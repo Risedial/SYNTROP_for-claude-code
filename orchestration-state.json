@@ -1,0 +1,59 @@
+{
+  "version": "1.0.0",
+  "project_id": null,
+  "project_name": null,
+  "created_at": null,
+  "updated_at": null,
+  "phase": "uninitialized",
+  "step": null,
+  "status": "pending",
+  "current_director": null,
+  "current_worker": null,
+  "completed_phases": [],
+  "completed_steps": [],
+  "user_input": {
+    "pending": false,
+    "type": null,
+    "questions_file": null,
+    "context_message": null,
+    "responses_received": []
+  },
+  "active_decisions": {},
+  "error_state": {
+    "has_error": false,
+    "error_file": null,
+    "recovery_attempted": false,
+    "recovery_options_presented": false
+  },
+  "progress": {
+    "percentage": 0,
+    "phases_total": 5,
+    "phases_completed": 0,
+    "current_phase_steps_total": 0,
+    "current_phase_steps_completed": 0
+  },
+  "context_pointers": {
+    "brain_dump": null,
+    "ssot": null,
+    "requirements": null,
+    "selected_approach": null,
+    "blueprint": null,
+    "implementation_plan": null,
+    "file_index": "file-index.json"
+  },
+  "execution_tracking": {
+    "total_implementation_steps": 0,
+    "completed_implementation_steps": 0,
+    "current_sprint": 0,
+    "total_sprints": 0,
+    "current_task_in_sprint": 0,
+    "total_tasks_in_current_sprint": 0
+  },
+  "vision_anchors": [],
+  "next_action": {
+    "description": "Send /orchestrate followed by your project idea to begin",
+    "command_hint": "/orchestrate [your idea]",
+    "expected_director": "INTAKE-DIRECTOR",
+    "expected_worker": "vision-clarifier"
+  }
+}

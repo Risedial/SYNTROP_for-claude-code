@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "updated_at": null,
+  "files": {},
+  "by_phase": {
+    "intake": [],
+    "research": [],
+    "architecture": [],
+    "execution": [],
+    "quality": []
+  }
+}

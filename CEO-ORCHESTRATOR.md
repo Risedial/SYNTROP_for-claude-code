@@ -34,39 +34,42 @@ Read context-summary.md
 This provides a quick orientation: project name, current phase, key decisions, what was last done, what happens next.
 
 ### Step 4: Determine Command Type
-Examine the user's message to determine what they want:
+The `/orchestrate` slash command passes user input via `$ARGUMENTS`. Examine the arguments to determine intent:
 
 ```
-IF user message starts with "/orchestrate reset":
+IF arguments == "reset":
   → Execute RESET PROTOCOL
 
-IF user message starts with "/orchestrate status":
+IF arguments == "status":
   → Execute STATUS PROTOCOL
 
-IF user message starts with "/orchestrate" followed by substantial text (50+ characters):
-  → This is a NEW PROJECT brain dump
-  → Execute NEW PROJECT PROTOCOL
-
-IF user message starts with "/orchestrate continue" OR "/orchestrate" (no arguments):
+IF arguments == "continue" OR arguments is empty/blank:
   → Execute CONTINUE PROTOCOL
 
-IF state shows "awaiting_user_input" or "awaiting_approval":
+IF state shows "awaiting_user_input" or "awaiting_approval"
+   AND arguments contain a response (not a subcommand):
   → User's message is a RESPONSE to pending questions
   → Execute USER INPUT PROTOCOL
 
 IF state shows "blocked_error":
   → Execute ERROR RECOVERY PROTOCOL
 
+IF arguments contain substantial text (50+ characters, not a subcommand):
+  → This is a NEW PROJECT brain dump
+  → Execute NEW PROJECT PROTOCOL
+
 OTHERWISE:
-  → If state exists and has an active project: treat as CONTINUE
-  → If no state exists: ask user to start with /orchestrate [idea]
+  → If state exists and has an active project (phase != "uninitialized"): treat as CONTINUE
+  → If no active project: display message asking user to start with /orchestrate [idea]
 ```
+
+**Note:** When invoked via the `/orchestrate` slash command, the arguments do NOT contain the "/orchestrate" prefix. The command system strips it. You receive only what follows: the brain dump text, "continue", "status", "reset", or the user's answers.
 
 ---
 
 ## PROTOCOL: NEW PROJECT
 
-Triggered when user sends `/orchestrate [brain dump text]`
+Triggered when user sends `/orchestrate [brain dump text]` (arguments = substantial text)
 
 ### Step 1: Initialize Workspace
 ```bash

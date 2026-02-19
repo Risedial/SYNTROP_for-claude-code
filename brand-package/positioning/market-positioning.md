@@ -7,9 +7,9 @@
 
 ## Positioning Statement
 
-**For developers who use Claude Code and want to build complete software projects — not just code snippets — {{PRODUCT_NAME}} is the only structured multi-session orchestration framework that solves context window death by design, turning a single `/orchestrate` command into a complete 5-phase pipeline that produces deployment-ready deliverables.**
+**For developers who use Claude Code and want to build complete software projects — not just code snippets — SYNTROP is the only structured multi-session orchestration framework that solves context window death by design, turning a single `/orchestrate` command into a complete 5-phase pipeline that produces deployment-ready deliverables.**
 
-Unlike Devin, Cursor agent mode, Replit Agent, and Bolt.new — which all operate within a single session and lose context when they end — {{PRODUCT_NAME}} uses a persistent state machine to pick up exactly where the last session left off, across unlimited sessions, with no cloud infrastructure required.
+Unlike Devin, Cursor agent mode, Replit Agent, and Bolt.new — which all operate within a single session and lose context when they end — SYNTROP uses a persistent state machine to pick up exactly where the last session left off, across unlimited sessions, with no cloud infrastructure required.
 
 ---
 
@@ -19,7 +19,7 @@ Unlike Devin, Cursor agent mode, Replit Agent, and Bolt.new — which all operat
 
 This is not yet a recognized market category. The adjacent categories are:
 
-| Adjacent Category | Why {{PRODUCT_NAME}} Is Different |
+| Adjacent Category | Why SYNTROP Is Different |
 |---|---|
 | AI coding assistants (Copilot, Cursor) | Those help within a session. This manages across sessions. |
 | Autonomous AI agents (Devin) | Those are cloud-hosted products. This is a local framework. |
@@ -42,7 +42,7 @@ Every major AI coding tool operates within a single conversation. When context r
 2. Start fresh and re-explain everything each time (frustrating, inconsistent)
 3. Use tools like Cursor CLAUDE.md to preserve some context (helpful but not structured)
 
-{{PRODUCT_NAME}} treats session boundaries as a first-class problem, not an afterthought. The state machine design means **session ending is a feature, not a bug** — it's a clean stopping point with guaranteed context recovery.
+SYNTROP treats session boundaries as a first-class problem, not an afterthought. The state machine design means **session ending is a feature, not a bug** — it's a clean stopping point with guaranteed context recovery.
 
 ### Who Is Actually Using AI Coding Tools
 
@@ -54,7 +54,7 @@ Based on observable adoption patterns (source: community discussions, product us
 - **OSS contributors and tinkerers** — interested in architecture, want to extend and customize
 - **Teams evaluating AI-assisted workflows** — often blocked by governance, security, or toolchain compatibility
 
-{{PRODUCT_NAME}} is most immediately relevant to solo developers and agency developers in the first two groups. The non-technical founder segment needs UX work that hasn't happened yet (v1.0 is terminal-native only).
+SYNTROP is most immediately relevant to solo developers and agency developers in the first two groups. The non-technical founder segment needs UX work that hasn't happened yet (v1.0 is terminal-native only).
 
 ---
 
@@ -64,32 +64,32 @@ Based on observable adoption patterns (source: community discussions, product us
 
 ```
 Full Automation <-----------------------------------------> Full Control
-    Devin          Replit Agent     {{PRODUCT_NAME}}     Cursor     Manual
+    Devin          Replit Agent     SYNTROP     Cursor     Manual
 ```
 
-{{PRODUCT_NAME}} is positioned in the **structured automation with human oversight** zone. It automates the execution while keeping humans in control of strategic decisions (what to build, which approach to take, whether the architecture is right).
+SYNTROP is positioned in the **structured automation with human oversight** zone. It automates the execution while keeping humans in control of strategic decisions (what to build, which approach to take, whether the architecture is right).
 
 ### Infrastructure vs. Zero-Config
 
 ```
 Heavy Infra <-----------------------------------------> Zero Config
-  LangGraph     CrewAI    Devin/Replit    Cursor    {{PRODUCT_NAME}}
+  LangGraph     CrewAI    Devin/Replit    Cursor    SYNTROP
 ```
 
-{{PRODUCT_NAME}} requires nothing beyond Claude Code — which developers already have. This is its strongest infrastructure advantage.
+SYNTROP requires nothing beyond Claude Code — which developers already have. This is its strongest infrastructure advantage.
 
 ### Scope: Task vs. Project
 
 ```
 Task-Level <-----------------------------------------> Project-Level
-  Copilot    Cursor Agent    Devin    Bolt.new    {{PRODUCT_NAME}}
+  Copilot    Cursor Agent    Devin    Bolt.new    SYNTROP
 ```
 
-{{PRODUCT_NAME}} is the only tool in this landscape explicitly designed for **entire project lifecycle management**, not individual tasks or PRs.
+SYNTROP is the only tool in this landscape explicitly designed for **entire project lifecycle management**, not individual tasks or PRs.
 
 ---
 
-## What {{PRODUCT_NAME}} Is Not Positioning Against
+## What SYNTROP Is Not Positioning Against
 
 - **"AI that writes code"** — Every tool does this. This framing is saturated and meaningless.
 - **"AI that thinks like a senior developer"** — Unverifiable hype. Avoid entirely.
@@ -100,7 +100,7 @@ Task-Level <-----------------------------------------> Project-Level
 
 ## The One-Sentence Category Claim
 
-**{{PRODUCT_NAME}} is the first open-source framework that treats multi-session AI development as a first-class problem — and solves it with a 33-file skill architecture that turns `/orchestrate` into a complete project-building pipeline.**
+**SYNTROP is the first open-source framework that treats multi-session AI development as a first-class problem — and solves it with a 33-file skill architecture that turns `/orchestrate` into a complete project-building pipeline.**
 
 Note: "first open-source framework" should be verified against GitHub search results before publishing. Hedge to "one of the first" if any prior art exists.
 

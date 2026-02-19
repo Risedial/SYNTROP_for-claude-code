@@ -12,17 +12,17 @@
 
 **Option A (Recommended):**
 ```
-Show HN: {{PRODUCT_NAME}} – 33 markdown skill files that turn Claude Code into a multi-session project builder
+Show HN: SYNTROP – 33 markdown skill files that turn Claude Code into a multi-session project builder
 ```
 
 **Option B:**
 ```
-Show HN: {{PRODUCT_NAME}} – a state machine approach to the context problem in multi-session AI development
+Show HN: SYNTROP – a state machine approach to the context problem in multi-session AI development
 ```
 
 **Option C:**
 ```
-Show HN: {{PRODUCT_NAME}} – hierarchical prompt orchestration for building complete projects with Claude Code
+Show HN: SYNTROP – hierarchical prompt orchestration for building complete projects with Claude Code
 ```
 
 *Recommendation: A or B. Both are technically precise and avoid hype. Option C might attract questions about how hierarchical prompt orchestration differs from existing frameworks — which is a good discussion to have.*
@@ -34,7 +34,7 @@ Show HN: {{PRODUCT_NAME}} – hierarchical prompt orchestration for building com
 ```
 Hi HN,
 
-I want to show you {{PRODUCT_NAME}}, a 33-file skill architecture that
+I want to show you SYNTROP, a 33-file skill architecture that
 extends Claude Code with a structured multi-session project pipeline.
 
 **The problem it solves:**
@@ -112,7 +112,7 @@ Interested in feedback on:
 
 ```
 CLAUDE.md files are project-level context that Claude reads at the start of
-each session — they're really useful. {{PRODUCT_NAME}} is more structured:
+each session — they're really useful. SYNTROP is more structured:
 
 - Explicit phase tracking (you're in Execution, sprint 3 of 7)
 - Decision log with rationale (not just "we use PostgreSQL" but why)
@@ -123,7 +123,7 @@ CLAUDE.md is context. orchestration-state.json is state. Both are valuable;
 the state machine adds the structured execution tracking that CLAUDE.md wasn't
 designed for.
 
-If your project fits in 2-3 sessions, you probably don't need {{PRODUCT_NAME}}.
+If your project fits in 2-3 sessions, you probably don't need SYNTROP.
 CLAUDE.md will do it.
 ```
 
@@ -156,18 +156,18 @@ Good point, and worth addressing directly.
 CrewAI and LangGraph are frameworks for *building* agent systems — they give
 you primitives (roles, graphs, tools) and you write code to configure them.
 
-{{PRODUCT_NAME}} is a specific agent system already built for a specific use
+SYNTROP is a specific agent system already built for a specific use
 case (software project lifecycle) using Claude Code's skill file architecture.
 The target user doesn't write orchestration code; they write project descriptions.
 
 The analogy: Django is a web framework. Your web app built with Django is not
-a new web framework. {{PRODUCT_NAME}} is to CrewAI what a specific web app
+a new web framework. SYNTROP is to CrewAI what a specific web app
 is to Django — it uses a similar *pattern* (hierarchical delegation) but it's
 a concrete implementation for a concrete use case.
 
 If you want to build your own orchestration system, CrewAI/LangGraph are better
 choices. If you want to *use* a system to build software projects in Claude Code,
-{{PRODUCT_NAME}} is different.
+SYNTROP is different.
 ```
 
 ---

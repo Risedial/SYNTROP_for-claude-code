@@ -1,6 +1,6 @@
-# {{PRODUCT_NAME}} Brand Package
+# SYNTROP Brand Package
 
-**What this is:** A complete brand strategy and content package for {{PRODUCT_NAME}}. Every file is production-ready except for four placeholder strings. Once a name is finalized, a global find-and-replace on those placeholders makes everything ready to use.
+**What this is:** A complete brand strategy and content package for SYNTROP. Every file is production-ready except for four placeholder strings. Once a name is finalized, a global find-and-replace on those placeholders makes everything ready to use.
 
 ---
 
@@ -14,12 +14,12 @@
 
 | Placeholder | Replace With |
 |-------------|-------------|
-| `{{PRODUCT_NAME}}` | The finalized product name |
-| `{{TAGLINE}}` | The selected tagline from `identity/tagline-options.md` |
+| `SYNTROP` | The finalized product name |
+| `The structure your vision is missing.` | The selected tagline from `identity/tagline-options.md` |
 | `{{LOGO_URL}}` | URL to the finalized logo image |
 | `{{WEBSITE_URL}}` | The product's public URL (GitHub repo or landing page) |
 
-**How to replace:** Use your editor's Find & Replace All (case-sensitive). Replace in this order: `{{PRODUCT_NAME}}` first, then the others.
+**How to replace:** Use your editor's Find & Replace All (case-sensitive). Replace in this order: `SYNTROP` first, then the others.
 
 ---
 

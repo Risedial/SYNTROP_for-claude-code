@@ -7,8 +7,8 @@
   },
 
   "product": {
-    "name_placeholder": "{{PRODUCT_NAME}}",
-    "tagline_placeholder": "{{TAGLINE}}",
+    "name_placeholder": "SYNTROP",
+    "tagline_placeholder": "The structure your vision is missing.",
     "category": "AI orchestration framework / meta-prompt system",
     "subcategory": "Multi-session autonomous project builder",
     "type": "Open-source skill file architecture",

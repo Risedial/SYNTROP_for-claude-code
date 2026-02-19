@@ -29,10 +29,10 @@ All pitches assume the listener has at least some developer background. Separate
 ## 15-Second Pitch (~50 words)
 
 **For developers who've used Claude Code:**
-> "{{PRODUCT_NAME}} solves the context problem in multi-session AI development. You run `/orchestrate` with your idea. It runs through 5 phases — Intake, Research, Architecture, Execution, Quality — across as many sessions as needed, picking up exactly where it left off each time. Output is complete: code, tests, docs, deployment."
+> "SYNTROP solves the context problem in multi-session AI development. You run `/orchestrate` with your idea. It runs through 5 phases — Intake, Research, Architecture, Execution, Quality — across as many sessions as needed, picking up exactly where it left off each time. Output is complete: code, tests, docs, deployment."
 
 **For technical non-developers:**
-> "{{PRODUCT_NAME}} is a structured workflow that sits on top of Claude Code. You describe what you want to build. It manages the entire process across multiple working sessions, asking you to make decisions at key points. You end up with a finished, deployable software project."
+> "SYNTROP is a structured workflow that sits on top of Claude Code. You describe what you want to build. It manages the entire process across multiple working sessions, asking you to make decisions at key points. You end up with a finished, deployable software project."
 
 ---
 
@@ -41,12 +41,12 @@ All pitches assume the listener has at least some developer background. Separate
 **For developer audiences:**
 > "The problem with AI coding tools is that they're all session-bound. When the conversation ends, context is gone. For anything larger than a small feature, you're re-explaining your entire project every time.
 >
-> {{PRODUCT_NAME}} is a 33-file skill architecture that runs inside Claude Code. It uses a JSON state machine as persistent memory — each session reads state, executes, and writes updated state. You pick up exactly where you left off.
+> SYNTROP is a 33-file skill architecture that runs inside Claude Code. It uses a JSON state machine as persistent memory — each session reads state, executes, and writes updated state. You pick up exactly where you left off.
 >
 > The framework runs through 5 phases: Intake, Research, Architecture, Execution, and Quality. You approve the plan at each transition. Output is a deployment-ready project — not a prototype."
 
 **For agency / business context:**
-> "{{PRODUCT_NAME}} is an open-source framework that turns Claude Code into a structured project-building process. Instead of getting code fragments from an AI, you get a complete deliverable: source code, tests, documentation, and deployment configuration.
+> "SYNTROP is an open-source framework that turns Claude Code into a structured project-building process. Instead of getting code fragments from an AI, you get a complete deliverable: source code, tests, documentation, and deployment configuration.
 >
 > The process runs across multiple working sessions with you approving the direction at 4-5 key checkpoints. Complex projects may need 15-20 sessions, but your active time in each session is minutes, not hours.
 >
@@ -62,7 +62,7 @@ All pitches assume the listener has at least some developer background. Separate
 >
 > Claude Code is a genuinely useful agentic coding tool. But any project that spans more than one conversation hits a wall: the session ends, context disappears, and you spend the first 20 minutes of the next session re-explaining what was built and why.
 >
-> {{PRODUCT_NAME}} is a structural solution. It's 33 markdown skill files that turn Claude Code into a hierarchical multi-session project builder. At the top is a CEO-level orchestrator. It delegates to 5 phase directors — Intake, Research, Architecture, Execution, Quality. Directors delegate to 23 specialized workers. Four handler systems manage error recovery, state validation, and context monitoring.
+> SYNTROP is a structural solution. It's 33 markdown skill files that turn Claude Code into a hierarchical multi-session project builder. At the top is a CEO-level orchestrator. It delegates to 5 phase directors — Intake, Research, Architecture, Execution, Quality. Directors delegate to 23 specialized workers. Four handler systems manage error recovery, state validation, and context monitoring.
 >
 > The key mechanism is `orchestration-state.json` — a state machine that records everything: current phase, completed steps, decisions made, files created, next action. Every session starts by reading this file. When the session ends, the file is updated. The next `/orchestrate continue` picks up from the exact stopping point.
 >
@@ -84,7 +84,7 @@ Lead with the technical problem, then the technical solution. Skip any marketing
 
 > "Claude Code is great for session-local tasks. The problem: real projects span sessions, and context evaporates at every boundary. Most workarounds (CLAUDE.md, commit messages, session summaries) are helpful but manual and unsystematic.
 >
-> {{PRODUCT_NAME}} treats session boundaries as a first-class design constraint. A JSON state machine captures everything: phase, step, decisions, file index, next action. Fresh sessions read state first, execute, update state, stop cleanly.
+> SYNTROP treats session boundaries as a first-class design constraint. A JSON state machine captures everything: phase, step, decisions, file index, next action. Fresh sessions read state first, execute, update state, stop cleanly.
 >
 > The skill architecture is 33 markdown files: 1 CEO orchestrator, 5 directors, 23 workers, 4 handlers. The entire project pipeline is observable and modifiable — they're just files.
 >
@@ -94,7 +94,7 @@ Lead with the technical problem, then the technical solution. Skip any marketing
 
 Skip the technical implementation. Focus on what they get and what they control.
 
-> "{{PRODUCT_NAME}} is like having a very structured AI development process where you stay in charge of the important decisions.
+> "SYNTROP is like having a very structured AI development process where you stay in charge of the important decisions.
 >
 > You describe what you want to build — even if it's messy and incomplete. The system asks clarifying questions, presents 3-5 options for how to build it, gets your approval, creates a detailed plan, gets your approval again, then builds it step by step.
 >

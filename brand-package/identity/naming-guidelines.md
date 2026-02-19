@@ -9,7 +9,7 @@
 
 A name is a permanent commitment. Bad names create lasting positioning problems — they either over-promise ("AutoCoder Pro"), misrepresent the category ("AI Developer"), or disappear into a sea of similar names ("Nexus", "Apex", "Forge").
 
-This document defines what a good name for {{PRODUCT_NAME}} looks like before you start generating candidates — so that evaluation is against criteria, not gut feel.
+This document defines what a good name for SYNTROP looks like before you start generating candidates — so that evaluation is against criteria, not gut feel.
 
 ---
 

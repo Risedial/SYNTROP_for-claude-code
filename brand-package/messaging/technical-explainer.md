@@ -1,13 +1,13 @@
 # Technical Explainer
 
 > **Source of Truth:** `metadata/system-facts.json`
-> **Audience:** Developers evaluating {{PRODUCT_NAME}} for adoption or contribution. Assumes comfort with AI tools, CLIs, and software architecture concepts.
+> **Audience:** Developers evaluating SYNTROP for adoption or contribution. Assumes comfort with AI tools, CLIs, and software architecture concepts.
 
 ---
 
-## What {{PRODUCT_NAME}} Actually Is
+## What SYNTROP Actually Is
 
-{{PRODUCT_NAME}} is a hierarchical prompt-based orchestration framework implemented as 33 markdown skill files. It runs inside Claude Code (Anthropic's CLI) and extends it with a structured multi-session project pipeline.
+SYNTROP is a hierarchical prompt-based orchestration framework implemented as 33 markdown skill files. It runs inside Claude Code (Anthropic's CLI) and extends it with a structured multi-session project pipeline.
 
 It is **not**:
 - A SaaS product or hosted service
@@ -25,7 +25,7 @@ It **is**:
 
 ## The State Machine: Core Technical Innovation
 
-The fundamental problem {{PRODUCT_NAME}} solves is **context window death**: Claude Code is excellent within a session, but real projects span multiple sessions. Without structure, every session starts from zero.
+The fundamental problem SYNTROP solves is **context window death**: Claude Code is excellent within a session, but real projects span multiple sessions. Without structure, every session starts from zero.
 
 ### The mechanism
 
@@ -284,7 +284,7 @@ All project decisions, phase transitions, and file creation events are written t
 
 ## Extension Points
 
-{{PRODUCT_NAME}} is designed to be extended. The primary extension mechanisms:
+SYNTROP is designed to be extended. The primary extension mechanisms:
 
 **Adding a worker:** Create a new markdown skill file with the worker instruction format. Register it with the appropriate Director by updating the Director's skill file to invoke the new worker when relevant.
 

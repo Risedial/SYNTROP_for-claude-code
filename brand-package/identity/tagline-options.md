@@ -7,7 +7,7 @@
 
 ## Evaluation Criteria
 
-A strong tagline for {{PRODUCT_NAME}} should:
+A strong tagline for SYNTROP should:
 - Be understood by a developer on first read, without context
 - Describe what the system does OR the problem it solves — not a vague aspiration
 - Be honest (no "build anything," no "the future of")
@@ -89,7 +89,7 @@ These lead with what you get. Strong for audiences motivated by output quality.
 
 **7. "Ship projects. Not sessions."**
 
-**Rationale:** Tight contrast. Other tools help within a session. {{PRODUCT_NAME}} delivers complete projects. Plays on "ship" (deploy) and "session" (the unit of AI work).
+**Rationale:** Tight contrast. Other tools help within a session. SYNTROP delivers complete projects. Plays on "ship" (deploy) and "session" (the unit of AI work).
 
 **Use when:** Any context where brevity matters. Great as a secondary tagline paired with a longer one.
 

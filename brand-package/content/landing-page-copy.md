@@ -30,7 +30,7 @@ Your project doesn't.
 ### Subheadline (H2)
 
 ```
-{{PRODUCT_NAME}} is a structured multi-session pipeline for Claude Code.
+SYNTROP is a structured multi-session pipeline for Claude Code.
 From brain dump to deployment-ready project — across unlimited sessions,
 with full context recovery between them.
 ```
@@ -103,14 +103,14 @@ Most workarounds (detailed CLAUDE.md files, commit messages, project READMEs)
 help but don't solve the structural problem: there's no persistent state
 machine tracking phase, decisions, file index, and next action.
 
-{{PRODUCT_NAME}} is that state machine.
+SYNTROP is that state machine.
 ```
 
 ---
 
 ### Visual Suggestion
 
-Split-screen: Left side shows "without {{PRODUCT_NAME}}" (session starts from scratch, re-explaining context, lost decisions). Right side shows "with {{PRODUCT_NAME}}" (session reads state, picks up from sprint_3, no context re-establishment needed).
+Split-screen: Left side shows "without SYNTROP" (session starts from scratch, re-explaining context, lost decisions). Right side shows "with SYNTROP" (session reads state, picks up from sprint_3, no context re-establishment needed).
 
 ---
 
@@ -309,14 +309,14 @@ State machine in JSON. Observable at every step.
 ### Section Header
 
 ```
-How {{PRODUCT_NAME}} fits in the landscape.
+How SYNTROP fits in the landscape.
 ```
 
 ---
 
 ### Table
 
-| | {{PRODUCT_NAME}} | Devin | Cursor Agent | Replit Agent | Bolt.new |
+| | SYNTROP | Devin | Cursor Agent | Replit Agent | Bolt.new |
 |---|---|---|---|---|---|
 | Multi-session state | ✅ State machine | ❌ | ❌ | Partial | ❌ |
 | Local / no cloud | ✅ | ❌ | ✅ | ❌ | ❌ |
@@ -336,7 +336,7 @@ Use Replit Agent or Bolt.new for quick prototypes with a lower technical barrier
 Use Devin for defined tasks in a cloud environment with dedicated support.
 Use Cursor for multi-file IDE changes within a session.
 
-Use {{PRODUCT_NAME}} when you're building a complete project with Claude Code
+Use SYNTROP when you're building a complete project with Claude Code
 across multiple sessions, and you want structure, control, and persistent context.
 ```
 
@@ -403,7 +403,7 @@ requiring constant coding.
 ### Section Header
 
 ```
-What {{PRODUCT_NAME}} is not.
+What SYNTROP is not.
 ```
 
 ---
@@ -464,7 +464,7 @@ Then, in Claude Code:
 ### Footer Note
 
 ```
-{{PRODUCT_NAME}} v1.0.0 · Open source ·
+SYNTROP v1.0.0 · Open source ·
 Requires Claude Pro or Max subscription ·
 Not affiliated with Anthropic
 ```

@@ -1,13 +1,13 @@
 # GitHub README Draft
 
 > **Source of Truth:** `metadata/system-facts.json`
-> **Usage:** This is a ready-to-use draft for the repository's `README.md`. Replace `{{PRODUCT_NAME}}`, `{{TAGLINE}}`, `{{LOGO_URL}}`, and `{{WEBSITE_URL}}` with finalized values. Follow conventions noted inline.
+> **Usage:** This is a ready-to-use draft for the repository's `README.md`. Replace `SYNTROP`, `The structure your vision is missing.`, `{{LOGO_URL}}`, and `{{WEBSITE_URL}}` with finalized values. Follow conventions noted inline.
 
 ---
 
 <!-- README DRAFT BEGINS BELOW THIS LINE -->
 
-# {{PRODUCT_NAME}}
+# SYNTROP
 
 <!-- Badge row — update with real shields.io badges once repo is live -->
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -15,12 +15,12 @@
 [![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](CHANGELOG.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-**{{TAGLINE}}**
+**The structure your vision is missing.**
 
 <!-- Insert demo GIF here. Recommended: record a terminal session showing /orchestrate [idea] → SSOT approval → /orchestrate continue → sprint completion -->
-<!-- ![{{PRODUCT_NAME}} demo]({{LOGO_URL}}) -->
+<!-- ![SYNTROP demo]({{LOGO_URL}}) -->
 
-{{PRODUCT_NAME}} is a 33-file skill architecture that turns Claude Code into a structured multi-session project builder. One `/orchestrate` command runs a complete 5-phase pipeline — from raw idea through deployment-ready output — across as many sessions as your project needs, with full context recovery between them.
+SYNTROP is a 33-file skill architecture that turns Claude Code into a structured multi-session project builder. One `/orchestrate` command runs a complete 5-phase pipeline — from raw idea through deployment-ready output — across as many sessions as your project needs, with full context recovery between them.
 
 **Not a SaaS. Not a hosted service. Not model-agnostic.** It runs locally inside Claude Code with no additional infrastructure.
 
@@ -33,8 +33,8 @@
 # https://claude.ai/product/claude-code
 
 # Clone the repository
-git clone https://github.com/[your-org]/{{PRODUCT_NAME}}
-cd {{PRODUCT_NAME}}
+git clone https://github.com/[your-org]/SYNTROP
+cd SYNTROP
 
 # Start a new project
 claude
@@ -73,7 +73,7 @@ Claude Code is an excellent agentic coding tool — for tasks that fit in one se
 
 When a session ends, context is gone. Developers building multi-session projects face the same problem: spend the first 20 minutes of every session re-explaining the architecture, the decisions already made, and where development stopped.
 
-{{PRODUCT_NAME}} solves this with a state machine (`orchestration-state.json`). Every session reads state first, executes, writes updated state, and stops cleanly. The next session picks up from the exact stopping point. Sessions end when work is complete, not when context runs out.
+SYNTROP solves this with a state machine (`orchestration-state.json`). Every session reads state first, executes, writes updated state, and stops cleanly. The next session picks up from the exact stopping point. Sessions end when work is complete, not when context runs out.
 
 ---
 
@@ -149,7 +149,7 @@ State: orchestration-state.json (persistent memory across all sessions)
 
 ---
 
-## What {{PRODUCT_NAME}} Is Not
+## What SYNTROP Is Not
 
 **Be clear-eyed about the tradeoffs before you start:**
 
@@ -165,7 +165,7 @@ If you want a browser-based tool, see Bolt.new or Replit Agent. If you need mode
 
 ## Comparison
 
-| Feature | {{PRODUCT_NAME}} | Devin | Cursor Agent | Replit Agent |
+| Feature | SYNTROP | Devin | Cursor Agent | Replit Agent |
 |---------|-----------------|-------|--------------|--------------|
 | Multi-session continuity | ✅ State machine | ❌ | ❌ | Partial |
 | Local / no cloud | ✅ | ❌ | ✅ | ❌ |
@@ -199,7 +199,7 @@ your-project/
 
 ## Contributing
 
-{{PRODUCT_NAME}} is built to be extended. The most useful contributions:
+SYNTROP is built to be extended. The most useful contributions:
 
 - **New workers** — Additional specialized task executors for phases that need more granularity
 - **Bug reports** — Especially state machine edge cases and recovery failures
@@ -252,6 +252,6 @@ Built on Claude Code (Anthropic). The orchestration pattern is inspired by hiera
 
 ---
 
-*{{PRODUCT_NAME}} v1.0.0 · Not affiliated with Anthropic · Requires Claude Pro or Max subscription*
+*SYNTROP v1.0.0 · Not affiliated with Anthropic · Requires Claude Pro or Max subscription*
 
 <!-- README DRAFT ENDS ABOVE THIS LINE -->

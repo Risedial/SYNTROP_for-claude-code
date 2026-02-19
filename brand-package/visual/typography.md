@@ -1,7 +1,7 @@
 # Typography
 
 > **Source of Truth:** `metadata/system-facts.json`
-> **Purpose:** Font selections for all {{PRODUCT_NAME}} contexts with reasoning. Applied to: documentation site, landing page, README (limited), social cards, presentations.
+> **Purpose:** Font selections for all SYNTROP contexts with reasoning. Applied to: documentation site, landing page, README (limited), social cards, presentations.
 
 ---
 

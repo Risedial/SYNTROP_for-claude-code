@@ -8,7 +8,7 @@
 
 ## Core Comparison Table
 
-| Feature | {{PRODUCT_NAME}} | Devin | Cursor Agent | Replit Agent | Bolt.new | CrewAI |
+| Feature | SYNTROP | Devin | Cursor Agent | Replit Agent | Bolt.new | CrewAI |
 |---|---|---|---|---|---|---|
 | **Multi-session continuity** | ✅ State machine design | ❌ Session-bound | ❌ Session-bound | Partial (hosted env) | ❌ Session-bound | ⚠️ External state required |
 | **Infrastructure required** | None (local) | Cognition cloud | Cursor IDE install | Replit cloud | Browser | Python + infra |
@@ -35,7 +35,7 @@
 
 Every tool in the table above (except CrewAI with external state added manually) operates within a single session. When the chat ends, context is gone.
 
-{{PRODUCT_NAME}} is architecturally designed for session termination. The `orchestration-state.json` state machine records the exact phase, step, decisions made, files created, and next action. The next session begins by reading this file — not by re-explaining the project.
+SYNTROP is architecturally designed for session termination. The `orchestration-state.json` state machine records the exact phase, step, decisions made, files created, and next action. The next session begins by reading this file — not by re-explaining the project.
 
 This is the single most important differentiator. Everything else is secondary.
 
@@ -43,11 +43,11 @@ This is the single most important differentiator. Everything else is secondary.
 
 Devin requires the Cognition Labs platform. Replit Agent requires Replit's cloud. Bolt.new requires StackBlitz in your browser. CrewAI requires a Python environment and custom orchestration code.
 
-{{PRODUCT_NAME}} requires: Claude Code. If you already use Claude Code, you have everything you need.
+SYNTROP requires: Claude Code. If you already use Claude Code, you have everything you need.
 
 ### 3. Human Stays in Control at Phase Gates
 
-{{PRODUCT_NAME}} pauses for user approval at 4 critical transitions:
+SYNTROP pauses for user approval at 4 critical transitions:
 1. After Intake: Approve the Single Source of Truth document
 2. After Research: Select the technical approach
 3. After Architecture: Approve the blueprint and sprint plan
@@ -57,7 +57,7 @@ Devin, Replit Agent, and Bolt.new are primarily "fire and hope" — you describe
 
 ### 4. Hierarchical Delegation Chain
 
-{{PRODUCT_NAME}}'s 33 skill files implement a structured chain of command:
+SYNTROP's 33 skill files implement a structured chain of command:
 - CEO Orchestrator reads state and routes to the correct Director
 - Directors manage phases and delegate to specialized Workers
 - Workers execute specific tasks (vision-clarifier, blueprint-architect, step-executor, integration-tester, etc.)
@@ -69,7 +69,7 @@ In contrast, Devin's internals are opaque. CrewAI has a similar role-based model
 
 ### 5. Complete Project Output vs. Code Snippets or MVPs
 
-{{PRODUCT_NAME}} produces: source code + tests + documentation + configuration + deployment scripts.
+SYNTROP produces: source code + tests + documentation + configuration + deployment scripts.
 
 Bolt.new and Replit Agent produce: functioning MVPs, often without tests, documentation, or deployment configuration.
 
@@ -92,7 +92,7 @@ If you want to ship, not just prototype, the output quality bar matters.
 | Multi-model flexibility | CrewAI or LangGraph | Not locked to Claude Code |
 | One-session projects | Cursor Agent Mode | No overhead of state management |
 
-{{PRODUCT_NAME}} is the right choice when: you're building a complete software project, across multiple sessions, where you want control over architectural decisions, and you're already working inside Claude Code.
+SYNTROP is the right choice when: you're building a complete software project, across multiple sessions, where you want control over architectural decisions, and you're already working inside Claude Code.
 
 ---
 

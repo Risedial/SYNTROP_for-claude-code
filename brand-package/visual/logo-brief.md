@@ -1,14 +1,14 @@
 # Logo Brief
 
 > **Source of Truth:** `metadata/system-facts.json`
-> **Audience:** Graphic designer or design-capable contributor creating the {{PRODUCT_NAME}} logo and wordmark.
+> **Audience:** Graphic designer or design-capable contributor creating the SYNTROP logo and wordmark.
 > **Use this document:** As a briefing doc before any logo work begins. Don't start without aligning on the mood and constraints sections.
 
 ---
 
 ## Project Overview
 
-{{PRODUCT_NAME}} is a terminal-native, open-source AI orchestration framework. It is not a SaaS product, not a consumer app — it's a developer tool. The logo will primarily appear in:
+SYNTROP is a terminal-native, open-source AI orchestration framework. It is not a SaaS product, not a consumer app — it's a developer tool. The logo will primarily appear in:
 
 1. GitHub repository header
 2. README.md (rendered in markdown, typically dark background on GitHub)

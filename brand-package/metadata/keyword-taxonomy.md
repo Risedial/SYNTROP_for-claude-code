@@ -9,7 +9,7 @@
 
 ### Intent 1: "I need to build a full project with AI and it keeps losing context"
 
-These are users who have experienced the problem {{PRODUCT_NAME}} solves. Highest conversion intent.
+These are users who have experienced the problem SYNTROP solves. Highest conversion intent.
 
 **Primary keywords:**
 - claude code multi-session
@@ -55,7 +55,7 @@ These are developers evaluating agent architectures. Mid-funnel — they know wh
 
 ### Intent 3: "I want to understand Claude Code and how to extend it"
 
-These are Claude Code power users who may not be searching for {{PRODUCT_NAME}} specifically but will find it valuable.
+These are Claude Code power users who may not be searching for SYNTROP specifically but will find it valuable.
 
 **Primary keywords:**
 - claude code advanced usage
@@ -133,7 +133,7 @@ claude
 
 ### GitHub README / Landing Page (Primary)
 
-**Title tag target:** `{{PRODUCT_NAME}} — Multi-Session AI Project Orchestration for Claude Code`
+**Title tag target:** `SYNTROP — Multi-Session AI Project Orchestration for Claude Code`
 
 **Meta description target:** `Open-source orchestration framework that turns Claude Code into a structured 5-phase project builder. State machine persistence across unlimited sessions. 33 skill files, 5 phases, one command.`
 
@@ -182,7 +182,7 @@ These keywords attract the wrong audience or create misleading expectations:
 
 ### Dev.to / Hashnode
 
-- Tutorial format: "How I built X using {{PRODUCT_NAME}}"
+- Tutorial format: "How I built X using SYNTROP"
 - SEO targets: "claude code tutorial," "ai orchestration guide," "multi-session ai development"
 
 ### Discord / Slack Communities

@@ -30,7 +30,7 @@ We built a structural solution.
 
 **Tweet 2**
 ```
-{{PRODUCT_NAME}} is 33 markdown skill files that implement a
+SYNTROP is 33 markdown skill files that implement a
 CEO → Director → Worker orchestration chain inside Claude Code.
 
 The CEO reads a JSON state machine.
@@ -153,7 +153,7 @@ Any developer can open it and understand the full project state.
 
 **Tweet 10 (CTA)**
 ```
-{{PRODUCT_NAME}} v1.0 is open source.
+SYNTROP v1.0 is open source.
 
 If you use Claude Code and build projects that span multiple sessions:
 → This solves the context problem architecturally.
@@ -190,7 +190,7 @@ Here's what's different about it compared to normal Claude Code sessions.
 Normal Claude Code: Session ends → context gone.
 Next session: 20 min re-explaining architecture, decisions, state.
 
-With {{PRODUCT_NAME}}: Session ends → state written.
+With SYNTROP: Session ends → state written.
 Next session: /orchestrate continue → picks up from sprint 4.
 
 20 minutes saved. Every. Session.
@@ -285,7 +285,7 @@ This isn't a rosy ad. It's what actually happened.
 
 **Tweet 9 (CTA)**
 ```
-{{PRODUCT_NAME}} is open source.
+SYNTROP is open source.
 
 If you use Claude Code and build projects that span more than one session,
 this is the structural solution to the context problem.
@@ -370,7 +370,7 @@ Read at the start of every session.
 ```
 That became orchestration-state.json.
 
-Every session of {{PRODUCT_NAME}} reads this file first.
+Every session of SYNTROP reads this file first.
 Every session writes an updated version when it ends.
 
 Sessions can end at any time — the next one picks up cleanly.
@@ -439,7 +439,7 @@ Honest positioning builds more trust than breathless launches.
 
 **Tweet 10 (CTA)**
 ```
-{{PRODUCT_NAME}} is live on GitHub. Open source.
+SYNTROP is live on GitHub. Open source.
 
 If you've hit the context wall building multi-session projects
 in Claude Code, this is the structural fix.

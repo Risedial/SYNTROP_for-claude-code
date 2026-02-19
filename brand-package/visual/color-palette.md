@@ -1,13 +1,13 @@
 # Color Palette
 
 > **Source of Truth:** `metadata/system-facts.json`
-> **Purpose:** Define the {{PRODUCT_NAME}} color system with reasoning. All colors selected for developer-native contexts (GitHub dark mode, terminal output, documentation sites).
+> **Purpose:** Define the SYNTROP color system with reasoning. All colors selected for developer-native contexts (GitHub dark mode, terminal output, documentation sites).
 
 ---
 
 ## Design Philosophy
 
-{{PRODUCT_NAME}} is a terminal-native developer tool. The color palette must:
+SYNTROP is a terminal-native developer tool. The color palette must:
 
 1. **Work in dark mode first.** Most developers using Claude Code work in dark environments. GitHub renders READMEs in dark mode by default.
 2. **Be functional, not decorative.** Colors should convey meaning (status, hierarchy, emphasis) not visual excitement.

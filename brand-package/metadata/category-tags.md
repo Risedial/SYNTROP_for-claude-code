@@ -1,7 +1,7 @@
 # Category Tags
 
 > **Source of Truth:** `metadata/system-facts.json`
-> **Purpose:** How to categorize {{PRODUCT_NAME}} across directories, platforms, and communities. Use exact tags listed here for consistency.
+> **Purpose:** How to categorize SYNTROP across directories, platforms, and communities. Use exact tags listed here for consistency.
 
 ---
 
@@ -48,7 +48,7 @@ Multi-session AI project orchestration for Claude Code. 33 skill files,
 
 **Gallery description (200 chars max):**
 ```
-{{PRODUCT_NAME}} turns Claude Code into a structured 5-phase project
+SYNTROP turns Claude Code into a structured 5-phase project
 builder. State machine keeps full context across unlimited sessions.
 Open source, local, zero extra infrastructure.
 ```
@@ -61,7 +61,7 @@ Open source, local, zero extra infrastructure.
 
 ### npm (if package is published)
 
-**Name:** `{{PRODUCT_NAME}}` (all lowercase, hyphens for spaces)
+**Name:** `SYNTROP` (all lowercase, hyphens for spaces)
 **Keywords array for package.json:**
 ```json
 {
@@ -86,8 +86,8 @@ Open source, local, zero extra infrastructure.
 
 ### Homebrew Formula (if distributed via Homebrew)
 
-**Tap name:** `{{PRODUCT_NAME}}/homebrew-{{PRODUCT_NAME}}`
-**Formula name:** `{{PRODUCT_NAME}}`
+**Tap name:** `SYNTROP/homebrew-SYNTROP`
+**Formula name:** `SYNTROP`
 
 **Description in formula:**
 ```ruby

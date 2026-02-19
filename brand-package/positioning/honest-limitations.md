@@ -9,13 +9,13 @@
 
 Every "AI that builds your app" tool has launched with bold claims and disappointed on delivery. Developers are tired of it. The fastest path to credibility with this audience is radical honesty about what the system is and what it isn't.
 
-{{PRODUCT_NAME}} is a v1.0 open-source framework. It does specific things well and has real constraints. Here they are.
+SYNTROP is a v1.0 open-source framework. It does specific things well and has real constraints. Here they are.
 
 ---
 
 ## Limitation 1: Claude Code Dependency
 
-**What this means:** {{PRODUCT_NAME}} is not model-agnostic. It runs exclusively inside Claude Code (Anthropic's CLI tool). If you use GPT-4, Gemini, or any other model as your primary AI coding environment, this system does not work for you.
+**What this means:** SYNTROP is not model-agnostic. It runs exclusively inside Claude Code (Anthropic's CLI tool). If you use GPT-4, Gemini, or any other model as your primary AI coding environment, this system does not work for you.
 
 **Why this won't change easily:** The skill files are designed around Claude Code's slash command architecture, file-reading behaviors, and tool use patterns. Porting to another CLI would require re-architecting the skill files, not just swapping an API key.
 
@@ -27,11 +27,11 @@ Every "AI that builds your app" tool has launched with bold claims and disappoin
 
 ## Limitation 2: Output Quality Is Bounded by Claude
 
-**What this means:** {{PRODUCT_NAME}} orchestrates Claude's work. It provides structure, persistence, and coordination. It does not give Claude capabilities it doesn't already have.
+**What this means:** SYNTROP orchestrates Claude's work. It provides structure, persistence, and coordination. It does not give Claude capabilities it doesn't already have.
 
 If Claude can't write good Python tests, the framework's quality phase won't fix that. If Claude hallucinates a library that doesn't exist, the framework won't catch it (unless it runs and fails, at which point the error handler kicks in).
 
-**Practical implication:** For complex, domain-specific software (embedded systems, novel algorithms, highly specialized libraries), Claude's knowledge gaps become {{PRODUCT_NAME}}'s gaps.
+**Practical implication:** For complex, domain-specific software (embedded systems, novel algorithms, highly specialized libraries), Claude's knowledge gaps become SYNTROP's gaps.
 
 **What helps:** The Research phase builds a decision matrix and the Architecture phase creates a detailed blueprint — both of which give Claude structured context to reduce hallucination rates. But they don't eliminate the underlying model limitations.
 
@@ -39,7 +39,7 @@ If Claude can't write good Python tests, the framework's quality phase won't fix
 
 ## Limitation 3: Complex Projects Require Many Sessions
 
-**What this means:** A project that would take a senior developer 2 weeks to build may require 15-20+ chat sessions with {{PRODUCT_NAME}}. Each session is a bounded unit of work — typically one sprint or one major task block.
+**What this means:** A project that would take a senior developer 2 weeks to build may require 15-20+ chat sessions with SYNTROP. Each session is a bounded unit of work — typically one sprint or one major task block.
 
 **Why the session count matters:** Each session requires a `/orchestrate continue` command to resume. For a 20-session project, that's 20 moments where you need to be present to kick off the next session. You're not going to sleep and wake up with a finished product.
 
@@ -51,7 +51,7 @@ If Claude can't write good Python tests, the framework's quality phase won't fix
 
 ## Limitation 4: No GUI, No Web Dashboard
 
-**What this means:** {{PRODUCT_NAME}} is a terminal-native system. All interaction happens through `claude` CLI commands. There is no web interface, no visual progress tracker, no drag-and-drop workflow editor.
+**What this means:** SYNTROP is a terminal-native system. All interaction happens through `claude` CLI commands. There is no web interface, no visual progress tracker, no drag-and-drop workflow editor.
 
 **Minimum technical requirement:** You need to be comfortable opening a terminal, running CLI commands, and reading JSON files. If that's not you, Replit Agent or Bolt.new have lower technical barriers.
 
@@ -61,7 +61,7 @@ If Claude can't write good Python tests, the framework's quality phase won't fix
 
 ## Limitation 5: Not Battle-Tested at Enterprise Scale
 
-**What this means:** {{PRODUCT_NAME}} is a v1.0 framework. It has been designed and tested, but it has not been run by thousands of users on production systems, it does not have enterprise-grade error recovery for every edge case, and there is no SLA, dedicated support tier, or professional services offering.
+**What this means:** SYNTROP is a v1.0 framework. It has been designed and tested, but it has not been run by thousands of users on production systems, it does not have enterprise-grade error recovery for every edge case, and there is no SLA, dedicated support tier, or professional services offering.
 
 **Specific unknowns:**
 - Behavior on very large codebases (100K+ LOC)
@@ -71,7 +71,7 @@ If Claude can't write good Python tests, the framework's quality phase won't fix
 
 **What exists for recovery:** Error handlers and state validation are implemented. But they haven't been stress-tested at scale.
 
-**Who should know this:** Anyone considering using {{PRODUCT_NAME}} for a business-critical project. Use it alongside human review processes, not as a replacement for them.
+**Who should know this:** Anyone considering using SYNTROP for a business-critical project. Use it alongside human review processes, not as a replacement for them.
 
 ---
 
@@ -79,7 +79,7 @@ If Claude can't write good Python tests, the framework's quality phase won't fix
 
 **What this means:** The Intake phase accepts a raw brain dump and converts it into structured requirements. This works well — but the SSOT document still needs your review and approval. If you approve a flawed SSOT, the entire downstream pipeline builds toward that flawed specification.
 
-**Garbage in, garbage out still applies.** {{PRODUCT_NAME}} improves the quality of requirements extraction, but it cannot read your mind. If your brain dump doesn't contain information you haven't articulated yet, the system won't invent it.
+**Garbage in, garbage out still applies.** SYNTROP improves the quality of requirements extraction, but it cannot read your mind. If your brain dump doesn't contain information you haven't articulated yet, the system won't invent it.
 
 **The fix:** Take the SSOT review seriously. It's 10 minutes of focused reading that determines the quality of everything downstream.
 
@@ -115,4 +115,4 @@ If Claude can't write good Python tests, the framework's quality phase won't fix
 
 If someone asks "what can't it do?", this document is your answer. Lead with it. Developers who find that you've already thought through the limitations will trust your claims about what the system _does_ do far more than developers who only hear the success cases.
 
-The goal is not to talk users out of using {{PRODUCT_NAME}}. The goal is to put them in the right mental model so they use it in the right situations and don't get surprised by the edges.
+The goal is not to talk users out of using SYNTROP. The goal is to put them in the right mental model so they use it in the right situations and don't get surprised by the edges.

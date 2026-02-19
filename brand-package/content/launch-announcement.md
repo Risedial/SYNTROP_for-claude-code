@@ -1,7 +1,7 @@
 # Launch Announcement
 
 > **Source of Truth:** `metadata/system-facts.json`
-> **Format:** Blog post / Product Hunt style announcement. Can be published as-is (with `{{PRODUCT_NAME}}` replaced) or adapted for specific channels.
+> **Format:** Blog post / Product Hunt style announcement. Can be published as-is (with `SYNTROP` replaced) or adapted for specific channels.
 > **Length:** ~800 words for blog post; the Product Hunt version at the bottom is ~200 words.
 
 ---
@@ -10,9 +10,9 @@
 
 ---
 
-### {{PRODUCT_NAME}}: A Structured Framework for Multi-Session AI Development
+### SYNTROP: A Structured Framework for Multi-Session AI Development
 
-We built {{PRODUCT_NAME}} to solve a problem we kept running into.
+We built SYNTROP to solve a problem we kept running into.
 
 Claude Code is a genuinely useful tool for agentic software development. It can read codebases, write files, run commands, and make meaningful progress on real projects. The problem isn't the capability. The problem is the session boundary.
 
@@ -24,9 +24,9 @@ We thought about this as a structural problem and built a structural solution.
 
 ---
 
-### What {{PRODUCT_NAME}} Is
+### What SYNTROP Is
 
-{{PRODUCT_NAME}} is 33 markdown skill files that implement a hierarchical orchestration framework inside Claude Code. One `/orchestrate` command initiates a CEO-level controller that reads a JSON state machine, determines the current project phase, and delegates to the appropriate Director. Directors delegate to 23 specialized Workers. Four Handler systems manage error recovery, state validation, context monitoring, and user input clarification.
+SYNTROP is 33 markdown skill files that implement a hierarchical orchestration framework inside Claude Code. One `/orchestrate` command initiates a CEO-level controller that reads a JSON state machine, determines the current project phase, and delegates to the appropriate Director. Directors delegate to 23 specialized Workers. Four Handler systems manage error recovery, state validation, context monitoring, and user input clarification.
 
 The state machine — `orchestration-state.json` — is the core innovation. Every session:
 1. Reads the state file (phase, step, decisions, file index, next action)
@@ -74,7 +74,7 @@ This is a v1.0 open-source framework, not a polished SaaS. Some things to know b
 
 ### Why Open Source
 
-We're releasing {{PRODUCT_NAME}} as an open-source framework because the architecture is the point. The 33 skill files are markdown — readable, modifiable, forkable. If you understand the CEO→Director→Worker pattern and want to add a custom Worker or extend a phase, you can do that. The state schema is documented JSON. There's nothing compiled to decipher.
+We're releasing SYNTROP as an open-source framework because the architecture is the point. The 33 skill files are markdown — readable, modifiable, forkable. If you understand the CEO→Director→Worker pattern and want to add a custom Worker or extend a phase, you can do that. The state schema is documented JSON. There's nothing compiled to decipher.
 
 If the approach is right — and we think it is — we'd rather have other Claude Code developers extending it than maintaining a private system that only works for us.
 
@@ -85,8 +85,8 @@ If the approach is right — and we think it is — we'd rather have other Claud
 If you have Claude Code installed and authenticated:
 
 ```bash
-git clone https://github.com/[your-org]/{{PRODUCT_NAME}}
-cd {{PRODUCT_NAME}}
+git clone https://github.com/[your-org]/SYNTROP
+cd SYNTROP
 
 # In Claude Code:
 /orchestrate Build me a [your project description]
@@ -110,7 +110,7 @@ Contributions welcome. The framework is yours to extend.
 
 ---
 
-*{{PRODUCT_NAME}} is not affiliated with Anthropic. Claude Code is Anthropic's product. {{PRODUCT_NAME}} is an orchestration framework built on top of it.*
+*SYNTROP is not affiliated with Anthropic. Claude Code is Anthropic's product. SYNTROP is an orchestration framework built on top of it.*
 
 ---
 
@@ -120,11 +120,11 @@ Contributions welcome. The framework is yours to extend.
 
 ---
 
-**{{PRODUCT_NAME}} — Multi-session AI project orchestration for Claude Code**
+**SYNTROP — Multi-session AI project orchestration for Claude Code**
 
 Every AI coding tool we've used is session-bound. When the conversation ends, context is gone. For real projects that span days or weeks, that's a fundamental structural problem.
 
-{{PRODUCT_NAME}} solves this with a JSON state machine. Every session reads `orchestration-state.json` — phase, step, decisions made, files created, next action — executes work, updates state, and stops cleanly. The next `/orchestrate continue` picks up exactly where it left off.
+SYNTROP solves this with a JSON state machine. Every session reads `orchestration-state.json` — phase, step, decisions made, files created, next action — executes work, updates state, and stops cleanly. The next `/orchestrate continue` picks up exactly where it left off.
 
 The framework is 33 markdown skill files: one CEO orchestrator, 5 phase directors, 23 specialized workers, 4 handler systems. It runs a complete 5-phase pipeline: Intake (converts brain dump to approved requirements), Research (3-5 options → user selects), Architecture (blueprint → user approves), Execution (sprint by sprint), Quality (tests + docs + deployment package).
 

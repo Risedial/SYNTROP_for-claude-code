@@ -8,7 +8,7 @@
 ## Structure
 
 Each value proposition follows the format:
-**[Persona] + [Problem they have] + [What {{PRODUCT_NAME}} does about it] + [Concrete outcome]**
+**[Persona] + [Problem they have] + [What SYNTROP does about it] + [Concrete outcome]**
 
 Generic value props that apply to everyone are usually meaningful to no one. These are mapped to specific personas.
 
@@ -18,7 +18,7 @@ Generic value props that apply to everyone are usually meaningful to no one. The
 
 **The one-sentence version:**
 
-> {{PRODUCT_NAME}} turns a Claude Code session into a complete 5-phase project pipeline — with persistent state, structured delegation, and human approval at every phase gate — so that multi-session AI development has a repeatable, recoverable process instead of a context graveyard.
+> SYNTROP turns a Claude Code session into a complete 5-phase project pipeline — with persistent state, structured delegation, and human approval at every phase gate — so that multi-session AI development has a repeatable, recoverable process instead of a context graveyard.
 
 **When to use:** Opening statement in a README, landing page hero description, any context where you have one sentence to explain the product.
 
@@ -30,7 +30,7 @@ Generic value props that apply to everyone are usually meaningful to no one. The
 
 **Problem:** Starting a multi-session Claude Code project means re-explaining the entire context every time. Most side projects die not from bad ideas but from lost momentum between sessions.
 
-**What {{PRODUCT_NAME}} does:** Writes a state file after every session. Every `/orchestrate continue` reads that file and picks up exactly where development stopped — phase, step, decisions already made, files already created.
+**What SYNTROP does:** Writes a state file after every session. Every `/orchestrate continue` reads that file and picks up exactly where development stopped — phase, step, decisions already made, files already created.
 
 **Concrete outcome:** A weekend project that would have died after 3 sessions of context re-establishment can now span 15+ sessions across 3 weeks without losing a single architectural decision.
 
@@ -48,7 +48,7 @@ Generic value props that apply to everyone are usually meaningful to no one. The
 
 **Problem:** AI-generated code is hard to hand off. It lacks documentation, test coverage, and the rationale behind decisions. Clients and developers inherit code they can't understand or maintain.
 
-**What {{PRODUCT_NAME}} does:** The Quality phase explicitly generates documentation and tests as first-class deliverables. The Intake phase produces an approved SSOT that serves as a requirements document. The Research phase decision matrix explains _why_ the technical approach was chosen.
+**What SYNTROP does:** The Quality phase explicitly generates documentation and tests as first-class deliverables. The Intake phase produces an approved SSOT that serves as a requirements document. The Research phase decision matrix explains _why_ the technical approach was chosen.
 
 **Concrete outcome:** A client-ready deliverable that includes not just working code but the specification it was built against, why specific technologies were chosen, test coverage, and deployment documentation.
 
@@ -66,7 +66,7 @@ Generic value props that apply to everyone are usually meaningful to no one. The
 
 **Problem:** Most AI orchestration frameworks require significant setup code to understand and customize. The behavior emerges from opaque, compiled logic rather than readable components.
 
-**What {{PRODUCT_NAME}} does:** The entire orchestration system is 33 markdown files. Every skill — every worker, director, handler — is readable, modifiable, and forkable. The state schema is documented JSON. There's nothing compiled to decompile.
+**What SYNTROP does:** The entire orchestration system is 33 markdown files. Every skill — every worker, director, handler — is readable, modifiable, and forkable. The state schema is documented JSON. There's nothing compiled to decompile.
 
 **Concrete outcome:** An orchestration architecture you can read, understand, extend, and contribute to. Custom workers can be added. Phase sequences can be modified. The system is transparent by design.
 
@@ -84,7 +84,7 @@ Generic value props that apply to everyone are usually meaningful to no one. The
 
 **Problem:** Wants to build something real, not just a prototype. Has enough technical depth to direct the build but not enough bandwidth to execute it. Needs structured decision points, not open-ended AI output.
 
-**What {{PRODUCT_NAME}} does:** The 5-phase pipeline with 4 approval gates means Aisha makes exactly the right decisions at exactly the right moments. The Intake phase structures her messy idea. The Research phase presents technology options she approves. The Architecture phase shows her the blueprint before anything is built.
+**What SYNTROP does:** The 5-phase pipeline with 4 approval gates means Aisha makes exactly the right decisions at exactly the right moments. The Intake phase structures her messy idea. The Research phase presents technology options she approves. The Architecture phase shows her the blueprint before anything is built.
 
 **Concrete outcome:** A working software project she understands and can explain, built according to an approach she explicitly approved.
 
@@ -99,7 +99,7 @@ Generic value props that apply to everyone are usually meaningful to no one. The
 
 ---
 
-## Anti-Value-Props: What {{PRODUCT_NAME}} Does NOT Solve
+## Anti-Value-Props: What SYNTROP Does NOT Solve
 
 Including these builds trust with technical audiences who are tired of over-promises.
 

@@ -1,7 +1,7 @@
 # Brand Brief
 
 > **Source of Truth:** `metadata/system-facts.json`
-> **Purpose:** This document defines the strategic brand foundation for {{PRODUCT_NAME}}. It should be the first document read by anyone creating brand assets — copywriters, designers, community managers, or contributors writing documentation.
+> **Purpose:** This document defines the strategic brand foundation for SYNTROP. It should be the first document read by anyone creating brand assets — copywriters, designers, community managers, or contributors writing documentation.
 
 ---
 
@@ -9,8 +9,8 @@
 
 **In one word:** Structure
 
-**What that means for {{PRODUCT_NAME}}:**
-Every problem {{PRODUCT_NAME}} solves comes down to structure. AI coding tools are powerful but unstructured — they work well in the moment but leave no lasting framework. {{PRODUCT_NAME}} provides the structure that turns ad-hoc AI sessions into a repeatable, trackable, recoverable project process.
+**What that means for SYNTROP:**
+Every problem SYNTROP solves comes down to structure. AI coding tools are powerful but unstructured — they work well in the moment but leave no lasting framework. SYNTROP provides the structure that turns ad-hoc AI sessions into a repeatable, trackable, recoverable project process.
 
 Structure is not glamorous. It is, however, what separates prototypes from shipped products.
 
@@ -30,7 +30,7 @@ Just: Solve the specific problem of context loss and workflow structure in multi
 
 ## Brand Personality
 
-{{PRODUCT_NAME}} communicates like a senior engineer who has solved this exact problem and wants to explain how. Not flashy. Not marketing-speak. Direct, precise, and confident without arrogance.
+SYNTROP communicates like a senior engineer who has solved this exact problem and wants to explain how. Not flashy. Not marketing-speak. Direct, precise, and confident without arrogance.
 
 **Five personality attributes:**
 
@@ -62,13 +62,13 @@ Full voice and tone guide: `identity/voice-and-tone.md`
 
 ## Brand Story
 
-**The problem that created {{PRODUCT_NAME}}:**
+**The problem that created SYNTROP:**
 
 Claude Code is a genuinely useful agentic coding tool. But building a complete project with it runs into a predictable wall: the context window ends, the session resets, and you spend the first 20 minutes of every new session re-explaining what you built and where you are.
 
 Workarounds exist — CLAUDE.md files, detailed commit messages, project READMEs — but they require manual effort and still don't give the AI the structured understanding of _why_ decisions were made, what phase of work is next, and what the acceptance criteria are.
 
-{{PRODUCT_NAME}} is a structural solution to a structural problem. Instead of trying to pack everything into a single conversation, it designs for the session boundary: a state machine captures every decision, every phase transition, every sprint completion. Fresh sessions start from the state file, not from the conversation history.
+SYNTROP is a structural solution to a structural problem. Instead of trying to pack everything into a single conversation, it designs for the session boundary: a state machine captures every decision, every phase transition, every sprint completion. Fresh sessions start from the state file, not from the conversation history.
 
 The result is a project-building process that can span unlimited sessions while maintaining full context about where it is and where it's going.
 
@@ -107,9 +107,9 @@ What the brand must NEVER claim or imply:
 
 ## Brand Opportunity
 
-The AI coding tool market is flooded with products that promise to build your app while you sleep. Every developer has been disappointed by at least one of them. {{PRODUCT_NAME}}'s opportunity is to win by being the brand that tells the truth — about what it does, what it doesn't do, and why the architecture is the way it is.
+The AI coding tool market is flooded with products that promise to build your app while you sleep. Every developer has been disappointed by at least one of them. SYNTROP's opportunity is to win by being the brand that tells the truth — about what it does, what it doesn't do, and why the architecture is the way it is.
 
-Developers who choose {{PRODUCT_NAME}} should choose it because they understand exactly what they're getting and believe it's the right tool for their specific situation. That kind of adoption is more durable than hype-driven signups that churn when expectations aren't met.
+Developers who choose SYNTROP should choose it because they understand exactly what they're getting and believe it's the right tool for their specific situation. That kind of adoption is more durable than hype-driven signups that churn when expectations aren't met.
 
 **The brand promise:**
-{{PRODUCT_NAME}} delivers what it says it delivers: a structured multi-session pipeline that turns your brain dump into a deployment-ready project, using Claude Code, with you in control at every phase gate.
+SYNTROP delivers what it says it delivers: a structured multi-session pipeline that turns your brain dump into a deployment-ready project, using Claude Code, with you in control at every phase gate.

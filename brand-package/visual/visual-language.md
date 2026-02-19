@@ -1,13 +1,13 @@
 # Visual Language
 
 > **Source of Truth:** `metadata/system-facts.json`
-> **Purpose:** Defines the visual vocabulary for {{PRODUCT_NAME}} beyond logo and color — iconography, illustration direction, screenshot guidelines, and how to represent the product visually.
+> **Purpose:** Defines the visual vocabulary for SYNTROP beyond logo and color — iconography, illustration direction, screenshot guidelines, and how to represent the product visually.
 
 ---
 
 ## Core Visual Concept
 
-{{PRODUCT_NAME}} is fundamentally about **structure** — hierarchical, persistent, traceable structure. The visual language should reflect this:
+SYNTROP is fundamentally about **structure** — hierarchical, persistent, traceable structure. The visual language should reflect this:
 
 - **Geometric over organic.** Straight lines, right angles, grids. Not curves, blobs, or fluid shapes.
 - **Dark and precise.** The primary aesthetic is dark mode — terminal-native, developer-friendly.
@@ -56,7 +56,7 @@
 
 ## Diagram Style: Architecture and Flow
 
-Architecture diagrams are the most important visual asset for {{PRODUCT_NAME}}. They appear in README, documentation, landing page, and technical explainer.
+Architecture diagrams are the most important visual asset for SYNTROP. They appear in README, documentation, landing page, and technical explainer.
 
 ### Box Style
 
@@ -157,7 +157,7 @@ The `orchestration-state.json` content is itself a compelling visual. When displ
 
 ## Illustration Direction
 
-{{PRODUCT_NAME}} v1.0 should **not** commission custom illustrations. The rationale:
+SYNTROP v1.0 should **not** commission custom illustrations. The rationale:
 
 1. Illustrations are expensive relative to launch stage
 2. This product's credibility comes from technical precision, not visual warmth
@@ -203,7 +203,7 @@ For Twitter/X posts and Product Hunt images:
 **Template structure for text-heavy social cards:**
 - Background: Obsidian (`#0D1117`)
 - Small Circuit accent line at top (4px height, full width)
-- {{PRODUCT_NAME}} wordmark: top-right, Mercury color
+- SYNTROP wordmark: top-right, Mercury color
 - Headline text: Steel, Inter SemiBold, 36-48px
 - Supporting text: Mercury, Inter Regular, 20-24px
 - Optional code snippet: Slate background, JetBrains Mono, 15px

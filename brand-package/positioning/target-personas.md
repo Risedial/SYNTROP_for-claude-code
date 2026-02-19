@@ -1,13 +1,13 @@
 # Target Personas
 
 > **Source of Truth:** `metadata/system-facts.json` → `technical_identity`, `user_involvement`
-> **Methodology:** Personas are grounded in documented adoption patterns for AI coding tools and the specific constraints of {{PRODUCT_NAME}} (Claude Code required, terminal-native, v1.0).
+> **Methodology:** Personas are grounded in documented adoption patterns for AI coding tools and the specific constraints of SYNTROP (Claude Code required, terminal-native, v1.0).
 
 ---
 
 ## Overview
 
-{{PRODUCT_NAME}} has four realistic user personas at v1.0. The first two are primary — they get the most from the system with the least friction. The second two are secondary — valuable adopters who need to understand specific tradeoffs.
+SYNTROP has four realistic user personas at v1.0. The first two are primary — they get the most from the system with the least friction. The second two are secondary — valuable adopters who need to understand specific tradeoffs.
 
 ---
 
@@ -30,7 +30,7 @@ He's already paying for Claude Max. He uses Claude Code daily. He knows how to w
 - Make architectural decisions once, not re-litigate them every session
 - Ship something he's actually proud of, not just a prototype
 
-**Why {{PRODUCT_NAME}} works for Marcus:**
+**Why SYNTROP works for Marcus:**
 - He already has Claude Code — zero additional setup
 - `/orchestrate` accepts messy brain dumps (his usual starting point)
 - The state machine means Sunday's session picks up where Saturday left off
@@ -62,7 +62,7 @@ She's found that AI tools are great for greenfield code but painful for project 
 - Something she can supervise and course-correct, not something that runs off autonomously
 - Reproducibility — if the process worked once, she wants to run it again
 
-**Why {{PRODUCT_NAME}} works for Priya:**
+**Why SYNTROP works for Priya:**
 - The 5-phase pipeline maps naturally to how agencies already structure projects (discovery → planning → build → QA → delivery)
 - Phase gates give her the same control she'd have reviewing a junior dev's PRs
 - The SSOT document from Intake becomes a client-ready requirements spec
@@ -84,7 +84,7 @@ Terminal-native means her non-technical project managers can't use it directly. 
 **Name (illustrative):** Diego, 24, Open-source contributor and CS graduate
 
 **Situation:**
-Diego is the kind of person who reads the implementation before using a tool. He's interested in {{PRODUCT_NAME}} as an architecture example as much as a practical tool. He wants to understand how 33 skill files create emergent multi-agent behavior, extend the worker library with custom workers, and possibly fork the system for his own orchestration experiments.
+Diego is the kind of person who reads the implementation before using a tool. He's interested in SYNTROP as an architecture example as much as a practical tool. He wants to understand how 33 skill files create emergent multi-agent behavior, extend the worker library with custom workers, and possibly fork the system for his own orchestration experiments.
 
 **What he wants:**
 - Clear documentation of the architecture (what each file does, how state flows)
@@ -92,7 +92,7 @@ Diego is the kind of person who reads the implementation before using a tool. He
 - Examples he can learn from and riff on
 - A community to discuss the patterns with
 
-**Why {{PRODUCT_NAME}} works for Diego:**
+**Why SYNTROP works for Diego:**
 - The skill file architecture is readable (they're markdown files, not compiled code)
 - The CEO→Director→Worker pattern is a well-defined contract he can study
 - Open source means he can fork, modify, contribute
@@ -101,7 +101,7 @@ Diego is the kind of person who reads the implementation before using a tool. He
 **What Diego will contribute:**
 Bug reports, custom worker implementations, edge case discoveries, community forum participation.
 
-**What {{PRODUCT_NAME}} needs to do for Diego:**
+**What SYNTROP needs to do for Diego:**
 - Well-documented architecture (CLAUDE.md and worker/director files are key)
 - Clear contributing guide
 - Receptiveness to PRs for additional workers
@@ -120,23 +120,23 @@ Aisha has a CS degree and can write code, but she's not a full-time developer. S
 - Something that works step by step (she doesn't want to hand off control entirely)
 - Output that's actually deployable, not just a demo
 
-**Why {{PRODUCT_NAME}} works for Aisha:**
+**Why SYNTROP works for Aisha:**
 - `/orchestrate [brain dump]` is the natural starting point for someone who has the idea but not the full spec
 - The Intake phase's SSOT document forces clarity she would have gotten wrong on her own
 - Phase gates mean she's reviewing and approving, not just hoping the AI got it right
 - She can use Claude Code (she has the technical baseline)
 
 **Key friction point:**
-Terminal-native UX. Aisha is comfortable with terminals but doesn't live there. If {{PRODUCT_NAME}} eventually builds a thin wrapper UI, Aisha's adoption curve gets easier.
+Terminal-native UX. Aisha is comfortable with terminals but doesn't live there. If SYNTROP eventually builds a thin wrapper UI, Aisha's adoption curve gets easier.
 
-**What {{PRODUCT_NAME}} needs to tell Aisha:**
+**What SYNTROP needs to tell Aisha:**
 "You don't need to be a full-time developer. You need to be able to read code and make decisions. The framework handles the rest."
 
 ---
 
 ## Persona Anti-Profile
 
-Who {{PRODUCT_NAME}} is _not_ for (at v1.0):
+Who SYNTROP is _not_ for (at v1.0):
 
 - **Completely non-technical users** — No GUI, no hand-holding beyond the command interface. Replit Agent or Bolt.new are better fits.
 - **Enterprise engineering teams** — Not battle-tested at scale. No SSO, no audit log, no enterprise support. Devin's Team/Enterprise plans handle this better.

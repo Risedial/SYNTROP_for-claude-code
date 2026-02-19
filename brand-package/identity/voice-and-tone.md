@@ -1,13 +1,13 @@
 # Voice and Tone
 
 > **Source of Truth:** `metadata/system-facts.json`
-> **Purpose:** Writing style guide for all {{PRODUCT_NAME}} communications — documentation, marketing copy, README, social posts. Read before writing anything public.
+> **Purpose:** Writing style guide for all SYNTROP communications — documentation, marketing copy, README, social posts. Read before writing anything public.
 
 ---
 
 ## The Core Voice: Technical and Honest
 
-{{PRODUCT_NAME}} communicates like a senior engineer who solved this exact problem and wants to explain how — not pitch it.
+SYNTROP communicates like a senior engineer who solved this exact problem and wants to explain how — not pitch it.
 
 **Three words that define the voice:**
 1. **Precise** — Exact facts, not approximate marketing language
@@ -35,10 +35,10 @@ Precision is the first test of every sentence we write.
 
 ## What "Direct" Means in Practice
 
-Cut qualifiers. Cut hedges where they don't add information. Cut compliments ("{{PRODUCT_NAME}} is proud to..."). Start with the action.
+Cut qualifiers. Cut hedges where they don't add information. Cut compliments ("SYNTROP is proud to..."). Start with the action.
 
 **Before:** "We believe that multi-session AI development is a problem worth solving, and we're excited to share our approach with the community."
-**After:** "Multi-session AI development has a context problem. {{PRODUCT_NAME}} solves it with a state machine."
+**After:** "Multi-session AI development has a context problem. SYNTROP solves it with a state machine."
 
 **Before:** "You might find that the Intake phase is helpful for clarifying your initial requirements."
 **After:** "The Intake phase extracts structured requirements from a raw brain dump and produces a Single Source of Truth document for your approval."
@@ -54,8 +54,8 @@ The architecture is genuinely interesting. Let it be interesting without decorat
 **Before:** "Revolutionary AI orchestration that transforms the way you build software."
 **After:** "A 33-file skill architecture that turns `/orchestrate` into a complete 5-phase project pipeline."
 
-**Before:** "{{PRODUCT_NAME}} supercharges your development workflow."
-**After:** "{{PRODUCT_NAME}} adds the structure layer that Claude Code doesn't have by default."
+**Before:** "SYNTROP supercharges your development workflow."
+**After:** "SYNTROP adds the structure layer that Claude Code doesn't have by default."
 
 **The test:** Would a developer who reads this and then looks at the code feel that the copy oversold? If yes, tone it down.
 
@@ -110,7 +110,7 @@ The voice stays consistent. The tone adjusts based on format and audience.
 ### GitHub README (public-facing intro section)
 **Tone:** Direct, confident, slightly more accessible
 **Example:**
-> {{PRODUCT_NAME}} solves the context problem in multi-session AI development. When your project is too large for one conversation — and it will be — the system writes state after every session and reads it back at the start of the next. You `/orchestrate continue` and it picks up exactly where it left off.
+> SYNTROP solves the context problem in multi-session AI development. When your project is too large for one conversation — and it will be — the system writes state after every session and reads it back at the start of the next. You `/orchestrate continue` and it picks up exactly where it left off.
 
 **What to avoid:** Feature lists without context, wall-of-text, underselling the actual innovation.
 
@@ -119,7 +119,7 @@ The voice stays consistent. The tone adjusts based on format and audience.
 ### Product Hunt / Launch Announcement
 **Tone:** Slightly warmer, still honest, results-focused
 **Example:**
-> We built {{PRODUCT_NAME}} because we kept hitting the same wall: Claude Code is excellent at writing code, but building a full project across a week of sessions meant re-explaining the architecture every time. The solution was a state machine. Now `/orchestrate continue` means exactly that — continue, from the exact state we left.
+> We built SYNTROP because we kept hitting the same wall: Claude Code is excellent at writing code, but building a full project across a week of sessions meant re-explaining the architecture every time. The solution was a state machine. Now `/orchestrate continue` means exactly that — continue, from the exact state we left.
 
 **What to avoid:** Excessive enthusiasm, claims that aren't in `system-facts.json`, competitive trash-talk.
 
@@ -130,7 +130,7 @@ The voice stays consistent. The tone adjusts based on format and audience.
 **Example:**
 > The problem with AI coding tools isn't the code.
 > It's that every session starts from zero.
-> {{PRODUCT_NAME}} uses a state machine to solve this. 33 skill files. 5 phases. One command.
+> SYNTROP uses a state machine to solve this. 33 skill files. 5 phases. One command.
 > Open source, local, no extra infrastructure.
 
 **What to avoid:** Thread padding (saying nothing for 3 tweets before the point), emojis unless they add meaning, engagement bait.
@@ -140,9 +140,9 @@ The voice stays consistent. The tone adjusts based on format and audience.
 ### Hacker News
 **Tone:** Technical, self-aware, anticipating skepticism, showing your work
 **Example:**
-> Show HN: {{PRODUCT_NAME}} — a 33-file skill architecture that turns Claude Code into a multi-session project builder
+> Show HN: SYNTROP — a 33-file skill architecture that turns Claude Code into a multi-session project builder
 >
-> Context: Claude Code is great for tasks that fit in one session. For anything larger, you lose context when the session ends. This is the structural problem we built {{PRODUCT_NAME}} to solve.
+> Context: Claude Code is great for tasks that fit in one session. For anything larger, you lose context when the session ends. This is the structural problem we built SYNTROP to solve.
 >
 > The mechanism: a JSON state machine (`orchestration-state.json`) records phase, step, decisions, and file index. Each new session reads this first, then executes, then updates state.
 >
@@ -169,7 +169,7 @@ Before publishing any piece of copy:
 ### Example 1: Feature Description
 
 **Original (avoid):**
-"{{PRODUCT_NAME}}'s revolutionary AI-powered Intake phase intelligently transforms your messy thoughts into a perfectly structured project specification that will supercharge your development process."
+"SYNTROP's revolutionary AI-powered Intake phase intelligently transforms your messy thoughts into a perfectly structured project specification that will supercharge your development process."
 
 **Rewritten:**
 "The Intake phase accepts a raw brain dump — contradictions, gaps, and half-formed ideas included — and produces a Single Source of Truth document that you review and approve before any code is written."

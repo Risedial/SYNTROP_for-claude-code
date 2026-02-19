@@ -1,0 +1,1 @@
+a system where you describe a project idea, approve a few checkpoints, and it autonomously handles everything from research to deployment across multiple chat sessions. Each session starts fresh with zero memory—all context lives in files. It's like having a dev team that works in sprints but never forgets what was decided.

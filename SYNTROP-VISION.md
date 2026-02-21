@@ -11,10 +11,15 @@
 
 **Name**: SYNTROP
 **Tagline**: The structure your vision is missing.
-**Meta description**: A system that builds systems.
-**What it is**: An AI orchestration framework that takes any software idea — from rough brain dump to precise specification — and builds it through a structured, multi-phase process using Claude Code.
-**Who it's for**: Anyone with an idea and Claude Code. No technical experience required to start.
-**What makes it different**: The user thinks. The system structures. Claude builds. One command. Guided every step. Nothing lost between sessions.
+**Meta description**: Multi-session AI project orchestration for Claude Code. Persistent state. Hierarchical execution. Deployment-ready output.
+**What it is**: A structured multi-session orchestration framework built for Claude Code. It routes any software project through a 5-phase pipeline — Intake, Research, Architecture, Execution, Quality — using a hierarchical skill architecture: 1 CEO orchestrator, 5 phase directors, 23 specialized workers, and 4 support handlers. Every session starts from a persistent JSON state machine (`orchestration-state.json`). Nothing is stored in conversation history. The output is deployment-ready: source code, tests, documentation, configuration, and deployment scripts.
+**Who it's for**: Developers, technical founders, agency dev leads, and OSS builders who use Claude Code for projects that span multiple chat sessions. Built for people who want complete, deployment-ready deliverables — not one-session prototypes. If your project will take more than 2-3 Claude Code sessions, SYNTROP is built for you.
+**Who it's NOT for**: Completely non-technical users (v1.0 is terminal-native — no GUI), enterprise engineering teams (not battle-tested at scale, no SSO/enterprise support), developers who need model flexibility (Claude Code only — not model-agnostic), one-session quick tasks (the overhead isn't worth it).
+**What makes it different**: The only open-source framework that treats multi-session AI development as a first-class problem. A persistent state machine records every phase, decision, and progress marker — fresh sessions start from state, not from conversation. Human approval gates at every phase boundary. 33 skill files with observable, forkable, plain-markdown architecture. Complete output: code + tests + docs + configuration + deployment. Local-first, zero infrastructure, no cloud required.
+**Brand essence**: Structure
+**Brand personality**: Precise, Honest, Architectural, Understated, Practical
+**Brand promise**: A structured multi-session pipeline that turns your brain dump into a deployment-ready project, using Claude Code, with you in control at every phase gate.
+**Voice rules**: Use exact counts (33 skill files, 5 phases, 1 CEO, 23 workers, 4 handlers). Lead with limitations when relevant. Never use: "revolutionary," "seamlessly," "magic," "AI-powered," "game-changing," "supercharge," "unlock," "leverage," "intuitive," "powerful," "next-generation," "seamless."
 
 ---
 
@@ -106,7 +111,8 @@ structure, and build your project from start to finish. Whether you want to buil
 web app, a tool, a script, or even your own AI system, SYNTROP gives your vision the
 structure it needs to become something real.
 
-No experience required. You have the idea. SYNTROP has the structure. Claude does the building.
+You have the idea. SYNTROP has the structure. Claude does the building.
+If you can use Claude Code, you have everything you need.
 
 *A system that builds systems.*
 
@@ -154,12 +160,12 @@ Use this command if:
 
 **Purpose**: The GitHub repository's public README. Marketing-first. Confidence at the level of Anthropic's own documentation voice. Makes the system's value immediately obvious. After the intro, gives the same simple instructions as PLEASE_OPEN_ME.md.
 
-**Voice guidelines**:
-- Confident but not arrogant
-- Simple but not simplistic
-- No hype words ("revolutionary," "game-changing")
-- Lead with what the user gets, not how the system works
-- Reads fast — a skimmer should understand in 10 seconds
+**Voice guidelines** (from brand package `identity/voice-and-tone.md`):
+- Precise over vague: "33 skill files, 5 phases, 1 CEO" not "dozens of agents"
+- Honest over optimistic: lead with what it is AND what it isn't
+- Understated over breathless: let the architecture speak, don't decorate it
+- No hype: never use "revolutionary," "seamlessly," "magic," "AI-powered," "game-changing," "supercharge," "unlock," "next-generation"
+- Reads fast — a skimmer should understand the value in 10 seconds
 
 **Bordered instruction box**: Use an HTML `<table>` element to create a visual border. This renders reliably on GitHub and creates clear visual separation. The table should contain a single cell with the step-by-step instructions inside it. Commands inside the table must still be in fenced code blocks.
 
@@ -186,8 +192,8 @@ You have the vision. SYNTROP gives it structure. Claude does the rest.
 
 ## Who it's for
 
-If you have an idea and Claude Code, you have everything you need.
-SYNTROP is built for people who want to build — not people who want to manage a build process.
+If you use Claude Code and your project will span more than a couple of sessions — SYNTROP is built for you.
+Developers, technical founders, agency leads, and OSS builders. People who want deployment-ready deliverables, not just code that runs.
 
 ---
 
@@ -242,6 +248,16 @@ Keep repeating Step 4 until your project is complete.
 Clone the repo, open Claude Code, and send `/start`. That's it.
 
 For a detailed walkthrough, see [USER-START-HERE/PLEASE_OPEN_ME.md](USER-START-HERE/PLEASE_OPEN_ME.md).
+
+---
+
+## What SYNTROP is not
+
+- Not model-agnostic: requires Claude Code (Anthropic's CLI). GPT-4, Gemini, and other models are not supported.
+- Not a one-session tool: designed for projects that span multiple chat sessions. For quick tasks, use Claude Code directly.
+- Not autonomous: human approval gates are intentional. You review and approve the plan before anything is built.
+- Not a GUI application: terminal-native only. You need to be comfortable running CLI commands.
+- Not battle-tested at enterprise scale: v1.0 framework. Use alongside human review processes for business-critical projects.
 ```
 
 ---

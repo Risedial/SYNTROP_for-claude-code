@@ -35,7 +35,42 @@
 - 3.18 ✅ Verified PHASE TRANSITION LOGIC (no hardcoded paths — no change needed)
 - BONUS: Removed /orchestrate continue from CONTINUE PROTOCOL description line
 
-## Phase 4 — Director File Changes (NEXT)
-- 4.1 ⏳ Update command_hint in INTAKE, RESEARCH, ARCHITECTURE, EXECUTION directors
-- 4.2 ⏳ Add SAFE TO CLEAR banners at all stop points (9 insertions across 5 directors)
-- 4.3 ⏳ Add prepared-braindump detection to INTAKE-DIRECTOR
+## Phase 4 — Director File Changes (COMPLETE)
+- 4.1 ✅ Updated command_hint in INTAKE, RESEARCH, ARCHITECTURE, EXECUTION directors ("/orchestrate continue" → "/orchestrate")
+- 4.2 ✅ Added SAFE TO CLEAR banners at all stop points (9 insertions across 5 directors)
+  - INTAKE: ssot-generation pause + phase completion
+  - RESEARCH: decision-matrix pause + phase completion
+  - ARCHITECTURE: implementation-planning pause + phase completion
+  - EXECUTION: replaced sprint display block + phase completion
+  - QUALITY: final review pause + PROJECT COMPLETE banner
+- 4.3 ✅ Added prepared-braindump detection to INTAKE-DIRECTOR (review mode vs standard mode branching)
+
+## Phase 5 — Handler Changes (COMPLETE)
+- 5.1 ✅ Updated USER-INPUT-HANDLER.md (3 changes):
+  - 5.1.A: Inserted Chat State Banners section (DO NOT CLEAR + SAFE TO CLEAR templates) after "When This Handler Is Invoked"
+  - 5.1.B: Inserted AskUserQuestion Requirement (Mandatory) section before Question Formatting Protocol
+  - 5.1.C: Appended DO NOT CLEAR banner to all 3 question format display examples (Type 1, 2, 3)
+
+## Phase 6 — Schema Update (COMPLETE)
+- 6.1 ✅ Added project_type: null field to SYNTROP/orchestration-state.json (after "version": "1.0.0")
+
+## Phase 7 — Prompt File Modifications (COMPLETE)
+- 7.1 ✅ Prepended Context section + Big-Picture Scoping Questions to SYNTROP/vision-prompt.md
+- 7.2 ✅ Prepended Context section + Big-Picture Scoping Questions to SYNTROP/system-design-prompt.md
+
+## Phase 8 — New Files (COMPLETE)
+- 8.1 ✅ Created .claude/commands/start.md — full /start onboarding wizard (YAML frontmatter, 9 steps, AskUserQuestion calls, SAFE TO CLEAR banner)
+- 8.2 ✅ Created USER-START-HERE/PLEASE_OPEN_ME.md — user-facing welcome doc (SYNTROP branding, two-command explanation, zero jargon)
+
+## Phase 9 — Deletions (COMPLETE — SKIPPED)
+- 9.1 ⏭ SKIPPED — USER-START-HERE/README.md never existed (DISCREPANCY 1)
+
+## Phase 10 — Full Rewrites (COMPLETE)
+- 10.1 ✅ Rewrote README.md with SYNTROP branding: tagline, what-it-does, who-for, how-works, <table> 4-step quick-start box, /start as first command, what-SYNTROP-is-not section
+
+## Phase 11 — Audit (COMPLETE)
+- 11.1 ✅ Grep audit run: identified and fixed 2 missed updates (CEO RESET bash path + EXECUTION-DIRECTOR prose loop examples). Out-of-scope occurrences documented (USER-GUIDE, TROUBLESHOOTING, workers, ERROR-RECOVERY).
+- 11.2 ✅ SYNTROP/ directory: 10 files + 3 dirs verified (directors/ has 5 files, handlers/ has 4 files)
+- 11.3 ✅ New files verified: .claude/commands/ has orchestrate.md + start.md; USER-START-HERE/ has only PLEASE_OPEN_ME.md
+
+## Execute Phase COMPLETE → Transitioned to Validate Phase

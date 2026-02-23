@@ -87,14 +87,14 @@ CASE step:
 The execution phase follows this loop pattern across fresh chats:
 
 ```
-Chat N: /orchestrate continue
+Chat N: /orchestrate
   → Read state: execution, sprint 3, task 2
   → Load step-executor
   → Execute tasks S3-T2, S3-T3, S3-T4... (until sprint done or context limit)
   → Update state: sprint 3, task 5 (where we stopped)
   → STOP
 
-Chat N+1: /orchestrate continue
+Chat N+1: /orchestrate
   → Read state: execution, sprint 3, task 5
   → Load step-executor
   → Execute tasks S3-T5, S3-T6 (sprint complete!)
@@ -104,7 +104,7 @@ Chat N+1: /orchestrate continue
   → Update state: sprint 4 ready
   → STOP
 
-Chat N+2: /orchestrate continue
+Chat N+2: /orchestrate
   → Read state: execution, sprint 4, task 1
   → Load step-executor
   → Continue building...
@@ -134,8 +134,16 @@ Overall: {completed_steps}/{total_steps} tasks ({percentage}%)
 
 [Progress bar visualization]
 
-Send `/orchestrate continue` to keep building.
+Sprint {N} of {total} complete. Progress saved.
 ```
+
++===========================================================+
+|                  SAFE TO CLEAR CHAT                       |
+|                                                           |
+|  Sprint {N} of {total} complete.                          |
+|  Open a fresh chat and send: /orchestrate                 |
+|  Overall progress: {X}%                                   |
++===========================================================+
 
 ## Phase Completion Detection
 Execution is complete when:
@@ -162,7 +170,7 @@ When execution is complete:
   },
   "next_action": {
     "description": "Execution complete! Beginning quality verification phase.",
-    "command_hint": "/orchestrate continue",
+    "command_hint": "/orchestrate",
     "expected_director": "QUALITY-DIRECTOR",
     "expected_worker": "vision-verifier"
   }
@@ -174,6 +182,15 @@ Update `context-summary.md`:
 **Last Action:** Execution phase complete. {N}/{N} tasks implemented. All sprints validated. Integration tests passed.
 **Next Action:** Quality phase beginning - verifying deliverables against vision.
 ```
+
+Display in chat:
++===========================================================+
+|                  SAFE TO CLEAR CHAT                       |
+|                                                           |
+|  Execution complete. Progress saved.                      |
+|  Open a fresh chat and send: /orchestrate                 |
+|  Overall progress: 80%                                    |
++===========================================================+
 
 ## Error Handling
 - **Build failure during task execution:** Step executor handles retry. If persistent, log error and flag for user.

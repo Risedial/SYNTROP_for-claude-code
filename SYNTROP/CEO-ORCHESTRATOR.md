@@ -323,7 +323,7 @@ Reply with A or B
 ### Step 2: Execute Reset
 If confirmed:
 ```bash
-bash init-workspace.sh --reset
+bash SYNTROP/init-workspace.sh --reset
 ```
 
 ### Step 3: Confirm Completion

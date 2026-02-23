@@ -41,6 +41,21 @@ CASE step:
       → IF contradictions detected: set step = "contradiction-check"
       → ELSE: set step = "requirements-extraction"
     ELSE:
+      BEFORE running vision-clarifier worker:
+        Check if `SYNTROP/artifacts/intake/prepared-braindump-used.md` exists
+        OR check if `SYNTROP/orchestration-state.json` context_pointers.brain_dump is set:
+
+        IF a prepared brain dump was used (file exists OR pointer was set):
+          Pass the prepared brain dump content to vision-clarifier as its input
+          Set vision-clarifier to operate in "review mode":
+            - The brain dump is already structured — validate and refine rather than
+              generate from scratch
+            - Expect fewer clarifying questions since the user already organized their idea
+            - Focus questions on ambiguities and gaps, not on basic structure
+
+        ELSE (no prepared brain dump — user sent /orchestrate [idea] directly):
+          Run vision-clarifier in standard mode with the raw brain dump from state
+
       → Delegate to workers/vision-clarifier.md
       → Questions generated → PAUSE for user input
 
@@ -56,6 +71,15 @@ CASE step:
   "ssot-generation":
     → Delegate to workers/single-source-of-truth-generator.md
     → SSOT generated → PAUSE for user approval
+
+    Display in chat:
+    +===========================================================+
+    |                  SAFE TO CLEAR CHAT                       |
+    |                                                           |
+    |  Intake — SSOT ready for your review.                     |
+    |  Answer the approval question above, then you can clear.  |
+    |  Overall progress: {X}%                                   |
+    +===========================================================+
 
   "ssot-approval":
     IF user approved (option A):
@@ -106,7 +130,7 @@ When intake is complete, update state:
   },
   "next_action": {
     "description": "Beginning research phase: analyzing implementation approaches",
-    "command_hint": "/orchestrate continue",
+    "command_hint": "/orchestrate",
     "expected_director": "RESEARCH-DIRECTOR",
     "expected_worker": "approach-researcher"
   }
@@ -118,6 +142,15 @@ Update `context-summary.md`:
 **Last Action:** Intake phase complete. SSOT approved by user. {N} requirements extracted. {M} vision anchors established.
 **Next Action:** Research phase beginning - researching implementation approaches.
 ```
+
+Display in chat:
++===========================================================+
+|                  SAFE TO CLEAR CHAT                       |
+|                                                           |
+|  Intake complete. Progress saved.                         |
+|  Open a fresh chat and send: /orchestrate                 |
+|  Overall progress: 20%                                    |
++===========================================================+
 
 ## Error Handling
 - If brain dump is empty: Ask user to provide their project idea

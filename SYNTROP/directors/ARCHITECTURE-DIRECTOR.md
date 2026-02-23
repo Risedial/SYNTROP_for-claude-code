@@ -47,6 +47,15 @@ CASE step:
     → Delegate to workers/implementation-planner.md
     → Plan created → PAUSE for user approval
 
+    Display in chat:
+    +===========================================================+
+    |                  SAFE TO CLEAR CHAT                       |
+    |                                                           |
+    |  Architecture — plan ready for your review.               |
+    |  Answer the approval question above, then you can clear.  |
+    |  Overall progress: {X}%                                   |
+    +===========================================================+
+
   "plan-approval":
     IF user approved (option A):
       → Mark architecture phase complete
@@ -108,7 +117,7 @@ When architecture is complete:
   },
   "next_action": {
     "description": "Beginning execution phase: setting up development environment",
-    "command_hint": "/orchestrate continue",
+    "command_hint": "/orchestrate",
     "expected_director": "EXECUTION-DIRECTOR",
     "expected_worker": "environment-setup"
   }
@@ -120,6 +129,15 @@ Update `context-summary.md`:
 **Last Action:** Architecture phase complete. Blueprint created. Implementation plan: {N} tasks across {M} sprints.
 **Next Action:** Execution phase beginning - setting up development environment.
 ```
+
+Display in chat:
++===========================================================+
+|                  SAFE TO CLEAR CHAT                       |
+|                                                           |
+|  Architecture complete. Progress saved.                   |
+|  Open a fresh chat and send: /orchestrate                 |
+|  Overall progress: 60%                                    |
++===========================================================+
 
 ## Error Handling
 - If blueprint generation fails: Check that SSOT and selected approach are available

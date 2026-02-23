@@ -1,0 +1,32 @@
+{
+  "validated_at": "2026-02-23T03:30:00Z",
+  "validation_commands_run": 4,
+  "passed": 4,
+  "failed": 0,
+  "results": [
+    {
+      "command": "grep -r 'orchestration-state\\.json' .claude/commands/ | grep -v 'SYNTROP/'",
+      "status": "pass",
+      "output": "imp.md:3 references to GO TIME/orchestration-state.json",
+      "notes": "imp.md correctly uses GO TIME/ paths (IMP system, not SYNTROP system). No SYNTROP commands have bare state references. PASS."
+    },
+    {
+      "command": "grep -r 'orchestrate continue' SYNTROP/ .claude/ CLAUDE.md README.md",
+      "status": "pass_with_notes",
+      "output": "Matches in: SYNTROP/handlers/ERROR-RECOVERY.md (command_hint), SYNTROP/TROUBLESHOOTING.md (user docs), SYNTROP/USER-GUIDE.md (user docs), SYNTROP/workers/integration-tester.md (command_hint), SYNTROP/workers/step-executor.md (command_hint), SYNTROP/workers/validation-runner.md (command_hints), .claude/commands/orchestrate.md (description frontmatter metadata only)",
+      "notes": "All remaining '/orchestrate continue' matches are in files explicitly out of plan scope (user docs, workers, ERROR-RECOVERY handler, orchestrate.md metadata description). The in-scope files (directors, CEO-ORCHESTRATOR, CLAUDE.md, README.md) are clean. PASS per plan scope."
+    },
+    {
+      "command": "ls SYNTROP/",
+      "status": "pass_with_notes",
+      "output": "10 files: CEO-ORCHESTRATOR.md, context-summary.md, file-index.json, init-workspace.sh, orchestration-state.json, progress-log.md, system-design-prompt.md, TROUBLESHOOTING.md, USER-GUIDE.md, vision-prompt.md + 3 dirs: directors/, handlers/, workers/",
+      "notes": "conversation.md absent — this file was not present in original workspace (user skipped during conflict-detection). directors/ has 5 files, handlers/ has 4 files. All critical files present. PASS."
+    },
+    {
+      "command": "ls .claude/commands/",
+      "status": "pass",
+      "output": "imp.md, orchestrate.md, start.md",
+      "notes": "Both orchestrate.md and start.md present. PASS."
+    }
+  ]
+}

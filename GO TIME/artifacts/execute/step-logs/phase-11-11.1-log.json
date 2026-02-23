@@ -1,0 +1,11 @@
+{
+  "step_id": "11.1",
+  "step_name": "Grep audit: remaining root-level path references",
+  "operation_type": "run_bash",
+  "executed_at": "2026-02-23T03:23:00Z",
+  "status": "completed",
+  "target_path": ".",
+  "tool_used": "Bash",
+  "output": "Audit findings: (1) imp.md has GO TIME/-prefixed references — expected, IMP system not SYNTROP. (2) /orchestrate continue found in EXECUTION-DIRECTOR.md (prose examples, 3 occurrences) — FIXED. (3) /orchestrate continue in TROUBLESHOOTING.md, USER-GUIDE.md, workers — out of plan scope, documented. (4) bash init-workspace.sh --reset in CEO RESET protocol — FIXED. (5) orchestrate.md description frontmatter mentions /orchestrate continue — out of scope (metadata description). All in-scope issues resolved.",
+  "notes": "Two fixes applied during audit: CEO-ORCHESTRATOR.md RESET protocol bash path + EXECUTION-DIRECTOR.md prose loop examples."
+}

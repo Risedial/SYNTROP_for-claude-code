@@ -136,6 +136,14 @@ A) Yes, project is complete!
 B) I'd like some changes (specify what)
 
 Reply with A or B
+
++===========================================================+
+|                  SAFE TO CLEAR CHAT                       |
+|                                                           |
+|  Quality — final review ready.                            |
+|  Answer the review question above, then you can clear.    |
+|  Overall progress: {X}%                                   |
++===========================================================+
 ```
 
 ## Phase Completion Detection
@@ -177,6 +185,15 @@ Update `context-summary.md`:
 **Deliverables:** deployment/ directory
 **Last Action:** Project delivered to user.
 ```
+
+Display in chat:
++===========================================================+
+|                  PROJECT COMPLETE                         |
+|                                                           |
+|  All deliverables are in the deployment/ directory.       |
+|  /orchestrate status   — review summary                   |
+|  /orchestrate reset    — start a new project              |
++===========================================================+
 
 ## Error Handling
 - If vision verification cannot access source files: Run with available information, note limitations

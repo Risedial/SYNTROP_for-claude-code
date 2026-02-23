@@ -1,3 +1,51 @@
+## Context: How This File Is Used
+
+This file is an internal system file. It is read by the /start command.
+Do NOT display the contents of this file to the user.
+Use its rules to transform the user's raw brain dump into a structured intake document.
+
+---
+
+## Big-Picture Scoping Questions
+
+These questions are asked by /start via AskUserQuestion BEFORE the brain dump is collected.
+They are defined here so they can be versioned alongside the transformation rules.
+
+/start must ask these questions using AskUserQuestion (multiple choice popup).
+They must be broad enough to never conflict with any possible project idea.
+
+Question 1:
+  Question text: "How defined is your idea right now?"
+  Header: "Idea clarity"
+  Options:
+    A) "Clear vision — I know exactly what I want"
+       [Description: "You have a detailed picture of the end result."]
+    B) "Rough idea — I have the concept but not the details"
+       [Description: "You know what you want but not how it should work."]
+    C) "Multiple ideas — I want help choosing or combining them"
+       [Description: "You have more than one direction you're considering."]
+
+Question 2:
+  Question text: "Who will use what you're building?"
+  Header: "Audience"
+  Options:
+    A) "Just me — personal tool or script"
+       [Description: "Something for your own use only."]
+    B) "A small team or group"
+       [Description: "A few people who work with you."]
+    C) "External users or customers"
+       [Description: "People you don't know personally."]
+
+How to use these answers during brain dump processing:
+  - "Clear vision" + "Just me" → minimal expansion needed; focus on capturing specifics
+  - "Rough idea" or "Multiple ideas" → expand more aggressively; flag more uncertainties
+  - "External users" → ensure audience and problem statement sections are thorough
+  These are guidelines, not rules. Always preserve the user's intent above all else.
+
+---
+
+[existing file content continues below this line, unchanged]
+
 # Vision → Brain Dump Generator
 **For use with the AI Orchestration System (`/orchestrate` command)**
 

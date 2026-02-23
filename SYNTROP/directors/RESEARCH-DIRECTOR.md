@@ -43,6 +43,15 @@ CASE step:
     → Delegate to workers/decision-matrix-builder.md
     → Matrix built → PAUSE for user approach selection
 
+    Display in chat:
+    +===========================================================+
+    |                  SAFE TO CLEAR CHAT                       |
+    |                                                           |
+    |  Research — approach selection ready.                     |
+    |  Answer the selection question above, then you can clear. |
+    |  Overall progress: {X}%                                   |
+    +===========================================================+
+
   "approach-selection":
     IF user selected an approach:
       → Record selection in active_decisions:
@@ -102,7 +111,7 @@ When research is complete:
   },
   "next_action": {
     "description": "Beginning architecture phase: creating technical blueprint",
-    "command_hint": "/orchestrate continue",
+    "command_hint": "/orchestrate",
     "expected_director": "ARCHITECTURE-DIRECTOR",
     "expected_worker": "blueprint-architect"
   }
@@ -114,6 +123,15 @@ Update `context-summary.md`:
 **Last Action:** Research phase complete. Selected approach: {name}. Technical validation: {result}.
 **Next Action:** Architecture phase beginning - creating technical blueprint.
 ```
+
+Display in chat:
++===========================================================+
+|                  SAFE TO CLEAR CHAT                       |
+|                                                           |
+|  Research complete. Progress saved.                       |
+|  Open a fresh chat and send: /orchestrate                 |
+|  Overall progress: 40%                                    |
++===========================================================+
 
 ## Error Handling
 - If no viable approaches found: Present finding to user, suggest relaxing constraints

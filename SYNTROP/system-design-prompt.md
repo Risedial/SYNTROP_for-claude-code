@@ -1,3 +1,49 @@
+## Context: How This File Is Used
+
+This file is an internal system file. It is read by the /start command.
+Do NOT display the contents of this file to the user.
+Use its rules to transform the user's raw brain dump into a structured orchestration system design specification.
+
+---
+
+## Big-Picture Scoping Questions
+
+These questions are asked by /start via AskUserQuestion BEFORE the brain dump is collected.
+Defined here so they can be versioned alongside the transformation rules.
+
+Question 1:
+  Question text: "What domain is this orchestration system for?"
+  Header: "Domain"
+  Options:
+    A) "Software or technical workflows"
+       [Description: "Development pipelines, code review systems, deployment automation, etc."]
+    B) "Business or operational workflows"
+       [Description: "Approvals, reporting, client management, operations, etc."]
+    C) "Creative, content, or research workflows"
+       [Description: "Writing pipelines, research automation, content production, etc."]
+    D) "Something else entirely"
+       [Description: "A domain not listed above."]
+
+Question 2:
+  Question text: "How much of the system design do you already have in mind?"
+  Header: "Design clarity"
+  Options:
+    A) "Just a concept — I need help designing the structure"
+       [Description: "You know the domain and purpose but not the phases or components."]
+    B) "I have some phases and steps mapped out"
+       [Description: "You have a partial design that needs to be filled in."]
+    C) "Full design ready — I just need it structured and built"
+       [Description: "You have a detailed vision of every component."]
+
+How to use these answers during brain dump processing:
+  - Option A for Q2 → expand aggressively; generate phase and worker candidates from context
+  - Option B or C for Q2 → preserve the user's structure; map their design to the framework
+  - Domain from Q1 → shapes the naming and framing of all components in the output
+
+---
+
+[existing file content continues below this line, unchanged]
+
 # Vision → Orchestration System Brain Dump Generator
 **For use with the AI Orchestration System (`/orchestrate` command)**
 

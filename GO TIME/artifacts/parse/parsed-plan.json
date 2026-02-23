@@ -1,0 +1,581 @@
+{
+  "plan_name": "SYNTROP System Redesign",
+  "plan_source": "META NEW CHANGE SYSTEM/IMPLEMENTATION-PLAN.md",
+  "parsed_at": "2026-02-22T00:00:00Z",
+  "total_phases": 11,
+  "total_steps": 41,
+  "known_gaps": [
+    "Artifact paths inside director/worker files will break after move to SYNTROP/ — test and fix after implementation",
+    "init-workspace.sh writes bare 'file-index.json' path in generated state — verify CEO can resolve after Phase 3 changes",
+    "Root 'exactly 4 items' goal not fully achievable due to extra untracked files (SYNTROP-VISION.md, etc.)"
+  ],
+  "phases": [
+    {
+      "phase_index": 0,
+      "phase_id": "phase-1",
+      "phase_name": "File Moves",
+      "description": "Move all orchestration files and directories from workspace root into SYNTROP/ subdirectory. All moves before any content edits.",
+      "total_steps": 8,
+      "steps": [
+        {
+          "step_index": 0,
+          "step_id": "1.1",
+          "step_name": "Create SYNTROP/ directory",
+          "operation_type": "mkdir",
+          "target_path": "SYNTROP",
+          "change_description": "Create the SYNTROP/ folder at workspace root",
+          "success_criteria": "Directory SYNTROP/ exists at workspace root",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 1,
+          "step_id": "1.2",
+          "step_name": "Move 9 standalone root files to SYNTROP/",
+          "operation_type": "run_bash",
+          "target_path": "SYNTROP/",
+          "change_description": "git mv CEO-ORCHESTRATOR.md, init-workspace.sh, orchestration-state.json, context-summary.md, file-index.json, progress-log.md, conversation.md, USER-GUIDE.md, TROUBLESHOOTING.md into SYNTROP/",
+          "success_criteria": "All 9 files appear in SYNTROP/ and are absent from workspace root",
+          "notes": "Uses git mv to preserve history",
+          "status": "pending"
+        },
+        {
+          "step_index": 2,
+          "step_id": "1.3",
+          "step_name": "Move directors/ directory to SYNTROP/",
+          "operation_type": "run_bash",
+          "target_path": "SYNTROP/directors",
+          "change_description": "git mv directors SYNTROP/directors",
+          "success_criteria": "SYNTROP/directors/ contains all 5 director files",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 3,
+          "step_id": "1.4",
+          "step_name": "Move workers/ directory to SYNTROP/",
+          "operation_type": "run_bash",
+          "target_path": "SYNTROP/workers",
+          "change_description": "git mv workers SYNTROP/workers",
+          "success_criteria": "SYNTROP/workers/ contains all worker files",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 4,
+          "step_id": "1.5",
+          "step_name": "Move handlers/ directory to SYNTROP/",
+          "operation_type": "run_bash",
+          "target_path": "SYNTROP/handlers",
+          "change_description": "git mv handlers SYNTROP/handlers",
+          "success_criteria": "SYNTROP/handlers/ contains all 4 handler files",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 5,
+          "step_id": "1.6",
+          "step_name": "Move and rename vision-to-braindump.md",
+          "operation_type": "run_bash",
+          "target_path": "SYNTROP/vision-prompt.md",
+          "change_description": "git mv USER-START-HERE/vision-to-braindump.md SYNTROP/vision-prompt.md",
+          "success_criteria": "SYNTROP/vision-prompt.md exists",
+          "notes": "File is renamed during move",
+          "status": "pending"
+        },
+        {
+          "step_index": 6,
+          "step_id": "1.7",
+          "step_name": "Move and rename vision-to-orchestration-braindump.md",
+          "operation_type": "run_bash",
+          "target_path": "SYNTROP/system-design-prompt.md",
+          "change_description": "git mv USER-START-HERE/vision-to-orchestration-braindump.md SYNTROP/system-design-prompt.md",
+          "success_criteria": "SYNTROP/system-design-prompt.md exists",
+          "notes": "File is renamed during move",
+          "status": "pending"
+        },
+        {
+          "step_index": 7,
+          "step_id": "1.check",
+          "step_name": "Phase 1 Completion Verification",
+          "operation_type": "run_bash",
+          "target_path": "SYNTROP/",
+          "change_description": "Run ls SYNTROP/ and ls to verify expected structure",
+          "success_criteria": "SYNTROP/ has 14 items: 11 files + 3 dirs. Root has no loose orchestration files.",
+          "notes": "Verification only — no changes",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "phase_index": 1,
+      "phase_id": "phase-2",
+      "phase_name": "Path Reference Updates",
+      "description": "Update .claude/commands/orchestrate.md and CLAUDE.md to reference SYNTROP/-prefixed paths.",
+      "total_steps": 2,
+      "steps": [
+        {
+          "step_index": 0,
+          "step_id": "2.1",
+          "step_name": "Update .claude/commands/orchestrate.md",
+          "operation_type": "multi_op",
+          "target_path": ".claude/commands/orchestrate.md",
+          "change_description": "Apply 4 changes: (A) Update CEO path in Step 1. (B) Replace all state file path references with SYNTROP/-prefixed versions. (C) Replace Step 2 routing block with project_type-aware routing. (D) Insert new Step 3.5 Session Context Display section.",
+          "success_criteria": "All 4 changes applied; no bare CEO-ORCHESTRATOR.md, orchestration-state.json, context-summary.md, or file-index.json references remain",
+          "notes": "Change C and D are new behavior additions, not just path replacements",
+          "status": "pending"
+        },
+        {
+          "step_index": 1,
+          "step_id": "2.2",
+          "step_name": "Update CLAUDE.md",
+          "operation_type": "multi_op",
+          "target_path": "CLAUDE.md",
+          "change_description": "Apply 5 changes: (A) Replace Primary Command section and commands table with new /start + /orchestrate table. (B) Replace System Architecture diagram with SYNTROP/-prefixed paths. (C) Replace Key Files table with SYNTROP/-prefixed paths. (D) Update Behavioral Rules #1 and #2 paths. (E) Update Documentation links.",
+          "success_criteria": "CLAUDE.md reflects /start as first command; all file paths SYNTROP/-prefixed",
+          "notes": "",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "phase_index": 2,
+      "phase_id": "phase-3",
+      "phase_name": "CEO-ORCHESTRATOR.md Changes",
+      "description": "Apply all 18 content changes to SYNTROP/CEO-ORCHESTRATOR.md. Highest-risk file — changes in order.",
+      "total_steps": 18,
+      "steps": [
+        {
+          "step_index": 0,
+          "step_id": "3.1",
+          "step_name": "Fix bash init-workspace.sh path",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/CEO-ORCHESTRATOR.md",
+          "change_description": "Find 'bash init-workspace.sh' → replace with 'bash SYNTROP/init-workspace.sh'",
+          "success_criteria": "1 occurrence updated; no bare 'bash init-workspace.sh' remains",
+          "notes": "Required deviation — VISION does not specify but will break without it",
+          "status": "pending"
+        },
+        {
+          "step_index": 1,
+          "step_id": "3.2",
+          "step_name": "Update INITIALIZATION Step 1 path",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/CEO-ORCHESTRATOR.md",
+          "change_description": "Find 'Read orchestration-state.json' (Step 1 under INITIALIZATION) → 'Read SYNTROP/orchestration-state.json'",
+          "success_criteria": "Step 1 reads SYNTROP/orchestration-state.json",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 2,
+          "step_id": "3.3",
+          "step_name": "Update INITIALIZATION Step 3 path",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/CEO-ORCHESTRATOR.md",
+          "change_description": "Find 'Read context-summary.md' (Step 3 under INITIALIZATION) → 'Read SYNTROP/context-summary.md'",
+          "success_criteria": "Step 3 reads SYNTROP/context-summary.md",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 3,
+          "step_id": "3.4",
+          "step_name": "Update INITIALIZATION Step 4: project_type-aware continue logic",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/CEO-ORCHESTRATOR.md",
+          "change_description": "Replace 'IF arguments == continue OR blank: → Execute CONTINUE PROTOCOL' with the new 3-branch logic that checks phase=uninitialized and context_pointers.brain_dump",
+          "success_criteria": "Continue/blank path has brain_dump detection and appropriate stop behavior",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 4,
+          "step_id": "3.5",
+          "step_name": "NEW PROJECT PROTOCOL: add archive step 3a",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/CEO-ORCHESTRATOR.md",
+          "change_description": "After Step 3 (Save Brain Dump), insert new Step 3a to rename prepared-braindump.md to prepared-braindump-used.md to prevent double-pickup",
+          "success_criteria": "Step 3a exists between Step 3 and Step 4 in NEW PROJECT PROTOCOL",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 5,
+          "step_id": "3.6",
+          "step_name": "NEW PROJECT PROTOCOL: pass project_type + update brain_dump paths",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/CEO-ORCHESTRATOR.md",
+          "change_description": "Add 'intake_mode' field to Step 4 Initialize State JSON; update brain_dump path to SYNTROP/artifacts/intake/raw-brain-dump.md in both Steps 3 and 4",
+          "success_criteria": "Step 4 JSON has intake_mode field; all brain_dump paths SYNTROP/-prefixed",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 6,
+          "step_id": "3.7",
+          "step_name": "Replace chat session end templates with ASCII box banners",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/CEO-ORCHESTRATOR.md",
+          "change_description": "Replace entire CHAT SESSION END TEMPLATE section with 3 ASCII box banners: DO NOT CLEAR, SAFE TO CLEAR, PROJECT COMPLETE",
+          "success_criteria": "All 3 banner formats are ASCII box style; no plain markdown templates remain",
+          "notes": "High-impact UX change",
+          "status": "pending"
+        },
+        {
+          "step_index": 7,
+          "step_id": "3.8",
+          "step_name": "Update Quick Reference: File Locations",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/CEO-ORCHESTRATOR.md",
+          "change_description": "Replace all bare file paths in QUICK REFERENCE: File Locations with SYNTROP/-prefixed versions",
+          "success_criteria": "All 9 path lines in the block use SYNTROP/ prefix",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 8,
+          "step_id": "3.9",
+          "step_name": "Update Quick Reference: User Commands",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/CEO-ORCHESTRATOR.md",
+          "change_description": "Replace command list: remove /orchestrate continue, add /start, change '/orchestrate [idea]' to remain, bare '/orchestrate' now auto-detects",
+          "success_criteria": "No '/orchestrate continue' in Quick Reference; /start is listed",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 9,
+          "step_id": "3.10",
+          "step_name": "Update CONTINUE PROTOCOL Step 2: Director paths",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/CEO-ORCHESTRATOR.md",
+          "change_description": "Replace bare directors/INTAKE-DIRECTOR.md etc. with SYNTROP/directors/... in the phase routing block",
+          "success_criteria": "All 5 director paths in routing block use SYNTROP/ prefix",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 10,
+          "step_id": "3.11",
+          "step_name": "Update CONTINUE PROTOCOL Step 4: state file references",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/CEO-ORCHESTRATOR.md",
+          "change_description": "Replace bare orchestration-state.json, file-index.json, context-summary.md, progress-log.md with SYNTROP/-prefixed versions in Step 4 update block",
+          "success_criteria": "All 4 state file paths in Step 4 use SYNTROP/ prefix",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 11,
+          "step_id": "3.12",
+          "step_name": "Update NEW PROJECT PROTOCOL Steps 5 and 6",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/CEO-ORCHESTRATOR.md",
+          "change_description": "Step 5: update file-index.json path. Step 7: update directors/INTAKE-DIRECTOR.md path. Both get SYNTROP/ prefix.",
+          "success_criteria": "Steps 5 and 7 of NEW PROJECT PROTOCOL use SYNTROP/-prefixed paths",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 12,
+          "step_id": "3.13",
+          "step_name": "Update STATUS PROTOCOL Read paths",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/CEO-ORCHESTRATOR.md",
+          "change_description": "Update orchestration-state.json, progress-log.md, context-summary.md, and workers/progress-reporter.md to SYNTROP/-prefixed paths in STATUS PROTOCOL",
+          "success_criteria": "STATUS PROTOCOL Step 1 and Step 2 use SYNTROP/ prefix",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 13,
+          "step_id": "3.14",
+          "step_name": "Update ERROR RECOVERY PROTOCOL handler path",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/CEO-ORCHESTRATOR.md",
+          "change_description": "Find 'handlers/ERROR-RECOVERY.md' → 'SYNTROP/handlers/ERROR-RECOVERY.md'",
+          "success_criteria": "ERROR RECOVERY references SYNTROP/handlers/ERROR-RECOVERY.md",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 14,
+          "step_id": "3.15",
+          "step_name": "Update STATE MACHINE DIAGRAM director paths (no-op)",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/CEO-ORCHESTRATOR.md",
+          "change_description": "Verify no path references in state machine diagram — no changes needed per plan",
+          "success_criteria": "Verification only",
+          "notes": "Plan specifies no changes needed here",
+          "status": "pending"
+        },
+        {
+          "step_index": 15,
+          "step_id": "3.16",
+          "step_name": "Update USER INPUT PROTOCOL handler path",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/CEO-ORCHESTRATOR.md",
+          "change_description": "Find 'handlers/USER-INPUT-HANDLER.md' → 'SYNTROP/handlers/USER-INPUT-HANDLER.md'",
+          "success_criteria": "USER INPUT PROTOCOL references SYNTROP/handlers/USER-INPUT-HANDLER.md",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 16,
+          "step_id": "3.17",
+          "step_name": "Update SELF-MONITORING: STATE-VALIDATOR path",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/CEO-ORCHESTRATOR.md",
+          "change_description": "Update 'orchestration-state.json' reference in SELF-MONITORING; update 'handlers/STATE-VALIDATOR.md' to 'SYNTROP/handlers/STATE-VALIDATOR.md' in INITIALIZATION Step 2",
+          "success_criteria": "Both STATE-VALIDATOR references use SYNTROP/ prefix",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 17,
+          "step_id": "3.18",
+          "step_name": "PHASE TRANSITION LOGIC: verify no hardcoded paths (no-op)",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/CEO-ORCHESTRATOR.md",
+          "change_description": "Verify PHASE TRANSITION LOGIC section uses only field names and percentages — no path changes needed",
+          "success_criteria": "Verification only",
+          "notes": "Plan specifies no changes needed here",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "phase_index": 3,
+      "phase_id": "phase-4",
+      "phase_name": "Director File Changes",
+      "description": "Update all 5 director files in SYNTROP/directors/: update command_hints, add SAFE TO CLEAR banners, and add prepared-braindump detection in INTAKE-DIRECTOR.",
+      "total_steps": 3,
+      "steps": [
+        {
+          "step_index": 0,
+          "step_id": "4.1",
+          "step_name": "Update command_hint in all 4 directors (not QUALITY)",
+          "operation_type": "multi_op",
+          "target_path": "SYNTROP/directors/",
+          "change_description": "In INTAKE, RESEARCH, ARCHITECTURE, EXECUTION directors: find '\"command_hint\": \"/orchestrate continue\"' → '\"command_hint\": \"/orchestrate\"'. QUALITY-DIRECTOR already has the right value — no change.",
+          "success_criteria": "No '/orchestrate continue' remains in any director file",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 1,
+          "step_id": "4.2",
+          "step_name": "Add SAFE TO CLEAR banners at all stop points in all 5 directors",
+          "operation_type": "multi_op",
+          "target_path": "SYNTROP/directors/",
+          "change_description": "Add ASCII box SAFE TO CLEAR banners at each stop point per director: INTAKE (2 stops), RESEARCH (2 stops), ARCHITECTURE (2 stops), EXECUTION (2 stops — replace sprint display block + add phase completion), QUALITY (2 stops — final review + project complete). Total: 9 banner insertions.",
+          "success_criteria": "All stop points in all 5 directors have the ASCII banner; EXECUTION sprint display block replaced per plan",
+          "notes": "EXECUTION stop 1 is a replacement, not an addition. QUALITY stop 2 replaces existing project complete template.",
+          "status": "pending"
+        },
+        {
+          "step_index": 2,
+          "step_id": "4.3",
+          "step_name": "INTAKE-DIRECTOR: add prepared-braindump detection",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/directors/INTAKE-DIRECTOR.md",
+          "change_description": "Before vision-clarifier delegation, insert check: if prepared-braindump-used.md exists OR brain_dump pointer is set, pass content to vision-clarifier in 'review mode'; else run standard mode.",
+          "success_criteria": "vision-clarifier delegation block has the IF/ELSE branch for prepared vs raw brain dump",
+          "notes": "",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "phase_index": 4,
+      "phase_id": "phase-5",
+      "phase_name": "Handler Changes",
+      "description": "Update USER-INPUT-HANDLER.md with chat state banners, AskUserQuestion requirement, and banner additions to question format examples.",
+      "total_steps": 1,
+      "steps": [
+        {
+          "step_index": 0,
+          "step_id": "5.1",
+          "step_name": "Update USER-INPUT-HANDLER.md (3 changes)",
+          "operation_type": "multi_op",
+          "target_path": "SYNTROP/handlers/USER-INPUT-HANDLER.md",
+          "change_description": "(A) Insert Chat State Banners section with DO NOT CLEAR and SAFE TO CLEAR banner templates, placed after 'When This Handler Is Invoked' section. (B) Insert AskUserQuestion Requirement section (mandatory rule for all questions). (C) Append DO NOT CLEAR banner to all 3 question format display examples (Type 1, 2, 3).",
+          "success_criteria": "Chat State Banners section and AskUserQuestion Requirement section exist; all 3 question format examples end with DO NOT CLEAR banner",
+          "notes": "",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "phase_index": 5,
+      "phase_id": "phase-6",
+      "phase_name": "Schema Update",
+      "description": "Add project_type field to SYNTROP/orchestration-state.json.",
+      "total_steps": 1,
+      "steps": [
+        {
+          "step_index": 0,
+          "step_id": "6.1",
+          "step_name": "Add project_type field to orchestration-state.json",
+          "operation_type": "update_json",
+          "target_path": "SYNTROP/orchestration-state.json",
+          "change_description": "Insert '\"project_type\": null' immediately after '\"version\": \"1.0.0\"' line",
+          "success_criteria": "orchestration-state.json has project_type field with null value after version",
+          "notes": "Valid values: null, 'vision', 'system_design'",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "phase_index": 6,
+      "phase_id": "phase-7",
+      "phase_name": "Prompt File Modifications",
+      "description": "Prepend context headers and scoping question definitions to vision-prompt.md and system-design-prompt.md.",
+      "total_steps": 2,
+      "steps": [
+        {
+          "step_index": 0,
+          "step_id": "7.1",
+          "step_name": "Prepend context header to SYNTROP/vision-prompt.md",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/vision-prompt.md",
+          "change_description": "Prepend the Context section (how this file is used) + Big-Picture Scoping Questions (2 questions with options + usage guidance) to the TOP of the file. Do NOT change existing content.",
+          "success_criteria": "File starts with the context header; original content preserved below the separator line",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 1,
+          "step_id": "7.2",
+          "step_name": "Prepend context header to SYNTROP/system-design-prompt.md",
+          "operation_type": "edit_file",
+          "target_path": "SYNTROP/system-design-prompt.md",
+          "change_description": "Prepend the Context section + Big-Picture Scoping Questions (2 questions: domain + design clarity) to the TOP of the file. Do NOT change existing content.",
+          "success_criteria": "File starts with the context header; original content preserved below the separator line",
+          "notes": "",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "phase_index": 7,
+      "phase_id": "phase-8",
+      "phase_name": "New Files",
+      "description": "Create .claude/commands/start.md and USER-START-HERE/PLEASE_OPEN_ME.md.",
+      "total_steps": 2,
+      "steps": [
+        {
+          "step_index": 0,
+          "step_id": "8.1",
+          "step_name": "Create .claude/commands/start.md",
+          "operation_type": "create_file",
+          "target_path": ".claude/commands/start.md",
+          "change_description": "Create the /start onboarding wizard command with full content as specified in plan (STEP 1-9: active project check, returning user check, SYNTROP explanation, path selection, scoping questions, brain dump collection, processing, state write, SAFE TO CLEAR banner)",
+          "success_criteria": ".claude/commands/start.md exists with 9 steps, valid YAML frontmatter, AskUserQuestion calls",
+          "notes": "allowed-tools: Read, Write, AskUserQuestion",
+          "status": "pending"
+        },
+        {
+          "step_index": 1,
+          "step_id": "8.2",
+          "step_name": "Create USER-START-HERE/PLEASE_OPEN_ME.md",
+          "operation_type": "create_file",
+          "target_path": "USER-START-HERE/PLEASE_OPEN_ME.md",
+          "change_description": "Create the user-facing welcome/quick-start doc with SYNTROP branding, two-command explanation (/start and /orchestrate), zero technical jargon",
+          "success_criteria": "USER-START-HERE/PLEASE_OPEN_ME.md exists with both commands clearly documented",
+          "notes": "",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "phase_index": 8,
+      "phase_id": "phase-9",
+      "phase_name": "Deletions",
+      "description": "Deletion steps — all skipped due to discrepancies.",
+      "total_steps": 1,
+      "steps": [
+        {
+          "step_index": 0,
+          "step_id": "9.1",
+          "step_name": "SKIP: Delete USER-START-HERE/README.md",
+          "operation_type": "delete_file",
+          "target_path": "USER-START-HERE/README.md",
+          "change_description": "SKIP — file does not exist. DISCREPANCY 1 documented in plan.",
+          "success_criteria": "N/A — skipped",
+          "notes": "File was never present in workspace. No action needed.",
+          "status": "skip"
+        }
+      ]
+    },
+    {
+      "phase_index": 9,
+      "phase_id": "phase-10",
+      "phase_name": "Full Rewrites",
+      "description": "Rewrite README.md with SYNTROP marketing copy and clear quick-start instructions.",
+      "total_steps": 1,
+      "steps": [
+        {
+          "step_index": 0,
+          "step_id": "10.1",
+          "step_name": "Rewrite README.md",
+          "operation_type": "write_file",
+          "target_path": "README.md",
+          "change_description": "Replace entire README.md content with SYNTROP-branded content: tagline, what it does, who it's for, how it works, 4-step bordered quick-start table, what SYNTROP is not section",
+          "success_criteria": "README.md has new content; <table> element present for bordered quick-start box; /start is the first command shown",
+          "notes": "Read current file first before overwriting",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "phase_index": 10,
+      "phase_id": "phase-11",
+      "phase_name": "Audit",
+      "description": "Run grep audits and ls verifications to confirm all changes applied correctly.",
+      "total_steps": 3,
+      "steps": [
+        {
+          "step_index": 0,
+          "step_id": "11.1",
+          "step_name": "Grep audit: remaining root-level path references",
+          "operation_type": "run_bash",
+          "target_path": ".",
+          "change_description": "Run grep checks: no bare orchestration-state.json/CEO-ORCHESTRATOR.md/context-summary.md/file-index.json in .claude/commands/; no '/orchestrate continue' anywhere; no bare 'bash init-workspace.sh' in CEO; no bare directors//workers//handlers/ in CEO",
+          "success_criteria": "All grep checks return zero matches (or expected matches only)",
+          "notes": "Any unexpected matches = a missed update that needs fixing",
+          "status": "pending"
+        },
+        {
+          "step_index": 1,
+          "step_id": "11.2",
+          "step_name": "Verify SYNTROP/ directory completeness",
+          "operation_type": "run_bash",
+          "target_path": "SYNTROP/",
+          "change_description": "ls SYNTROP/, SYNTROP/directors/, SYNTROP/handlers/ to verify all expected files exist",
+          "success_criteria": "SYNTROP/ has 11 files + 3 dirs; directors/ has 5 files; handlers/ has 4 files",
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "step_index": 2,
+          "step_id": "11.3",
+          "step_name": "Verify new files exist",
+          "operation_type": "run_bash",
+          "target_path": ".",
+          "change_description": "ls .claude/commands/ (expect orchestrate.md + start.md); ls USER-START-HERE/ (expect PLEASE_OPEN_ME.md only)",
+          "success_criteria": ".claude/commands/ has both command files; USER-START-HERE/ has only PLEASE_OPEN_ME.md",
+          "notes": "",
+          "status": "pending"
+        }
+      ]
+    }
+  ],
+  "validation_commands": [
+    "grep -r 'orchestration-state\\.json' .claude/commands/ | grep -v 'SYNTROP/'",
+    "grep -r 'orchestrate continue' SYNTROP/ .claude/ CLAUDE.md README.md",
+    "ls SYNTROP/",
+    "ls .claude/commands/"
+  ]
+}

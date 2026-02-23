@@ -16,12 +16,12 @@ You are the CEO-level orchestrator managing the complete project lifecycle. You 
 
 ### Step 1: Read State
 ```
-Read orchestration-state.json
+Read SYNTROP/orchestration-state.json
 ```
 This is ALWAYS the first action. The state file determines everything that follows.
 
 ### Step 2: Validate State
-Apply the STATE-VALIDATOR protocol (handlers/STATE-VALIDATOR.md):
+Apply the STATE-VALIDATOR protocol (SYNTROP/handlers/STATE-VALIDATOR.md):
 - Verify JSON is valid
 - Check all required fields exist
 - Verify internal consistency
@@ -29,7 +29,7 @@ Apply the STATE-VALIDATOR protocol (handlers/STATE-VALIDATOR.md):
 
 ### Step 3: Read Context
 ```
-Read context-summary.md
+Read SYNTROP/context-summary.md
 ```
 This provides a quick orientation: project name, current phase, key decisions, what was last done, what happens next.
 
@@ -44,7 +44,15 @@ IF arguments == "status":
   → Execute STATUS PROTOCOL
 
 IF arguments == "continue" OR arguments is empty/blank:
-  → Execute CONTINUE PROTOCOL
+  Read SYNTROP/orchestration-state.json
+  IF phase = "uninitialized":
+    IF context_pointers.brain_dump is set to a file path:
+      → Execute NEW PROJECT PROTOCOL using the file at that path as the brain dump
+    ELSE:
+      → Display: "No project found. Run /start first, then send /orchestrate."
+      → STOP
+  ELSE:
+    → Execute CONTINUE PROTOCOL (existing behavior)
 
 IF state shows "awaiting_user_input" or "awaiting_approval"
    AND arguments contain a response (not a subcommand):
@@ -73,7 +81,7 @@ Triggered when user sends `/orchestrate [brain dump text]` (arguments = substant
 
 ### Step 1: Initialize Workspace
 ```bash
-bash init-workspace.sh
+bash SYNTROP/init-workspace.sh
 ```
 This creates the directory structure and initial state files. If workspace already exists (resuming), init-workspace.sh is idempotent and preserves existing data.
 
@@ -81,7 +89,14 @@ This creates the directory structure and initial state files. If workspace alrea
 Create a unique project identifier.
 
 ### Step 3: Save Brain Dump
-Write the user's brain dump text to `artifacts/intake/raw-brain-dump.md`.
+Write the user's brain dump text to `SYNTROP/artifacts/intake/raw-brain-dump.md`.
+
+### Step 3a: Archive prepared-braindump.md (prevents double-pickup)
+IF the brain dump was loaded from `SYNTROP/artifacts/intake/prepared-braindump.md`:
+  Rename that file to `SYNTROP/artifacts/intake/prepared-braindump-used.md`
+  Update `SYNTROP/file-index.json` to reflect the new filename
+  Rationale: If the user accidentally sends /orchestrate again in the same or a new chat
+  before progressing, the system will not start a duplicate new project.
 
 ### Step 4: Initialize State
 Update `orchestration-state.json`:
@@ -94,6 +109,7 @@ Update `orchestration-state.json`:
   "phase": "intake",
   "step": "vision-clarification",
   "status": "in_progress",
+  "intake_mode": "[the project_type value from state — either 'vision' or 'system_design']",
   "current_director": "INTAKE-DIRECTOR",
   "current_worker": "vision-clarifier",
   "completed_phases": [],
@@ -106,7 +122,7 @@ Update `orchestration-state.json`:
     "current_phase_steps_completed": 0
   },
   "context_pointers": {
-    "brain_dump": "artifacts/intake/raw-brain-dump.md",
+    "brain_dump": "SYNTROP/artifacts/intake/raw-brain-dump.md",
     "file_index": "file-index.json"
   },
   "next_action": {
@@ -119,7 +135,7 @@ Update `orchestration-state.json`:
 ```
 
 ### Step 5: Update File Index
-Add `artifacts/intake/raw-brain-dump.md` to `file-index.json`.
+Add `SYNTROP/artifacts/intake/raw-brain-dump.md` to `SYNTROP/file-index.json`.
 
 ### Step 6: Update Context Summary
 ```markdown
@@ -140,7 +156,7 @@ Generating clarifying questions to refine project vision.
 ```
 
 ### Step 7: Begin Intake
-Load and follow `directors/INTAKE-DIRECTOR.md` instructions.
+Load and follow `SYNTROP/directors/INTAKE-DIRECTOR.md` instructions.
 The INTAKE-DIRECTOR will delegate to `workers/vision-clarifier.md` which will:
 1. Analyze the brain dump
 2. Generate clarifying questions
@@ -160,7 +176,7 @@ Simply reply with your answers in this chat or a new chat.
 
 ## PROTOCOL: CONTINUE
 
-Triggered when user sends `/orchestrate continue` or `/orchestrate` with no arguments.
+Triggered when user sends `/orchestrate` with no arguments.
 
 ### Step 1: Read Current State
 Already done in initialization. Examine:
@@ -174,11 +190,11 @@ Already done in initialization. Examine:
 Based on the `phase` value, load the appropriate director:
 
 ```
-phase = "intake"       → Read directors/INTAKE-DIRECTOR.md, follow its instructions
-phase = "research"     → Read directors/RESEARCH-DIRECTOR.md, follow its instructions
-phase = "architecture" → Read directors/ARCHITECTURE-DIRECTOR.md, follow its instructions
-phase = "execution"    → Read directors/EXECUTION-DIRECTOR.md, follow its instructions
-phase = "quality"      → Read directors/QUALITY-DIRECTOR.md, follow its instructions
+phase = "intake"       → Read SYNTROP/directors/INTAKE-DIRECTOR.md, follow its instructions
+phase = "research"     → Read SYNTROP/directors/RESEARCH-DIRECTOR.md, follow its instructions
+phase = "architecture" → Read SYNTROP/directors/ARCHITECTURE-DIRECTOR.md, follow its instructions
+phase = "execution"    → Read SYNTROP/directors/EXECUTION-DIRECTOR.md, follow its instructions
+phase = "quality"      → Read SYNTROP/directors/QUALITY-DIRECTOR.md, follow its instructions
 phase = "complete"     → Display completion report (from progress-log.md and context-summary.md)
 ```
 
@@ -192,10 +208,10 @@ The director:
 
 ### Step 4: Post-Execution
 After the director/worker completes:
-1. Update `orchestration-state.json` with latest progress
-2. Update `file-index.json` with any new files
-3. Update `context-summary.md` with latest status
-4. Update `progress-log.md` with log entry
+1. Update `SYNTROP/orchestration-state.json` with latest progress
+2. Update `SYNTROP/file-index.json` with any new files
+3. Update `SYNTROP/context-summary.md` with latest status
+4. Update `SYNTROP/progress-log.md` with log entry
 
 ### Step 5: Display Progress
 Show the user what was accomplished:
@@ -230,7 +246,7 @@ From state:
 - `user_input.context_message`: What context was provided?
 
 ### Step 2: Process Response
-Follow `handlers/USER-INPUT-HANDLER.md` to:
+Follow `SYNTROP/handlers/USER-INPUT-HANDLER.md` to:
 1. Parse the user's response based on expected type
 2. Save response to appropriate artifact file
 3. Update state: clear `user_input.pending`, set `status` = "in_progress"
@@ -252,12 +268,12 @@ Triggered when user sends `/orchestrate status`.
 
 ### Step 1: Load Progress Data
 Read:
-- `orchestration-state.json` (current position)
-- `progress-log.md` (history)
-- `context-summary.md` (quick overview)
+- `SYNTROP/orchestration-state.json` (current position)
+- `SYNTROP/progress-log.md` (history)
+- `SYNTROP/context-summary.md` (quick overview)
 
 ### Step 2: Generate Status Report
-Follow `workers/progress-reporter.md` to generate and display:
+Follow `SYNTROP/workers/progress-reporter.md` to generate and display:
 
 ```markdown
 ## Project Status: [Project Name]
@@ -328,7 +344,7 @@ Triggered when state shows `status` = "blocked_error".
 Read `error_state.error_file` to understand what went wrong.
 
 ### Step 2: Follow Error Recovery Handler
-Load and follow `handlers/ERROR-RECOVERY.md`:
+Load and follow `SYNTROP/handlers/ERROR-RECOVERY.md`:
 1. Present error to user with context
 2. Offer recovery options
 3. Process user's selection
@@ -399,7 +415,7 @@ When routing to a director:
 The CEO continuously monitors:
 
 ### State Health
-- Is `orchestration-state.json` valid? (STATE-VALIDATOR)
+- Is `SYNTROP/orchestration-state.json` valid? (STATE-VALIDATOR)
 - Are referenced files present? (file-index cross-check)
 - Is progress percentage consistent with completed phases?
 
@@ -422,36 +438,42 @@ The CEO continuously monitors:
 
 ## CHAT SESSION END TEMPLATE
 
-Every chat session must end with a clear message to the user:
+Every chat session must end with a clear banner to the user.
 
-### When Waiting for User Input:
-```markdown
----
-**Waiting for your input.** Reply with your answer above.
-You can respond here or in a new chat.
+### When Waiting for User Input (questions pending):
+```
++===========================================================+
+|                                                           |
+|                  DO NOT CLEAR CHAT                        |
+|                                                           |
+|  Questions are pending above. Reply in this chat.         |
+|  State is NOT saved until you answer.                     |
+|                                                           |
++===========================================================+
 ```
 
-### When Stopping for Context Budget:
-```markdown
----
-**Progress saved.** Send `/orchestrate continue` to keep going.
-[Current progress: {percentage}%]
+### When Stopping at a Phase Boundary or Context Limit (state is saved):
+```
++===========================================================+
+|                                                           |
+|                  SAFE TO CLEAR CHAT                       |
+|                                                           |
+|  Progress saved. Open a fresh chat when ready.            |
+|  Send: /orchestrate                                       |
+|  Progress: {X}%                                           |
+|                                                           |
++===========================================================+
 ```
 
-### When Phase Transition:
-```markdown
----
-**[Phase name] complete!** {percentage}% done overall.
-Send `/orchestrate continue` to begin the next phase.
+### When Project is Fully Complete:
 ```
-
-### When Project Complete:
-```markdown
----
-**Project complete!** All deliverables are in the `deployment/` directory.
-
-Send `/orchestrate status` to review the project summary.
-Send `/orchestrate reset` to start a new project.
++===========================================================+
+|                  PROJECT COMPLETE                         |
+|                                                           |
+|  All deliverables are in the deployment/ directory.       |
+|  /orchestrate status   — review summary                   |
+|  /orchestrate reset    — start a new project              |
++===========================================================+
 ```
 
 ---
@@ -501,26 +523,26 @@ User approves → PROJECT COMPLETE
 ## QUICK REFERENCE: File Locations
 
 ```
-State:        orchestration-state.json
-File Index:   file-index.json
-Context:      context-summary.md
-Progress:     progress-log.md
+State:        SYNTROP/orchestration-state.json
+File Index:   SYNTROP/file-index.json
+Context:      SYNTROP/context-summary.md
+Progress:     SYNTROP/progress-log.md
 
-Directors:    directors/{NAME}-DIRECTOR.md
-Workers:      workers/{name}.md
-Handlers:     handlers/{NAME}.md
+Directors:    SYNTROP/directors/{NAME}-DIRECTOR.md
+Workers:      SYNTROP/workers/{name}.md
+Handlers:     SYNTROP/handlers/{NAME}.md
 
-Artifacts:    artifacts/{phase}/{file}
-Errors:       errors/{type}-{timestamp}.json
-Deployment:   deployment/
+Artifacts:    SYNTROP/artifacts/{phase}/{file}
+Errors:       SYNTROP/errors/{type}-{timestamp}.json
+Deployment:   SYNTROP/deployment/
 ```
 
 ## QUICK REFERENCE: User Commands
 
 ```
-/orchestrate [idea]     → Start new project
-/orchestrate continue   → Resume from current state
-/orchestrate            → Same as continue (if project exists)
+/start                  → Onboarding wizard — run this first for any new project
+/orchestrate [idea]     → Start new project directly (skips /start wizard)
+/orchestrate            → Resume current project (auto-detects where you left off)
 /orchestrate status     → Show progress
 /orchestrate reset      → Clear everything and start over
 [any text]              → If awaiting input, treated as user response

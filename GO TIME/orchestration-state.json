@@ -1,0 +1,62 @@
+{
+  "version": "1.0.0",
+  "plan_id": null,
+  "plan_name": null,
+  "plan_source": null,
+  "created_at": null,
+  "updated_at": null,
+  "phase": "uninitialized",
+  "step": null,
+  "status": "pending",
+  "current_director": null,
+  "current_worker": null,
+  "completed_phases": [],
+  "completed_steps": [],
+  "implementation_plan": {
+    "total_phases": 0,
+    "phases": [],
+    "current_phase_index": 0,
+    "current_step_index": 0
+  },
+  "execution_tracking": {
+    "total_steps": 0,
+    "completed_steps": 0,
+    "failed_steps": 0,
+    "skipped_steps": 0,
+    "rollback_available": false,
+    "last_completed_step_id": null
+  },
+  "user_input": {
+    "pending": false,
+    "type": null,
+    "questions_file": null,
+    "context_message": null,
+    "responses_received": []
+  },
+  "error_state": {
+    "has_error": false,
+    "error_file": null,
+    "recovery_attempted": false,
+    "failed_step_details": null,
+    "recovery_options_presented": false
+  },
+  "progress": {
+    "percentage": 0,
+    "phases_total": 4,
+    "phases_completed": 0,
+    "current_phase_steps_total": 0,
+    "current_phase_steps_completed": 0
+  },
+  "context_pointers": {
+    "plan_source": null,
+    "parsed_plan": null,
+    "execution_log": null,
+    "file_index": "GO TIME/file-index.json"
+  },
+  "next_action": {
+    "description": "Send /imp followed by the path to your implementation plan to begin",
+    "command_hint": "/imp [path-to-plan.md] or /imp [paste plan text]",
+    "expected_director": "PARSE-DIRECTOR",
+    "expected_worker": "plan-parser"
+  }
+}

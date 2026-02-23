@@ -24,6 +24,8 @@ Open Claude Code and drag these three folders into your workspace:
 - `.claude/`
 - `SYNTROP/`
 - `USER-START-HERE/`
+- `CLAUDE.md`
+- `README.md`
 
 You'll use two commands. Here's what they do and when to use each one.
 

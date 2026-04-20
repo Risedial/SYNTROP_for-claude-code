@@ -1,0 +1,196 @@
+{
+  "generated_at": "2026-04-17T00:00:00Z",
+  "mode": "review",
+  "brain_dump_analysis": {
+    "core_intent": "Deploy a mobile-first PWA with a mastery-based adaptive algorithm to replace a Claude Code study command for Alberta Standard First Aid Level C certification prep",
+    "identified_ambiguities": [
+      "Frontend framework not formally confirmed (React + Vite stated as assumption, HIGH impact)",
+      "Exact mastery threshold numbers unresolved (streak length, session count, reversal window)",
+      "DeviceId durability strategy unresolved (localStorage-only vs. localStorage + cookie)",
+      "Score estimation formula not specified (weighted vs. equal weighting)"
+    ],
+    "identified_gaps": [
+      "Infrastructure provisioning exact command sequence not defined",
+      "Service worker strategy if content files exceed 5MB not decided"
+    ],
+    "identified_contradictions": [],
+    "preliminary_scope": "medium"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "category": "technology",
+      "question": "Confirm your frontend framework. The spec lists React + Vite as a HIGH-impact assumption. This choice determines every component, state management pattern, and build configuration decision downstream. Wrong assumption invalidates all component planning.",
+      "type": "multiple_choice",
+      "context": "React + Vite is the most common choice for PWAs with complex state (mastery algorithm, multi-tab navigation, offline sync) and has the broadest Claude Code support. SvelteKit is lighter but less established in Claude's training data. Vanilla JS eliminates framework overhead but requires manual state management for a complex algorithm.",
+      "options": [
+        {
+          "key": "A",
+          "label": "React + Vite",
+          "description": "React for component architecture and state management (useState, useReducer, Context); Vite for fast builds and ES module handling. This is the assumption in the spec. Best tooling support, most predictable Claude Code execution.",
+          "recommendation": true
+        },
+        {
+          "key": "B",
+          "label": "SvelteKit",
+          "description": "Svelte's compiled approach produces smaller bundles. SvelteKit handles routing natively. Good for PWAs, but less Claude Code training data — build tasks may require more correction passes.",
+          "recommendation": false
+        },
+        {
+          "key": "C",
+          "label": "Vanilla JS + Vite",
+          "description": "No framework overhead. Maximum control. But requires manual DOM management and a custom state machine implementation for the mastery algorithm — significantly more code to write and test.",
+          "recommendation": false
+        }
+      ],
+      "priority": "critical",
+      "required": true
+    },
+    {
+      "id": "q2",
+      "category": "features",
+      "question": "Set your mastery threshold numbers. The algorithm requires specific numeric values before the algorithm specification can be written. These numbers determine how many correct answers are required before a question graduates to the next state.",
+      "type": "multiple_choice",
+      "context": "The spec assumes '3 consecutive correct answers, across 2+ sessions, no reversals in last 5 exposures' for Near-Mastery → Mastered graduation. Too easy (2 correct) risks overconfidence; too strict (5 correct) may demotivate before exam day. The 70% exam pass threshold suggests moderate rigor is appropriate. These numbers can be adjusted post-launch by editing a config constant — they don't affect the architecture.",
+      "options": [
+        {
+          "key": "A",
+          "label": "Moderate (spec default)",
+          "description": "3 consecutive correct, across 2+ distinct sessions, no reversals in the last 5 exposures to graduate Near-Mastery → Mastered. 2 consecutive correct to graduate Active → Near-Mastery. Maintenance review every 10 sessions.",
+          "recommendation": true
+        },
+        {
+          "key": "B",
+          "label": "Strict",
+          "description": "4 consecutive correct, across 3+ distinct sessions, no reversals in the last 7 exposures to graduate. 3 consecutive to reach Near-Mastery. Maintenance review every 8 sessions. Best for maximum exam confidence, but slower progression.",
+          "recommendation": false
+        },
+        {
+          "key": "C",
+          "label": "Relaxed",
+          "description": "2 consecutive correct, across 2+ sessions, no reversals in the last 4 exposures. 2 consecutive to reach Near-Mastery. Faster completion feeling, but higher risk of premature graduation on questions that feel easy but aren't.",
+          "recommendation": false
+        }
+      ],
+      "priority": "high",
+      "required": true
+    },
+    {
+      "id": "q3",
+      "category": "technology",
+      "question": "Choose your DeviceId durability strategy. The device UUID is used to associate localStorage progress with the Redis backup. If localStorage is cleared without a fallback, the user loses their Redis association and can't restore — defeating the entire backup system.",
+      "type": "multiple_choice",
+      "context": "iOS Safari periodically clears localStorage (after 7 days of no use, or when storage pressure is high). The spec assumes a localStorage + cookie fallback, where the same UUID is stored in a 7-year-expiry cookie. If localStorage is cleared, the cookie value is used to re-establish the Redis key on next load. The cookie approach adds minimal complexity but solves a real problem for the primary browser target.",
+      "options": [
+        {
+          "key": "A",
+          "label": "localStorage + cookie fallback (recommended)",
+          "description": "UUID stored in both localStorage and a 7-year SameSite=Strict cookie. On app load: if localStorage UUID is missing, read from cookie, re-seed localStorage, and resume Redis association. Solves iOS Safari's aggressive cache clearing. This is the spec assumption.",
+          "recommendation": true
+        },
+        {
+          "key": "B",
+          "label": "localStorage only",
+          "description": "Simpler — just the UUID in localStorage. If cleared (iOS Safari, manual browser data clear), the Redis key is orphaned and the user must manually re-enter a backup code, or progress is lost. Acceptable if you're OK losing Redis association on storage clear.",
+          "recommendation": false
+        },
+        {
+          "key": "C",
+          "label": "localStorage + IndexedDB",
+          "description": "IndexedDB is more persistent than localStorage and less likely to be cleared. More complex to implement. Not affected by the same Safari policies as localStorage, but adds another storage API dependency.",
+          "recommendation": false
+        }
+      ],
+      "priority": "high",
+      "required": true
+    },
+    {
+      "id": "q4",
+      "category": "features",
+      "question": "Choose your exam score estimation formula. The Analytics tab shows an estimated exam score as a percentage. This number needs to be credible — it's the primary motivator for the user and will be compared against the 70% pass threshold.",
+      "type": "multiple_choice",
+      "context": "The spec assumes question-count-weighted averaging (topics with more questions count for more). Since the 11 topics have unequal question counts (e.g., CPR likely has more questions than Environmental Emergencies), equal weighting would over-represent minor topics. Weighted by question count mirrors how a real exam with proportional question distribution would score.",
+      "options": [
+        {
+          "key": "A",
+          "label": "Weighted by question count per topic (spec default)",
+          "description": "Each topic's mastery % is weighted by that topic's share of total questions. Topics with more questions have more influence on the final score. Most accurately represents what a proportional exam would look like. Formula: sum(topic_mastery * topic_question_count) / total_questions.",
+          "recommendation": true
+        },
+        {
+          "key": "B",
+          "label": "Simple average across all topics equally",
+          "description": "All 11 topics contribute equally regardless of how many questions they have. Simpler formula but may over-represent topics that are minor on the real exam. A topic with 3 questions counts as much as a topic with 20.",
+          "recommendation": false
+        },
+        {
+          "key": "C",
+          "label": "Weighted by question count + confidence penalty",
+          "description": "Same as A, but fast-tap answers (under 2 seconds) are counted at 50% confidence and reduce the effective mastery score for that question. Penalizes speed-guessing when calculating the estimated score. More accurate signal of genuine readiness, but adds complexity to the formula.",
+          "recommendation": false
+        }
+      ],
+      "priority": "medium",
+      "required": true
+    },
+    {
+      "id": "q5",
+      "category": "technology",
+      "question": "Choose your infrastructure provisioning approach. The zero-manual-interaction requirement is firm — you will not touch any dashboard. What level of automation is acceptable for Upstash Redis setup?",
+      "type": "multiple_choice",
+      "context": "Upstash has an MCP server that Claude Code can call to provision a Redis database entirely via API. Vercel has a CLI for project creation and deployment. The spec assumes both are used in sequence for full automation. An alternative is Vercel's built-in KV storage (which uses Upstash under the hood) — this may be provisionable entirely through Vercel CLI without a separate Upstash step.",
+      "options": [
+        {
+          "key": "A",
+          "label": "Upstash MCP + Vercel CLI (spec assumption)",
+          "description": "Claude Code uses the Upstash MCP server to create a Redis database and retrieve credentials, then uses Vercel CLI to create the project and set environment variables. Two separate tools, both fully automated. Maximum control over Redis configuration.",
+          "recommendation": true
+        },
+        {
+          "key": "B",
+          "label": "Vercel KV via Vercel CLI only",
+          "description": "Vercel KV is Upstash Redis exposed through Vercel's own storage product. If it can be provisioned via Vercel CLI alone (one tool, one workflow), this simplifies the setup significantly. Worth attempting — if CLI provisioning works, simpler is better.",
+          "recommendation": false
+        },
+        {
+          "key": "C",
+          "label": "Defer — research during infrastructure phase",
+          "description": "Don't decide now. The architecture and execution phases will determine the exact tooling. Lock this decision when the infrastructure spec worker runs. Note: this delays a decision that affects how the `/api/sync` route is implemented.",
+          "recommendation": false
+        }
+      ],
+      "priority": "medium",
+      "required": true
+    },
+    {
+      "id": "q6",
+      "category": "features",
+      "question": "One content question that affects the study algorithm: the spec says questions return to Active state on 'any miss' from Maintenance. Do you want a grace period (e.g., 1 miss allowed before demotion) or strict immediate demotion?",
+      "type": "multiple_choice",
+      "context": "A Mastered question entering Maintenance is supposed to be well-known. A single miss on a Maintenance question could be a fluke (distraction, mis-tap) or a genuine memory gap. Strict demotion (any miss → Active) is conservative and maximizes retention. Grace period (1 miss forgiven) reduces churn on questions the user genuinely knows but occasionally fumbles. This interacts with the fast-tap detection — a fast-tap miss is already excluded from mastery streaks, but what about Maintenance demotion?",
+      "options": [
+        {
+          "key": "A",
+          "label": "Strict: any non-fast-tap miss demotes to Active",
+          "description": "If a Maintenance question is answered wrong (and the response is not flagged as a fast-tap), it immediately returns to Active state. Fast-tap misses in Maintenance are repeated in session but do not demote. This is the safest interpretation of the spec.",
+          "recommendation": true
+        },
+        {
+          "key": "B",
+          "label": "Grace: 1 non-fast-tap miss allowed before demotion",
+          "description": "The first non-fast-tap miss on a Maintenance question downgrades it to Near-Mastery (not Active). A second miss demotes it to Active. Reduces churn on well-known material but may allow genuine gaps to persist longer.",
+          "recommendation": false
+        },
+        {
+          "key": "C",
+          "label": "Strict demotion + fast-tap also demotes",
+          "description": "Any miss (including fast-tap) in Maintenance demotes the question to Active. Most aggressive — ensures even rushed answers are penalized at the Maintenance tier. May feel punitive if the user accidentally taps the wrong answer.",
+          "recommendation": false
+        }
+      ],
+      "priority": "medium",
+      "required": true
+    }
+  ],
+  "total_questions": 6
+}

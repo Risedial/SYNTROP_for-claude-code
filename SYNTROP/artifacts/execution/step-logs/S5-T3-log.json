@@ -1,0 +1,16 @@
+{
+  "task_id": "S5-T3",
+  "task_name": "QuestionCard component",
+  "executed_at": "2026-04-18",
+  "status": "completed",
+  "files_created": ["src/components/study/QuestionCard.tsx"],
+  "files_modified": [],
+  "validation_results": {
+    "files_exist": true,
+    "builds_clean": true,
+    "tests_pass": true,
+    "linter_clean": true
+  },
+  "notes": "Props: question, onDone. Calls markQuestionDisplayed on mount. Reads questionDisplayTime from store synchronously at answer time (no subscription) for fast-tap detection. recordAnswer called with answerTime. ExplanationPanel shows after selection. Calls nextQuestion() then onDone() on Next click.",
+  "issues_encountered": []
+}

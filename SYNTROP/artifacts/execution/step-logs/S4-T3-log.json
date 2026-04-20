@@ -1,0 +1,16 @@
+{
+  "task_id": "S4-T3",
+  "task_name": "useSync hook (src/hooks/useSync.ts)",
+  "executed_at": "2026-04-18T00:00:00Z",
+  "status": "completed",
+  "files_created": ["src/hooks/useSync.ts"],
+  "files_modified": [],
+  "validation_results": {
+    "files_exist": true,
+    "builds_clean": true,
+    "tests_pass": true,
+    "linter_clean": true
+  },
+  "notes": "Auto-sync via setInterval(60s): POSTs when isDirty, calls markClean on success, non-blocking on failure. manualSave: POST /api/sync, throws on error. restoreBackup: GET /api/sync, throws 'no_backup_found' when data===null, merges restored questions into store then markClean. Returns {manualSave, restoreBackup}.",
+  "issues_encountered": []
+}

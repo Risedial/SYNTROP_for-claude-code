@@ -1,0 +1,232 @@
+{
+  "generated_at": "2026-04-17",
+  "project": "First Aid Study PWA",
+
+  "metrics": {
+    "structural": {
+      "total_components": 34,
+      "max_dependency_depth": 9,
+      "external_integrations": 2,
+      "external_integration_list": ["Upstash Redis REST API", "Vercel deployment"],
+      "data_entities": 1,
+      "data_entity_notes": "Single QuestionRecord per question (146 records), no relational tables. All data in Zustand store persisted to localStorage.",
+      "api_endpoints": 2,
+      "api_endpoint_list": ["GET /api/sync", "POST /api/sync"],
+      "ui_tabs": 4,
+      "ui_screens": 5,
+      "ui_screen_list": ["Study (question view)", "Study (session summary)", "Skills", "Progress", "Settings"]
+    },
+    "functional": {
+      "must_have_requirements": 27,
+      "must_have_notes": "FR-001 through FR-027 from requirements.json. All are in scope for this build.",
+      "user_workflows": 5,
+      "user_workflow_list": [
+        "Study session: answer questions, see explanations, advance through mastery states",
+        "Skills review: browse 12 practical skills with step-by-step guides",
+        "Progress check: view estimated score, topic grid, weak areas",
+        "Manual save: trigger Redis backup from Settings",
+        "Data restore: recover from Redis backup after localStorage loss"
+      ],
+      "permission_sets": 0,
+      "permission_notes": "No authentication, no authorization. Single user tool.",
+      "data_pipelines": 1,
+      "data_pipeline_list": ["localStorage Zustand store → Vercel /api/sync → Upstash Redis (polling, 60s dirty-flag gate)"],
+      "real_time_features": 0,
+      "real_time_notes": "No WebSockets. Auto-sync is periodic polling with dirty flag, not real-time."
+    },
+    "integration": {
+      "third_party_apis": 1,
+      "third_party_list": ["Upstash Redis REST (via @upstash/redis)"],
+      "auth_complexity": "simple",
+      "auth_notes": "API key auth only (UPSTASH_REDIS_REST_TOKEN). No OAuth, no user sessions.",
+      "sync_requirements": "eventual_consistency",
+      "sync_notes": "60s polling with dirty flag. Data loss window: up to 60s of un-synced answers.",
+      "webhook_processing": false
+    }
+  },
+
+  "project_tier": "medium",
+  "tier_rationale": "34 components sits at the boundary of Medium/Large by structural count, but functional complexity is low (1 user, 0 auth, 1 API, 2 endpoints). The algorithm (5-state machine with reversal detection) is the only area of genuine complexity. Classifying as Medium-high with 35 total steps is appropriate — sufficient granularity for a less-capable executor model, without excessive overhead.",
+
+  "recommendations": {
+    "total_implementation_steps": 35,
+    "total_sprints": 8,
+    "steps_per_sprint_range": "3-5",
+    "content_gate_required": true,
+    "content_gate_notes": "CON-005 requires user to verify clinical accuracy of questions.ts and skills.ts before any UI is built that displays content. This gate is Sprint 2 Step 3 — execution PAUSES and resumes only after user confirms.",
+
+    "sprint_structure": [
+      {
+        "sprint": 1,
+        "name": "Foundation",
+        "focus": "Project scaffolding, type system, design system, PWA configuration",
+        "components": ["comp-001", "comp-002", "comp-004", "comp-003", "comp-008"],
+        "estimated_steps": 4,
+        "steps": [
+          "S01: Vite + React + TypeScript project scaffolding (tsconfig strict:true, package.json, npm install)",
+          "S02: TypeScript type definitions — all 4 type files (algorithm.ts, session.ts, store.ts, content.ts)",
+          "S03: Design system CSS — globals.css with all design tokens from style-template.md. Run frontend-design skill first.",
+          "S04: PWA assets + vite.config.ts + index.html iOS meta tags"
+        ],
+        "validation_checkpoint": "Project builds with zero TypeScript errors. vite build produces a valid dist/. Design tokens are visible in browser.",
+        "can_parallelize_within_sprint": false,
+        "sprint_blocker": "S01 must complete before S02; S02 must complete before S03 and S04"
+      },
+      {
+        "sprint": 2,
+        "name": "Infrastructure & Data",
+        "focus": "Upstash provisioning, content data, content gate, /api/sync, Zustand store",
+        "components": ["comp-009", "comp-007", "comp-014", "comp-013"],
+        "estimated_steps": 5,
+        "steps": [
+          "S05: Infrastructure provisioning — test Upstash MCP, provision Redis, create Vercel project, set env vars",
+          "S06: Content data files — typed questions.ts + skills.ts wrappers (copy from zzz/, add TypeScript types)",
+          "S07: CONTENT GATE — user reviews questions.ts and skills.ts for clinical accuracy. [PAUSES — requires user approval]",
+          "S08: /api/sync serverless function — GET (fetch from Redis) + POST (write to Redis) with UUID validation",
+          "S09: Zustand store — useStore.ts with persist middleware (key: fap_store, version: 1, migrate template, all actions)"
+        ],
+        "validation_checkpoint": "Upstash Redis responds to test commands. /api/sync returns 200 on local Vercel dev. Store persists to localStorage and rehydrates on page reload.",
+        "can_parallelize_within_sprint": false,
+        "sprint_blocker": "S07 is a hard gate — S08 and S09 must wait for user approval of S07",
+        "user_input_required": true,
+        "user_input_step": "S07"
+      },
+      {
+        "sprint": 3,
+        "name": "Core Algorithm",
+        "focus": "PRNG, device ID, 5-state machine, session builder — the technical core of the app",
+        "components": ["comp-005", "comp-006", "comp-010", "comp-011"],
+        "estimated_steps": 4,
+        "steps": [
+          "S10: mulberry32 PRNG + seededShuffle + seedFromSessionId (src/lib/prng.ts) + Device ID utility (src/lib/deviceId.ts)",
+          "S11: 5-state algorithm (src/lib/algorithm.ts) — isFastTap, hasReversalInWindow, applyAnswer, isMaintenanceDue",
+          "S12: Algorithm validation — manual test of all 5 state transitions, reversal detection, fast-tap exclusion",
+          "S13: Session builder (src/lib/sessionBuilder.ts) — buildSessionQueue with tier ordering and PRNG shuffle"
+        ],
+        "validation_checkpoint": "Run algorithm manually: create 5 sample QuestionRecords, call applyAnswer() through all states, verify state transitions match spec. Session queue for 10 questions produces correct tier ordering.",
+        "can_parallelize_within_sprint": false,
+        "sprint_blocker": "S11 must complete before S12; S12 must pass before S13"
+      },
+      {
+        "sprint": 4,
+        "name": "Hooks & Analytics",
+        "focus": "Session lifecycle hook, sync hook, analytics computations",
+        "components": ["comp-012", "comp-015", "comp-016"],
+        "estimated_steps": 3,
+        "steps": [
+          "S14: Analytics computations (src/lib/analytics.ts) — computeTopicStats, computeEstimatedScore, readyToTest logic",
+          "S15: useSession hook (src/hooks/useSession.ts) — startSession, recordAnswer (with fast-tap detection), nextQuestion, endSession",
+          "S16: useSync hook (src/hooks/useSync.ts) — autoSync interval (60s dirty-flag), manualSave, restoreBackup"
+        ],
+        "validation_checkpoint": "analyticsTest: Seed 146 questions in specific states, verify computeTopicStats returns correct mastery%, estimatedScore is correct. sessionTest: Start session, answer 5 questions (2 fast-tap), verify fastTapPending populated, endSession clears session.",
+        "can_parallelize_within_sprint": false,
+        "sprint_blocker": "S15 depends on sessionBuilder from S13"
+      },
+      {
+        "sprint": 5,
+        "name": "Study Tab UI",
+        "focus": "The primary user-facing feature — question display, answer selection, feedback, session flow",
+        "components": ["comp-019", "comp-020", "comp-021", "comp-022", "comp-023"],
+        "estimated_steps": 5,
+        "steps": [
+          "S17: AnswerOption component — 4 visual states (idle, selected-correct, selected-incorrect, revealed-correct) with design system colors",
+          "S18: ExplanationPanel component — explanation text, result badge, fast-tap warning, Next button",
+          "S19: QuestionCard component — question display, option list, timing start/stop, calls useSession.recordAnswer",
+          "S20: SessionSummary component — end-of-session stats (count, correct%, fast-taps, state distribution)",
+          "S21: StudyTab component — session orchestrator (auto-start, QuestionCard vs SessionSummary routing)"
+        ],
+        "validation_checkpoint": "Manual study flow: open app, see question, select answer, see explanation, advance. Session ends after queue exhausted. SessionSummary shows correct stats. Fast-tap triggers warning.",
+        "can_parallelize_within_sprint": false,
+        "sprint_blocker": "S17+S18 must complete before S19; S19+S20 must complete before S21"
+      },
+      {
+        "sprint": 6,
+        "name": "Skills & Progress Tabs",
+        "focus": "Practical skills guide and analytics dashboard",
+        "components": ["comp-024", "comp-025", "comp-026", "comp-027", "comp-028", "comp-029"],
+        "estimated_steps": 5,
+        "steps": [
+          "S22: SkillCard component — expandable accordion with steps, commonErrors, evaluationCriteria",
+          "S23: SkillsTab component — 12 skills list with single-expand accordion state",
+          "S24: ScoreDisplay component — estimated score (large display), ready-to-test banner (score >= 80% + all topics >= 75%)",
+          "S25: TopicGrid component — 11-cell grid with red/yellow/green color coding per topic mastery%",
+          "S26: WeakTopics + ProgressTab — WeakTopics (3 lowest by masteryPercent) + ProgressTab assembling all progress components"
+        ],
+        "validation_checkpoint": "Skills tab: expand/collapse SkillCard works, all 12 skills render. Progress tab: seed some mastered questions, verify TopicGrid shows green cells, ScoreDisplay shows correct %, WeakTopics shows correct names.",
+        "can_parallelize_within_sprint": false,
+        "sprint_blocker": "S22 before S23; S24+S25 before S26"
+      },
+      {
+        "sprint": 7,
+        "name": "Settings, Navigation & App Assembly",
+        "focus": "Settings tab, bottom navigation, iOS install banner, app shell, entry point",
+        "components": ["comp-030", "comp-031", "comp-032", "comp-017", "comp-018", "comp-033"],
+        "estimated_steps": 6,
+        "steps": [
+          "S27: SyncControls component — Save button (POST /api/sync), Restore button (GET /api/sync + confirm modal), last sync timestamp",
+          "S28: SettingsTab component — mounts useSync for auto-sync, renders SyncControls, shows content version",
+          "S29: BottomNav component — 4 tabs, active indicator (gradient), 44px touch targets, setActiveTab calls",
+          "S30: IOSInstallBanner — iOS Safari detection, dismissible, stores dismissal in Zustand",
+          "S31: AppShell component — 4 tab containers with CSS display:none toggle, BottomNav fixed bottom",
+          "S32: App.tsx + main.tsx — store initialization (initializeQuestions, resolveDeviceId, setDeviceId), render AppShell + IOSInstallBanner"
+        ],
+        "validation_checkpoint": "Full app renders to first question with zero console errors. All 4 tabs switch correctly. Bottom nav active state updates. iOS banner shows on iOS user agent. Store initializes all 146 questions on first load.",
+        "can_parallelize_within_sprint": false,
+        "sprint_blocker": "S27 before S28; S29+S30+all tab components before S31; S31 before S32"
+      },
+      {
+        "sprint": 8,
+        "name": "Deployment & Validation",
+        "focus": "Production build, deploy, and full acceptance testing",
+        "components": ["comp-034"],
+        "estimated_steps": 3,
+        "steps": [
+          "S33: Production build + verification — vite build, du -sh dist/ (verify < 5MB), verify service worker generates",
+          "S34: Vercel deployment — vercel deploy --prod, verify app loads at production URL, /api/sync responds",
+          "S35: Acceptance validation — offline test (all 4 tabs in airplane mode after first visit), PWA install check, manual sync test, algorithm end-to-end (advance one question through New→Active→Near-Mastery)"
+        ],
+        "validation_checkpoint": "All 7 success criteria from SSOT section 7 verified: SC-001 through SC-007.",
+        "can_parallelize_within_sprint": false,
+        "sprint_blocker": "S33 before S34; S34 before S35"
+      }
+    ],
+
+    "granularity_rules": {
+      "config": "Batch related config into 1 step (e.g., vite.config.ts + index.html + icons = 1 step)",
+      "types": "All type definitions in 1 step — they are pure interfaces with no logic",
+      "utilities": "Batch small pure functions (PRNG + deviceId = 1 step)",
+      "algorithm": "Always 1 dedicated step per algorithm component — highest risk, needs isolation",
+      "hooks": "1 step per hook — medium complexity with Zustand interactions",
+      "ui_leaf": "1 step per leaf component (AnswerOption, ExplanationPanel, SkillCard)",
+      "ui_composite": "1 step per composite/page component (StudyTab, SkillsTab, ProgressTab)",
+      "integration": "1 step per external service (Upstash provisioning = 1 step)",
+      "deployment": "1 step each for build, deploy, and validation"
+    }
+  },
+
+  "risk_assessment": {
+    "highest_complexity_areas": [
+      "5-state algorithm (comp-010): reversal detection and session-based mastery gates are nuanced — explicitly validate with test cases before advancing",
+      "useSession hook (comp-015): manages fast-tap detection timing + queue management across multiple function calls — most stateful hook in the app",
+      "Infrastructure provisioning (comp-009): external dependency; Upstash MCP authentication status is unknown until tested"
+    ],
+    "recommended_review_points": [
+      "After Sprint 3 S12 (algorithm validation) — verify all 5 transitions before building any UI on top",
+      "After Sprint 4 S15 (useSession) — verify session lifecycle end-to-end before Study Tab UI",
+      "After Sprint 7 S32 (full assembly) — verify app initialization and tab switching before deployment"
+    ],
+    "context_budget_concern": "low",
+    "context_notes": "Single-executor model (one Claude instance per sprint). Steps are sized to complete in 1-3 file edits each. No sprint should exceed 30 minutes of Claude work. Context window will not be a limiting factor at this granularity."
+  },
+
+  "vision_anchor_coverage": {
+    "permanent_replacement_zero_cost": "Sprint 2 infra (free tier) + Sprint 8 deployment",
+    "performance_based_mastery": "Sprint 3 algorithm (no calendar fields), Sprint 4 session builder",
+    "single_user_no_accounts": "No auth components anywhere in the plan — covered by absence",
+    "offline_first": "Sprint 1 vite-plugin-pwa + Sprint 8 offline validation (SC-002)",
+    "zero_manual_setup": "Sprint 2 Upstash MCP + Vercel CLI — no dashboard URLs",
+    "user_verified_content": "Sprint 2 content gate S07 — hard pause before UI build",
+    "react_vite_locked": "Sprint 1 scaffolding — enforced by project template",
+    "atomic_build_tasks": "35 steps each producing 1-3 files — every step executable without ambiguity"
+  }
+}

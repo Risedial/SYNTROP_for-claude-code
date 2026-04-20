@@ -1,0 +1,65 @@
+{
+  "generated_at": "2026-04-18",
+  "project_id": "fap-2026-0417-001",
+  "fidelity_score": 92,
+  "director_decision": "continue",
+  "functional_requirements": {
+    "total": 27,
+    "fully_met": 24,
+    "partially_met": 3,
+    "not_met": 0,
+    "partial_ids": ["FR-013", "FR-021", "FR-023"]
+  },
+  "non_functional_requirements": {
+    "total": 10,
+    "fully_met": 7,
+    "evidenced_unmeasured": 3,
+    "not_met": 0,
+    "evidenced_ids": ["NFR-001", "NFR-002", "NFR-004"]
+  },
+  "success_criteria": {
+    "total": 7,
+    "pass": 5,
+    "pending": 1,
+    "partial": 1,
+    "pass_ids": ["SC-001", "SC-002", "SC-003", "SC-005", "SC-006"],
+    "pending_ids": ["SC-004"],
+    "partial_ids": ["SC-007"]
+  },
+  "vision_anchors": {
+    "total": 8,
+    "maintained": 7,
+    "partially_maintained": 1,
+    "not_maintained": 0
+  },
+  "gaps": [
+    {
+      "id": "GAP-001",
+      "description": "Redis sync pending Upstash activation (FR-013, FR-021, SC-004)",
+      "severity": "medium",
+      "effort_minutes": 5,
+      "resolution": "Follow SYNTROP/artifacts/architecture/infra-notes.md"
+    },
+    {
+      "id": "GAP-002",
+      "description": "SC-007 PARTIAL — one manual Upstash console step required (MCP unavailable)",
+      "severity": "low",
+      "effort_minutes": 5,
+      "resolution": "Included in GAP-001 resolution"
+    },
+    {
+      "id": "GAP-003",
+      "description": "NFR-001/002/004 not instrumentally measured",
+      "severity": "low",
+      "effort_minutes": 10,
+      "resolution": "Run Lighthouse after Upstash activation"
+    }
+  ],
+  "weighted_score_calculation": {
+    "must_have_weight": 3,
+    "should_have_weight": 2,
+    "max_possible": 110,
+    "achieved": 101.25,
+    "fidelity_percent": 92
+  }
+}

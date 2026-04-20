@@ -1,12 +1,274 @@
 {
   "version": "1.0.0",
-  "updated_at": null,
-  "files": {},
+  "updated_at": "2026-04-18",
+  "files": {
+    "SYNTROP/artifacts/intake/raw-brain-dump.md": {
+      "phase": "intake",
+      "step": "vision-clarification",
+      "type": "brain_dump",
+      "description": "Raw brain dump — source of truth for project vision"
+    },
+    "SYNTROP/artifacts/intake/prepared-braindump-used.md": {
+      "phase": "intake",
+      "step": "vision-clarification",
+      "type": "archive",
+      "description": "Archived copy of the prepared brain dump from /start — consumed and archived"
+    },
+    "SYNTROP/artifacts/intake/brain-dump-analysis.md": {
+      "phase": "intake",
+      "step": "vision-clarification",
+      "type": "analysis",
+      "description": "Human-readable analysis: what's clear, what needed clarification, feasibility"
+    },
+    "SYNTROP/artifacts/intake/clarifying-questions.json": {
+      "phase": "intake",
+      "step": "vision-clarification",
+      "type": "questions",
+      "description": "6 clarifying questions covering framework, thresholds, DeviceId, score formula, infra, demotion"
+    },
+    "SYNTROP/artifacts/intake/user-response-vision-clarification.json": {
+      "phase": "intake",
+      "step": "vision-clarification",
+      "type": "user_response",
+      "description": "User answers to clarifying questions — all A (all spec defaults confirmed)"
+    },
+    "SYNTROP/artifacts/intake/requirements.json": {
+      "phase": "intake",
+      "step": "requirements-extraction",
+      "type": "requirements",
+      "description": "27 functional requirements, 10 non-functional requirements, 8 constraints, 7 success criteria"
+    },
+    "SYNTROP/artifacts/intake/SINGLE-SOURCE-OF-TRUTH.md": {
+      "phase": "intake",
+      "step": "ssot-generation",
+      "type": "ssot",
+      "description": "Single Source of Truth — authoritative vision document for all subsequent phases"
+    },
+    "SYNTROP/artifacts/research/approaches.json": {
+      "phase": "research",
+      "step": "approach-research",
+      "type": "approaches",
+      "description": "3 approaches within locked React+Vite constraint: JS+Context, TS+Zustand, TS+Zustand+CustomSW"
+    },
+    "SYNTROP/artifacts/research/research-notes.md": {
+      "phase": "research",
+      "step": "approach-research",
+      "type": "research_notes",
+      "description": "Research findings: TypeScript vs JS, Zustand vs Context, vite-plugin-pwa vs custom SW"
+    },
+    "SYNTROP/artifacts/research/pros-cons.json": {
+      "phase": "research",
+      "step": "pros-cons-analysis",
+      "type": "pros_cons",
+      "description": "Personalized pros/cons — Approach B scores 91, A scores 72, C scores 58"
+    },
+    "SYNTROP/artifacts/research/decision-matrix.json": {
+      "phase": "research",
+      "step": "decision-matrix",
+      "type": "decision_matrix",
+      "description": "Weighted matrix — Approach B: 92.25 (winner), A: 69.45, C: 74.15"
+    },
+    "SYNTROP/artifacts/research/technical-validation.json": {
+      "phase": "research",
+      "step": "technical-validation",
+      "type": "technical_validation",
+      "description": "Validation of Approach B — passed_with_warnings, 5 warnings, 0 blockers"
+    },
+    "SYNTROP/artifacts/research/selected-approach.md": {
+      "phase": "research",
+      "step": "technical-validation",
+      "type": "selected_approach",
+      "description": "Selected approach summary — TS+Zustand+vite-plugin-pwa, risks, architecture recommendations"
+    },
+    "SYNTROP/artifacts/architecture/blueprint.md": {
+      "phase": "architecture",
+      "step": "blueprint-creation",
+      "type": "blueprint",
+      "description": "Full technical blueprint: TypeScript interfaces, data model, API spec, component architecture, file structure"
+    },
+    "SYNTROP/artifacts/architecture/dependency-graph.json": {
+      "phase": "architecture",
+      "step": "dependency-mapping",
+      "type": "dependency_graph",
+      "description": "34 components mapped with dependencies, critical path (depth 9), 65% parallelizable"
+    },
+    "SYNTROP/artifacts/architecture/complexity-analysis.json": {
+      "phase": "architecture",
+      "step": "complexity-analysis",
+      "type": "complexity_analysis",
+      "description": "Project tier: medium. 35 tasks, 8 sprints, content gate at Sprint 2"
+    },
+    "SYNTROP/artifacts/architecture/implementation-plan.md": {
+      "phase": "architecture",
+      "step": "implementation-planning",
+      "type": "implementation_plan",
+      "description": "Human-readable implementation plan: 35 tasks across 8 sprints with detailed task specs"
+    },
+    "SYNTROP/artifacts/architecture/implementation-plan.json": {
+      "phase": "architecture",
+      "step": "implementation-planning",
+      "type": "implementation_plan_json",
+      "description": "Machine-readable implementation plan for step-executor: all sprints, tasks, validations"
+    },
+    "SYNTROP/artifacts/execution/environment-status.json": {
+      "phase": "execution",
+      "step": "environment-setup",
+      "type": "environment_status",
+      "description": "Environment setup status — all checks passed, Sprint 1 validation results"
+    },
+    "package.json": { "phase": "execution", "step": "S1-T1", "type": "config", "description": "npm package manifest with all production and dev dependencies" },
+    "tsconfig.json": { "phase": "execution", "step": "S1-T1", "type": "config", "description": "TypeScript project references root config" },
+    "tsconfig.app.json": { "phase": "execution", "step": "S1-T1", "type": "config", "description": "TypeScript app config — strict mode, ES2020, bundler resolution" },
+    "tsconfig.node.json": { "phase": "execution", "step": "S1-T1", "type": "config", "description": "TypeScript node config for Vite config file" },
+    "vite.config.ts": { "phase": "execution", "step": "S1-T4", "type": "config", "description": "Vite config with VitePWA plugin — manifest, service worker, icons" },
+    "index.html": { "phase": "execution", "step": "S1-T4", "type": "config", "description": "Entry HTML with 4 iOS PWA meta tags" },
+    "eslint.config.js": { "phase": "execution", "step": "S1-T1", "type": "config", "description": "ESLint flat config" },
+    "src/vite-env.d.ts": { "phase": "execution", "step": "S1-T1", "type": "source", "description": "Vite client type reference" },
+    "src/main.tsx": { "phase": "execution", "step": "S1-T1", "type": "source", "description": "React root entry — stub, finalized in S7-T6" },
+    "src/App.tsx": { "phase": "execution", "step": "S1-T1", "type": "source", "description": "App component stub — finalized in S7-T6" },
+    "src/types/algorithm.ts": { "phase": "execution", "step": "S1-T2", "type": "source", "description": "QuestionState, ExposureRecord, QuestionRecord types" },
+    "src/types/session.ts": { "phase": "execution", "step": "S1-T2", "type": "source", "description": "SessionRecord type" },
+    "src/types/store.ts": { "phase": "execution", "step": "S1-T2", "type": "source", "description": "AppStore interface" },
+    "src/types/content.ts": { "phase": "execution", "step": "S1-T2", "type": "source", "description": "Question and Skill types" },
+    "src/styles/globals.css": { "phase": "execution", "step": "S1-T3", "type": "source", "description": "Complete design system CSS — all color/spacing/typography tokens + global reset" },
+    "public/icons/icon-192.png": { "phase": "execution", "step": "S1-T4", "type": "asset", "description": "PWA icon 192x192 (placeholder — user should replace with real artwork)" },
+    "public/icons/icon-512.png": { "phase": "execution", "step": "S1-T4", "type": "asset", "description": "PWA icon 512x512 (placeholder — user should replace with real artwork)" },
+    "public/apple-touch-icon.png": { "phase": "execution", "step": "S1-T4", "type": "asset", "description": "iOS home screen icon 180x180 (placeholder — user should replace with real artwork)" },
+    "src/data/questions.ts": { "phase": "execution", "step": "S2-T2", "type": "source", "description": "146 questions typed as Question[] with QUESTION_COUNT, TOPICS, QUESTION_IDS exports" },
+    "src/data/skills.ts": { "phase": "execution", "step": "S2-T2", "type": "source", "description": "12 skills typed as Skill[]" },
+    "api/sync.ts": { "phase": "execution", "step": "S2-T4", "type": "source", "description": "Vercel serverless /api/sync — GET (fetch Redis) + POST (write Redis) with UUID validation" },
+    "src/store/useStore.ts": { "phase": "execution", "step": "S2-T5", "type": "source", "description": "Zustand store with persist middleware — key fap_store, version 1, all AppStore fields and actions" },
+    "SYNTROP/artifacts/execution/validation-results/sprint-2-validation.json": { "phase": "execution", "step": "sprint-validation", "type": "validation", "description": "Sprint 2 validation — passed_with_warnings (Upstash Redis manual step pending)" },
+    "src/lib/prng.ts": { "phase": "execution", "step": "S3-T1", "type": "source", "description": "mulberry32 PRNG, seedFromSessionId, seededShuffle utilities" },
+    "src/lib/deviceId.ts": { "phase": "execution", "step": "S3-T1", "type": "source", "description": "resolveDeviceId — localStorage→cookie→generate with 7-year SameSite=Strict cookie" },
+    "src/lib/algorithm.ts": { "phase": "execution", "step": "S3-T2", "type": "source", "description": "5-state mastery algorithm — isFastTap, hasReversalInWindow, applyAnswer, isMaintenanceDue" },
+    "src/lib/sessionBuilder.ts": { "phase": "execution", "step": "S3-T4", "type": "source", "description": "buildSessionQueue — 3-tier classification + seeded shuffle + 1:5 near_mastery interleave" },
+    "SYNTROP/artifacts/execution/validation-results/sprint-3-validation.json": { "phase": "execution", "step": "sprint-validation", "type": "validation", "description": "Sprint 3 validation — passed (16/16 assertions, all 5 validation checks)" },
+    "src/lib/analytics.ts": { "phase": "execution", "step": "S4-T1", "type": "source", "description": "computeTopicStats (11-topic mastery%), computeEstimatedScore (weighted average), isReadyToTest (all>=75% AND score>=80)" },
+    "src/hooks/useSession.ts": { "phase": "execution", "step": "S4-T2", "type": "source", "description": "Session lifecycle hook — startSession, markQuestionDisplayed, recordAnswer (fast-tap detection), nextQuestion (queue flush/complete), getCurrentQuestion, endSession" },
+    "src/hooks/useSync.ts": { "phase": "execution", "step": "S4-T3", "type": "source", "description": "Sync hook — auto-sync setInterval(60s), manualSave (POST), restoreBackup (GET+merge)" },
+    "SYNTROP/artifacts/execution/validation-results/sprint-4-validation.json": { "phase": "execution", "step": "sprint-validation", "type": "validation", "description": "Sprint 4 validation — passed (tsc clean, build clean, all 3 hooks correct)" },
+    "src/components/study/AnswerOption.tsx": { "phase": "execution", "step": "S5-T1", "type": "source", "description": "Answer option button — 4 visual states, 44px touch target, disabled after selection" },
+    "src/components/study/ExplanationPanel.tsx": { "phase": "execution", "step": "S5-T2", "type": "source", "description": "Post-answer panel — result badge, fast-tap warning (conditional), explanation text, Next button" },
+    "src/components/study/QuestionCard.tsx": { "phase": "execution", "step": "S5-T3", "type": "source", "description": "Question display — topic label, question text, AnswerOption list, ExplanationPanel after answer" },
+    "src/components/study/SessionSummary.tsx": { "phase": "execution", "step": "S5-T4", "type": "source", "description": "Session end screen — 5-state distribution, answered count, Start New Session button" },
+    "src/components/study/StudyTab.tsx": { "phase": "execution", "step": "S5-T5", "type": "source", "description": "Study tab orchestrator — manages activeQuestion state, routes to QuestionCard or SessionSummary" },
+    "SYNTROP/artifacts/execution/validation-results/sprint-5-validation.json": { "phase": "execution", "step": "sprint-validation", "type": "validation", "description": "Sprint 5 validation — passed (tsc clean, build clean, all 5 component files exist)" },
+    "src/components/skills/SkillCard.tsx": { "phase": "execution", "step": "S6-T1", "type": "source", "description": "Expandable skill card — collapsed: name + category badge; expanded: objective, steps, commonErrors, evaluationCriteria; max-height CSS transition" },
+    "src/components/skills/SkillsTab.tsx": { "phase": "execution", "step": "S6-T2", "type": "source", "description": "Skills tab — 12 SkillCards with accordion logic via skillsExpandedId in Zustand store" },
+    "src/components/progress/ScoreDisplay.tsx": { "phase": "execution", "step": "S6-T3", "type": "source", "description": "Estimated score display — DM Sans 300 weight, 3.5rem, Ready to Test banner when isReadyToTest" },
+    "src/components/progress/TopicGrid.tsx": { "phase": "execution", "step": "S6-T4", "type": "source", "description": "11-cell topic mastery grid — color-coded red/yellow/green, short names, 3-column layout" },
+    "src/components/progress/WeakTopics.tsx": { "phase": "execution", "step": "S6-T4", "type": "source", "description": "3 lowest-mastery topics sorted ascending — focus areas list" },
+    "src/components/progress/ProgressTab.tsx": { "phase": "execution", "step": "S6-T5", "type": "source", "description": "Progress tab — reactive to Zustand questions; renders ScoreDisplay, TopicGrid, WeakTopics" },
+    "SYNTROP/artifacts/execution/validation-results/sprint-6-validation.json": { "phase": "execution", "step": "sprint-validation", "type": "validation", "description": "Sprint 6 validation — passed (tsc clean, build clean, all 6 checks pass)" },
+    "src/components/settings/SyncControls.tsx": { "phase": "execution", "step": "S7-T1", "type": "source", "description": "Sync controls — Save (POST) + Restore (confirm modal → GET) buttons, last-synced timestamp, 4s status auto-clear" },
+    "src/components/settings/SettingsTab.tsx": { "phase": "execution", "step": "S7-T2", "type": "source", "description": "Settings tab — heading + SyncControls + About section (certification, provider, question/skill counts)" },
+    "src/components/layout/BottomNav.tsx": { "phase": "execution", "step": "S7-T3", "type": "source", "description": "Fixed bottom navigation — 4 tabs, gradient underline active indicator, 44px touch targets, iOS safe-area padding" },
+    "src/components/shared/IOSInstallBanner.tsx": { "phase": "execution", "step": "S7-T4", "type": "source", "description": "iOS install prompt banner — detects iOS UA + not standalone + not dismissed; dismisses permanently via store" },
+    "src/components/layout/AppShell.tsx": { "phase": "execution", "step": "S7-T5", "type": "source", "description": "App shell — all 4 tabs always mounted, display:none toggle, scrollable content area with BottomNav padding" },
+    "SYNTROP/artifacts/execution/validation-results/sprint-7-validation.json": { "phase": "execution", "step": "sprint-validation", "type": "validation", "description": "Sprint 7 validation — passed (tsc clean, build clean, all 11 checks pass)" }
+  },
   "by_phase": {
-    "intake": [],
-    "research": [],
-    "architecture": [],
-    "execution": [],
-    "quality": []
+    "intake": [
+      "SYNTROP/artifacts/intake/raw-brain-dump.md",
+      "SYNTROP/artifacts/intake/prepared-braindump-used.md",
+      "SYNTROP/artifacts/intake/brain-dump-analysis.md",
+      "SYNTROP/artifacts/intake/clarifying-questions.json",
+      "SYNTROP/artifacts/intake/user-response-vision-clarification.json",
+      "SYNTROP/artifacts/intake/requirements.json",
+      "SYNTROP/artifacts/intake/SINGLE-SOURCE-OF-TRUTH.md"
+    ],
+    "research": [
+      "SYNTROP/artifacts/research/approaches.json",
+      "SYNTROP/artifacts/research/research-notes.md",
+      "SYNTROP/artifacts/research/pros-cons.json",
+      "SYNTROP/artifacts/research/decision-matrix.json",
+      "SYNTROP/artifacts/research/technical-validation.json",
+      "SYNTROP/artifacts/research/selected-approach.md"
+    ],
+    "architecture": [
+      "SYNTROP/artifacts/architecture/blueprint.md",
+      "SYNTROP/artifacts/architecture/dependency-graph.json",
+      "SYNTROP/artifacts/architecture/complexity-analysis.json",
+      "SYNTROP/artifacts/architecture/implementation-plan.md",
+      "SYNTROP/artifacts/architecture/implementation-plan.json"
+    ],
+    "execution": [
+      "SYNTROP/artifacts/execution/environment-status.json",
+      "package.json",
+      "tsconfig.json",
+      "tsconfig.app.json",
+      "tsconfig.node.json",
+      "vite.config.ts",
+      "index.html",
+      "eslint.config.js",
+      "src/vite-env.d.ts",
+      "src/main.tsx",
+      "src/App.tsx",
+      "src/types/algorithm.ts",
+      "src/types/session.ts",
+      "src/types/store.ts",
+      "src/types/content.ts",
+      "src/styles/globals.css",
+      "public/icons/icon-192.png",
+      "public/icons/icon-512.png",
+      "public/apple-touch-icon.png",
+      "src/data/questions.ts",
+      "src/data/skills.ts",
+      "api/sync.ts",
+      "src/store/useStore.ts",
+      "SYNTROP/artifacts/execution/validation-results/sprint-2-validation.json",
+      "src/lib/prng.ts",
+      "src/lib/deviceId.ts",
+      "src/lib/algorithm.ts",
+      "src/lib/sessionBuilder.ts",
+      "SYNTROP/artifacts/execution/validation-results/sprint-3-validation.json",
+      "src/lib/analytics.ts",
+      "src/hooks/useSession.ts",
+      "src/hooks/useSync.ts",
+      "SYNTROP/artifacts/execution/validation-results/sprint-4-validation.json",
+      "src/components/study/AnswerOption.tsx",
+      "src/components/study/ExplanationPanel.tsx",
+      "src/components/study/QuestionCard.tsx",
+      "src/components/study/SessionSummary.tsx",
+      "src/components/study/StudyTab.tsx",
+      "SYNTROP/artifacts/execution/validation-results/sprint-5-validation.json",
+      "src/components/skills/SkillCard.tsx",
+      "src/components/skills/SkillsTab.tsx",
+      "src/components/progress/ScoreDisplay.tsx",
+      "src/components/progress/TopicGrid.tsx",
+      "src/components/progress/WeakTopics.tsx",
+      "src/components/progress/ProgressTab.tsx",
+      "SYNTROP/artifacts/execution/validation-results/sprint-6-validation.json",
+      "src/components/settings/SyncControls.tsx",
+      "src/components/settings/SettingsTab.tsx",
+      "src/components/layout/BottomNav.tsx",
+      "src/components/shared/IOSInstallBanner.tsx",
+      "src/components/layout/AppShell.tsx",
+      "SYNTROP/artifacts/execution/validation-results/sprint-7-validation.json",
+      "SYNTROP/artifacts/execution/step-logs/S8-T1-log.json",
+      "SYNTROP/artifacts/execution/step-logs/S8-T2-log.json",
+      "SYNTROP/artifacts/execution/step-logs/S8-T3-log.json",
+      "SYNTROP/artifacts/execution/validation-results/sprint-8-validation.json",
+      "SYNTROP/artifacts/architecture/infra-notes.md",
+      "SYNTROP/artifacts/architecture/acceptance-results.md"
+    ],
+    "quality": [
+      "SYNTROP/artifacts/quality/vision-verification-report.md",
+      "SYNTROP/artifacts/quality/vision-verification.json",
+      "SYNTROP/artifacts/quality/quality-report.md",
+      "SYNTROP/artifacts/quality/quality-report.json",
+      "SYNTROP/artifacts/quality/deployment-package-status.json",
+      "SYNTROP/deployment/documentation/README.md",
+      "SYNTROP/deployment/documentation/API-DOCUMENTATION.md",
+      "SYNTROP/deployment/documentation/ARCHITECTURE.md",
+      "SYNTROP/deployment/documentation/USER-MANUAL.md",
+      "SYNTROP/deployment/documentation/DEPLOYMENT-GUIDE.md",
+      "SYNTROP/deployment/documentation/TROUBLESHOOTING.md",
+      "SYNTROP/deployment/scripts/deploy.sh",
+      "SYNTROP/deployment/scripts/setup-env.sh",
+      "SYNTROP/deployment/config/.env.template",
+      "SYNTROP/deployment/DEPLOYMENT-CHECKLIST.md"
+    ]
   }
 }

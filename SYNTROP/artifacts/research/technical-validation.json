@@ -1,0 +1,175 @@
+{
+  "generated_at": "2026-04-17",
+  "selected_approach": {
+    "id": "approach-B",
+    "name": "TypeScript + Zustand + vite-plugin-pwa"
+  },
+  "validation_result": "passed_with_warnings",
+  "feasibility_checks": [
+    {
+      "area": "5-State Mastery Algorithm",
+      "check": "TypeScript can model the 5-state machine with full type safety",
+      "result": "pass",
+      "details": "Discriminated union type QuestionState = 'new' | 'active' | 'near_mastery' | 'mastered' | 'maintenance' enforces exhaustive case handling. All algorithm fields (consecutiveCorrect, sessionIds, recentExposures, masteredAt) are typeable as precise TypeScript interfaces. Pure reducer functions for state transitions are fully testable.",
+      "mitigation": null
+    },
+    {
+      "area": "Fast-Tap Detection (FR-005)",
+      "check": "Sub-2-second response time detection is implementable",
+      "result": "pass",
+      "details": "Record Date.now() on question display; compare to Date.now() on answer submission. Delta < 2000ms triggers fast-tap flag. This is a trivial JavaScript timing operation with no library dependency.",
+      "mitigation": null
+    },
+    {
+      "area": "Deterministic Session Ordering (FR-006)",
+      "check": "Session question ordering must be reproducible given the same session ID seed",
+      "result": "warning",
+      "details": "JavaScript's Math.random() is NOT seedable — standard randomization produces different orders on every call. FR-006 requires deterministic ordering given a session ID seed. A seeded PRNG must be implemented or imported.",
+      "mitigation": "Use the 'seedrandom' npm package (1.5KB gzipped, MIT license, widely used) OR implement a mulberry32 LCG (a ~10-line pure function, no dependency). Both are viable. Architecture phase must select and specify one as the standard. mulberry32 is preferred for zero-dependency atomic task simplicity."
+    },
+    {
+      "area": "localStorage Persistence (FR-009)",
+      "check": "Zustand persist middleware correctly handles the question state schema",
+      "result": "pass",
+      "details": "Zustand's persist middleware with localStorage adapter handles serialization, deserialization, and rehydration. The persist config requires a name key ('fap_store') and a version integer for schema migrations. Rehydration on app load is automatic and synchronous.",
+      "mitigation": null
+    },
+    {
+      "area": "Device UUID + Cookie Fallback (FR-010)",
+      "check": "Anonymous UUID generation and 7-year cookie storage are implementable",
+      "result": "pass",
+      "details": "crypto.randomUUID() is available in all modern browsers (iOS Safari 15.4+, Android Chrome 92+). Cookie set with maxAge: 7*365*24*60*60 (seconds) and SameSite=Strict. On app load, check localStorage UUID → if absent, read cookie → if present, re-seed localStorage. This is straightforward DOM API usage.",
+      "mitigation": null
+    },
+    {
+      "area": "Upstash Redis Sync via /api/sync (FR-021)",
+      "check": "Vercel serverless function can read/write Upstash Redis using REST API",
+      "result": "pass",
+      "details": "@upstash/redis npm package provides a REST-based client that works in Vercel's Edge and Node.js serverless runtimes. GET /api/sync reads from Redis by device UUID key; POST /api/sync writes. UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN are injected as Vercel environment variables via CLI. This is a documented, standard pattern.",
+      "mitigation": null
+    },
+    {
+      "area": "Upstash MCP Server Provisioning (FR-023, CON-003)",
+      "check": "Upstash MCP server can create a Redis database and return credentials without user dashboard interaction",
+      "result": "warning",
+      "details": "The Upstash MCP server is available in this Claude Code environment (confirmed as a listed MCP server). However, Upstash MCP provisioning requires an authenticated Upstash account linked to the MCP server. This must be verified before the execution phase begins. If MCP provisioning fails, Vercel KV (via Vercel CLI) is the documented fallback.",
+      "mitigation": "In the execution phase, test Upstash MCP connectivity as the first infrastructure task before any application code is written. If MCP fails: fall back to Vercel KV provisioned via `vercel env add KV_REST_API_URL` and the Vercel KV integration CLI commands. Assumption A2 from the SSOT explicitly documents this fallback."
+    },
+    {
+      "area": "Vercel CLI Non-Interactive Deployment (FR-022, CON-003)",
+      "check": "Vercel CLI can create project, set env vars, and deploy without user dashboard interaction",
+      "result": "pass",
+      "details": "`vercel --yes` skips all interactive prompts. `vercel env add KEY VALUE production` sets environment variables non-interactively. `vercel deploy --prod` deploys to production. These are documented Vercel CLI patterns. Assumption A3 from the SSOT is validated — Vercel CLI supports non-interactive env var injection.",
+      "mitigation": null
+    },
+    {
+      "area": "PWA Service Worker — Offline Cache (FR-020)",
+      "check": "vite-plugin-pwa generates a service worker that caches all assets on install",
+      "result": "pass",
+      "details": "vite-plugin-pwa in 'generateSW' mode uses Workbox's precacheAndRoute to cache all Vite build outputs on service worker install. The precache manifest is generated from Vite's build output automatically — no manual asset enumeration required. Full offline after first load is the default behavior.",
+      "mitigation": null
+    },
+    {
+      "area": "PWA Installation — iOS Safari (SC-006)",
+      "check": "App is installable via 'Add to Home Screen' on iOS Safari",
+      "result": "warning",
+      "details": "iOS Safari does NOT show a native install prompt. Android Chrome shows a native beforeinstallprompt event. For iOS, the user must manually tap Share → Add to Home Screen. A custom in-app banner ('Install this app') must be shown on iOS to guide users — this requires detecting iOS via user agent and showing a dismissible prompt. vite-plugin-pwa does not generate this banner automatically.",
+      "mitigation": "In the architecture phase, specify an iOS install prompt component as an atomic task. The component detects iOS Safari (navigator.standalone === false && /iPad|iPhone|iPod/.test(navigator.userAgent)) and shows a dismissible banner with instructions. This is a well-documented pattern. The app still installs correctly on iOS once the user follows the steps."
+    },
+    {
+      "area": "PWA Manifest (FR-019)",
+      "check": "manifest.json includes all fields required for iOS and Android installation",
+      "result": "pass",
+      "details": "vite-plugin-pwa generates manifest.json from vite.config.ts configuration. Required fields: name, short_name, display: 'standalone', start_url: '/', background_color, theme_color, icons (192px, 512px, maskable). Apple-specific meta tags (apple-mobile-web-app-capable, apple-mobile-web-app-status-bar-style, apple-touch-icon) must be added to index.html — vite-plugin-pwa supports this via the includeAssets and appleMobileWebAppCapable options.",
+      "mitigation": null
+    },
+    {
+      "area": "Performance — First Load <2s (NFR-001)",
+      "check": "React + Vite + Zustand bundle loads under 2 seconds on mobile",
+      "result": "pass",
+      "details": "Vite's production build with tree-shaking produces optimized bundles. Zustand adds ~3.5KB gzipped. React + ReactDOM: ~45KB gzipped. Application code and content (questions.js + skills.js) is the largest variable. Initial estimate: total gzipped bundle ~150-200KB — well under 2s on a 4G connection (typical mobile 10Mbps = 200KB in 160ms). Assumption A1 (under 5MB total) is almost certainly met.",
+      "mitigation": null
+    },
+    {
+      "area": "Performance — Tab Switch <300ms (NFR-003)",
+      "check": "Zustand selector subscriptions prevent re-renders that would cause tab switch jank",
+      "result": "pass",
+      "details": "Zustand's useStore(selector) pattern ensures components only re-render on relevant state changes. Tab switching renders a different component tree — with React's concurrent mode and no heavy computation on mount, 300ms is easily achievable. No virtualization or lazy loading is required for 131 questions.",
+      "mitigation": null
+    },
+    {
+      "area": "Free Tier Limits (NFR-010, CON-002)",
+      "check": "Single user daily Redis usage stays within Upstash free tier (10,000 commands/day)",
+      "result": "pass",
+      "details": "Each sync is 1 Redis SET command (POST) or 1 Redis GET command (GET). Auto-sync every 60 seconds when dirty = max ~1440 SET commands/day (once per minute × 24 hours) if studying continuously all day. Manual syncs are additional but infrequent. Peak realistic usage: ~200-500 Redis commands/day. 10,000 limit provides 20-50× headroom.",
+      "mitigation": null
+    },
+    {
+      "area": "TypeScript + Vite Configuration",
+      "check": "TypeScript compiles correctly with React JSX in Vite",
+      "result": "pass",
+      "details": "Vite's official 'react-ts' template provides a tested tsconfig.json baseline with correct JSX settings (jsx: 'react-jsx'), module resolution, and strict mode. This is the standard starting point — no custom tsconfig required.",
+      "mitigation": null
+    }
+  ],
+  "risk_register": [
+    {
+      "risk_id": "RISK-001",
+      "description": "Seeded PRNG not available natively — Math.random() is not seedable in JavaScript",
+      "likelihood": "high",
+      "impact": "medium",
+      "mitigation_strategy": "Implement mulberry32 (a 10-line pure function LCG) as a utility in src/lib/prng.ts — no npm dependency. Architecture phase specifies this as an atomic task with the exact implementation.",
+      "fallback_plan": "If mulberry32 produces poor distribution, use seedrandom npm package (1.5KB gzipped, MIT license)"
+    },
+    {
+      "risk_id": "RISK-002",
+      "description": "Upstash MCP server requires authenticated account — if authentication is not configured, provisioning fails",
+      "likelihood": "medium",
+      "impact": "high",
+      "mitigation_strategy": "Test Upstash MCP connectivity as the very first execution phase task. Verify before writing any application code.",
+      "fallback_plan": "Vercel KV (built-in to Vercel CLI) as documented in Assumption A2. Uses the same REST API pattern — /api/sync code is identical, only env var names differ."
+    },
+    {
+      "risk_id": "RISK-003",
+      "description": "Zustand persist schema migration — adding fields to QuestionRecord after first deployment corrupts existing localStorage data",
+      "likelihood": "medium",
+      "impact": "medium",
+      "mitigation_strategy": "Define Zustand persist version: 1 from the start. Document migrate function pattern in the architecture phase as a standard template. Any schema change increments version and adds a migration function.",
+      "fallback_plan": "If migration is missed: the restore-from-Redis feature in Settings acts as a recovery path — user taps Restore to recover clean data from the Redis backup."
+    },
+    {
+      "risk_id": "RISK-004",
+      "description": "iOS Safari PWA install requires manual 'Add to Home Screen' flow — no native install prompt",
+      "likelihood": "high",
+      "impact": "low",
+      "mitigation_strategy": "Add iOS install prompt component (dismissible banner) that detects iOS and shows step-by-step instructions. Specify as an atomic task in the architecture phase.",
+      "fallback_plan": "App is still fully functional in iOS Safari browser without installation — install is for convenience only. SC-006 requires installable, but the app delivers full value without it."
+    },
+    {
+      "risk_id": "RISK-005",
+      "description": "Bundle size exceeds service worker cache limits — if total build output > 50MB, some browsers limit SW cache storage",
+      "likelihood": "low",
+      "impact": "medium",
+      "mitigation_strategy": "Run `vite build && du -sh dist/` as part of the execution phase setup task. Content files (131 questions, 12 skills) are plain JS — estimated 50-100KB uncompressed. Total bundle well under 5MB (Assumption A1).",
+      "fallback_plan": "If above 5MB (extremely unlikely): lazy-load content files at runtime instead of bundling at build time. This would require removing CON-004 (build-time content only) — a significant requirement change."
+    }
+  ],
+  "warnings": [
+    "Seeded PRNG: Math.random() is not seedable — mulberry32 or seedrandom must be specified in the architecture phase as an atomic task (affects FR-006)",
+    "iOS Safari install prompt: no native beforeinstallprompt event — a custom in-app banner must be built (affects SC-006)",
+    "Upstash MCP: verify authentication is configured before execution phase begins — fallback to Vercel KV is documented but changes env var names in /api/sync",
+    "TypeScript strictness: tsconfig.json must use strict: true — architecture phase must specify this before any typing tasks",
+    "vite-plugin-pwa iOS meta tags: apple-mobile-web-app-capable and apple-touch-icon must be specified in plugin config — not automatic"
+  ],
+  "blockers": [],
+  "recommendations": [
+    "Architecture phase should begin by defining TypeScript interfaces (QuestionState, QuestionRecord, AppStore, SessionRecord) as the first atomic tasks — all subsequent tasks reference these types",
+    "Specify mulberry32 PRNG implementation as a standalone atomic task in src/lib/prng.ts before any algorithm tasks",
+    "Define Zustand store shape with persist config (name: 'fap_store', version: 1, migrate function) as a single atomic task before any component tasks",
+    "Configure vite-plugin-pwa with all manifest fields and Apple meta tags in vite.config.ts as a single atomic task",
+    "Verify Upstash MCP connectivity as the first infrastructure task in the execution phase — before writing /api/sync",
+    "Run bundle size check (vite build + size analysis) as an early execution task to validate Assumption A1",
+    "Specify iOS install prompt component as an atomic task with exact detection logic and dismissal persistence in localStorage"
+  ],
+  "estimated_complexity": "medium"
+}

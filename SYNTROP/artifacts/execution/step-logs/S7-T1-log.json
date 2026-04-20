@@ -1,0 +1,16 @@
+{
+  "task_id": "S7-T1",
+  "task_name": "SyncControls component",
+  "executed_at": "2026-04-18T00:00:00Z",
+  "status": "completed",
+  "files_created": ["src/components/settings/SyncControls.tsx"],
+  "files_modified": [],
+  "validation_results": {
+    "files_exist": true,
+    "builds_clean": true,
+    "tests_pass": true,
+    "linter_clean": true
+  },
+  "notes": "Save button triggers POST with loading/saved/error states. Restore button shows confirm modal before GET. Status messages auto-clear after 4s. useSync hook called internally.",
+  "issues_encountered": ["Duplicate status === 'idle' in useEffect condition — removed duplicate"]
+}

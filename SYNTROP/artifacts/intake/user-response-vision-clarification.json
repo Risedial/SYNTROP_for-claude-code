@@ -1,0 +1,51 @@
+{
+  "recorded_at": "2026-04-17",
+  "questions_file": "SYNTROP/artifacts/intake/clarifying-questions.json",
+  "raw_response": "A, A, A, A, A, A",
+  "responses": [
+    {
+      "question_id": "q1",
+      "question": "Confirm your frontend framework",
+      "answer_key": "A",
+      "answer_label": "React + Vite",
+      "decision": "Framework confirmed as React + Vite. All component architecture, state management, and build configuration will use React + Vite."
+    },
+    {
+      "question_id": "q2",
+      "question": "Set your mastery threshold numbers",
+      "answer_key": "A",
+      "answer_label": "Moderate (spec default)",
+      "decision": "Mastery thresholds: Active→Near-Mastery = 2 consecutive correct; Near-Mastery→Mastered = 3 consecutive correct across 2+ distinct sessions with no reversals in the last 5 exposures. Maintenance review every 10 sessions."
+    },
+    {
+      "question_id": "q3",
+      "question": "Choose your DeviceId durability strategy",
+      "answer_key": "A",
+      "answer_label": "localStorage + cookie fallback",
+      "decision": "DeviceId stored in both localStorage AND a 7-year SameSite=Strict cookie. On app load: if localStorage UUID is missing, read from cookie, re-seed localStorage, and restore Redis association."
+    },
+    {
+      "question_id": "q4",
+      "question": "Choose your exam score estimation formula",
+      "answer_key": "A",
+      "answer_label": "Weighted by question count per topic",
+      "decision": "Estimated exam score = sum(topic_mastery_percent × topic_question_count) / total_questions. Topics with more questions carry proportionally more weight."
+    },
+    {
+      "question_id": "q5",
+      "question": "Choose your infrastructure provisioning approach",
+      "answer_key": "A",
+      "answer_label": "Upstash MCP + Vercel CLI",
+      "decision": "Redis provisioned via Upstash MCP server (Claude Code calls MCP tools to create database and retrieve credentials). Vercel deployment and env var injection via Vercel CLI. Zero manual dashboard interaction."
+    },
+    {
+      "question_id": "q6",
+      "question": "Choose your Maintenance state demotion rule",
+      "answer_key": "A",
+      "answer_label": "Strict: any non-fast-tap miss demotes to Active",
+      "decision": "Any deliberate wrong answer (response time ≥ 2s) on a Maintenance question immediately demotes it to Active state. Fast-tap misses (< 2s) in Maintenance are repeated within the current session but do not trigger demotion."
+    }
+  ],
+  "contradictions_detected": false,
+  "all_questions_answered": true
+}

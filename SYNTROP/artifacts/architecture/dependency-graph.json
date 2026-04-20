@@ -1,0 +1,520 @@
+{
+  "generated_at": "2026-04-17",
+  "project": "First Aid Study PWA",
+
+  "components": [
+    {
+      "id": "comp-001",
+      "name": "Project scaffolding (package.json, tsconfig.json, npm install)",
+      "type": "config",
+      "description": "Initialize Vite React+TypeScript project. Set strict:true in tsconfig. Install all runtime and dev dependencies. Verify TypeScript compiles with zero errors.",
+      "depends_on": [],
+      "required_by": ["comp-002", "comp-008", "comp-013", "comp-014"],
+      "dependency_type": "hard",
+      "dependency_level": 0,
+      "estimated_complexity": "low",
+      "on_critical_path": true
+    },
+    {
+      "id": "comp-002",
+      "name": "TypeScript type definitions (src/types/)",
+      "type": "config",
+      "description": "Write all 4 type files: algorithm.ts (QuestionState, QuestionRecord, ExposureRecord), session.ts (SessionRecord), store.ts (AppStore), content.ts (Question, Skill). These are the contracts all subsequent tasks reference — must be complete before any logic is written.",
+      "depends_on": ["comp-001"],
+      "required_by": ["comp-005", "comp-006", "comp-007", "comp-010", "comp-011", "comp-012", "comp-013"],
+      "dependency_type": "hard",
+      "dependency_level": 1,
+      "estimated_complexity": "medium",
+      "on_critical_path": true
+    },
+    {
+      "id": "comp-003",
+      "name": "PWA assets (icons, apple-touch-icon)",
+      "type": "config",
+      "description": "Create public/icons/icon-192.png, icon-512.png, and apple-touch-icon.png. Required for vite-plugin-pwa manifest and iOS home screen install. Can be placeholder icons during development.",
+      "depends_on": [],
+      "required_by": ["comp-008"],
+      "dependency_type": "hard",
+      "dependency_level": 0,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-004",
+      "name": "Design system CSS (src/styles/globals.css)",
+      "type": "frontend",
+      "description": "Implement all CSS custom properties from zzz/design-system/style-template.md: color tokens, typography scale, spacing tokens, gradient presets. Run frontend-design skill first. This file must exist before any component styling.",
+      "depends_on": [],
+      "required_by": ["comp-017", "comp-019", "comp-020", "comp-022", "comp-024", "comp-025", "comp-026", "comp-028", "comp-030", "comp-031", "comp-032"],
+      "dependency_type": "hard",
+      "dependency_level": 0,
+      "estimated_complexity": "medium",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-005",
+      "name": "mulberry32 PRNG utility (src/lib/prng.ts)",
+      "type": "backend",
+      "description": "Implement mulberry32 LCG, seedFromSessionId(), and seededShuffle<T>(). Pure functions, zero dependencies. Exact implementation specified in blueprint section 7. Required before sessionBuilder can be written.",
+      "depends_on": ["comp-002"],
+      "required_by": ["comp-011"],
+      "dependency_type": "hard",
+      "dependency_level": 2,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-006",
+      "name": "Device ID utility (src/lib/deviceId.ts)",
+      "type": "backend",
+      "description": "Implement resolveDeviceId() with localStorage → cookie → crypto.randomUUID() fallback chain. Implement getCookie/setCookie with 7-year SameSite=Strict. Pure DOM API, no npm dep.",
+      "depends_on": ["comp-002"],
+      "required_by": ["comp-033"],
+      "dependency_type": "hard",
+      "dependency_level": 2,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-007",
+      "name": "Content data files (src/data/questions.ts, skills.ts)",
+      "type": "backend",
+      "description": "Copy zzz/questions.js → src/data/questions.ts with typed export (Question[]). Copy zzz/skills.js → src/data/skills.ts with typed export (Skill[]). Add TypeScript types and verify import works. DO NOT modify content — user-verified.",
+      "depends_on": ["comp-002"],
+      "required_by": ["comp-011", "comp-012", "comp-025", "comp-029"],
+      "dependency_type": "hard",
+      "dependency_level": 2,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-008",
+      "name": "Vite config + PWA setup (vite.config.ts + index.html iOS meta tags)",
+      "type": "config",
+      "description": "Write vite.config.ts with @vitejs/plugin-react and VitePWA config: full manifest (name, icons, display, theme_color), includeAssets, generateSW mode. Add iOS meta tags to index.html: apple-mobile-web-app-capable, status-bar-style, title, apple-touch-icon link.",
+      "depends_on": ["comp-001", "comp-003"],
+      "required_by": ["comp-034"],
+      "dependency_type": "hard",
+      "dependency_level": 1,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-009",
+      "name": "Infrastructure provisioning (Upstash Redis + Vercel project + env vars)",
+      "type": "integration",
+      "description": "FIRST EXECUTION TASK. Test Upstash MCP connectivity. Provision Redis database via MCP (or Vercel KV fallback). Create Vercel project via CLI. Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN via 'vercel env add'. Verify connectivity before writing any code that uses these vars.",
+      "depends_on": [],
+      "required_by": ["comp-014"],
+      "dependency_type": "hard",
+      "dependency_level": 0,
+      "estimated_complexity": "medium",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-010",
+      "name": "5-state algorithm (src/lib/algorithm.ts)",
+      "type": "backend",
+      "description": "Implement: isFastTap(), hasReversalInWindow(), applyAnswer(), isMaintenanceDue(). Pure functions, no side effects. All state transitions per blueprint section 4 and section 7. TypeScript strict with exhaustive switch on QuestionState union.",
+      "depends_on": ["comp-002"],
+      "required_by": ["comp-011", "comp-015"],
+      "dependency_type": "hard",
+      "dependency_level": 2,
+      "estimated_complexity": "high",
+      "on_critical_path": true
+    },
+    {
+      "id": "comp-011",
+      "name": "Session builder (src/lib/sessionBuilder.ts)",
+      "type": "backend",
+      "description": "Implement buildSessionQueue(questions, sessionCount, allQuestions): string[]. Uses isMaintenanceDue() from algorithm.ts, mulberry32 + seededShuffle from prng.ts. Tier ordering: Active → interleaved Near-Mastery → maintenance-due. Returns ordered array of question IDs.",
+      "depends_on": ["comp-002", "comp-005", "comp-007", "comp-010"],
+      "required_by": ["comp-015"],
+      "dependency_type": "hard",
+      "dependency_level": 3,
+      "estimated_complexity": "medium",
+      "on_critical_path": true
+    },
+    {
+      "id": "comp-012",
+      "name": "Analytics computations (src/lib/analytics.ts)",
+      "type": "backend",
+      "description": "Implement computeTopicStats(questions, allQuestions): TopicStat[] and computeEstimatedScore(topicStats): number. Pure functions. Formula: masteryPercent = (mastered + near_mastery*0.5) / count * 100. Score = weighted average.",
+      "depends_on": ["comp-002", "comp-007"],
+      "required_by": ["comp-029"],
+      "dependency_type": "hard",
+      "dependency_level": 3,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-013",
+      "name": "Zustand store (src/store/useStore.ts)",
+      "type": "backend",
+      "description": "Implement full Zustand store with persist middleware. Key: 'fap_store', version: 1, migrate function template. All AppStore fields + actions per blueprint section 8. Verify localStorage rehydration on page reload.",
+      "depends_on": ["comp-001", "comp-002"],
+      "required_by": ["comp-015", "comp-016", "comp-017", "comp-018", "comp-020", "comp-022", "comp-023", "comp-024", "comp-025", "comp-030", "comp-031", "comp-032"],
+      "dependency_type": "hard",
+      "dependency_level": 2,
+      "estimated_complexity": "medium",
+      "on_critical_path": true
+    },
+    {
+      "id": "comp-014",
+      "name": "/api/sync serverless function (api/sync.ts)",
+      "type": "backend",
+      "description": "Implement GET and POST handlers for Vercel serverless function. GET: read from Upstash Redis by deviceId. POST: write JSON string to Redis. Validate deviceId is UUID format. Uses UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN env vars.",
+      "depends_on": ["comp-001", "comp-009"],
+      "required_by": ["comp-016"],
+      "dependency_type": "hard",
+      "dependency_level": 1,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-015",
+      "name": "useSession hook (src/hooks/useSession.ts)",
+      "type": "frontend",
+      "description": "Implements session lifecycle: startSession() builds queue via sessionBuilder + creates SessionRecord. nextQuestion() advances index, handles fastTapPending. endSession() increments sessionCount, clears currentSession. Reads/writes Zustand store.",
+      "depends_on": ["comp-002", "comp-010", "comp-011", "comp-013"],
+      "required_by": ["comp-021", "comp-023"],
+      "dependency_type": "hard",
+      "dependency_level": 4,
+      "estimated_complexity": "medium",
+      "on_critical_path": true
+    },
+    {
+      "id": "comp-016",
+      "name": "useSync hook (src/hooks/useSync.ts)",
+      "type": "frontend",
+      "description": "Implements: autoSync() setInterval (60s, fires when isDirty=true). manualSave() calls POST /api/sync. restoreBackup() calls GET /api/sync. Reads deviceId and questions from store. Calls store.markClean() on success.",
+      "depends_on": ["comp-013", "comp-014"],
+      "required_by": ["comp-030"],
+      "dependency_type": "hard",
+      "dependency_level": 2,
+      "estimated_complexity": "medium",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-017",
+      "name": "BottomNav component",
+      "type": "frontend",
+      "description": "4 fixed nav items: Study | Skills | Progress | Settings. Reads activeTab from store, calls setActiveTab on tap. Touch target ≥44px. Active indicator: gradient underline per design system. Uses CSS custom properties.",
+      "depends_on": ["comp-004", "comp-013"],
+      "required_by": ["comp-018"],
+      "dependency_type": "hard",
+      "dependency_level": 3,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-018",
+      "name": "AppShell component",
+      "type": "frontend",
+      "description": "Root layout. Mounts all 4 tab components with CSS display:none toggling (not unmounting) to preserve state on tab switch. Renders BottomNav fixed at bottom. Wraps app content area with correct padding to avoid BottomNav overlap.",
+      "depends_on": ["comp-017", "comp-023", "comp-025", "comp-029", "comp-031"],
+      "required_by": ["comp-033"],
+      "dependency_type": "hard",
+      "dependency_level": 7,
+      "estimated_complexity": "low",
+      "on_critical_path": true
+    },
+    {
+      "id": "comp-019",
+      "name": "AnswerOption component",
+      "type": "frontend",
+      "description": "Single answer button. Props: text, index, selectedIndex|null, correctIndex, onSelect. Visual states: idle / selected-correct / selected-incorrect / revealed-correct. After selection: all options show result state. Uses design system state colors.",
+      "depends_on": ["comp-002", "comp-004"],
+      "required_by": ["comp-021"],
+      "dependency_type": "hard",
+      "dependency_level": 2,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-020",
+      "name": "ExplanationPanel component",
+      "type": "frontend",
+      "description": "Shows after answer selection. Displays explanation text, correct/incorrect result badge, fast-tap warning when applicable. 'Next Question' button calls onNext callback. Slides in from below after answer.",
+      "depends_on": ["comp-002", "comp-004"],
+      "required_by": ["comp-021"],
+      "dependency_type": "hard",
+      "dependency_level": 2,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-021",
+      "name": "QuestionCard component",
+      "type": "frontend",
+      "description": "Displays one question. On mount: records Date.now() as questionDisplayTime in store. Renders question text, topic label, AnswerOption list. On answer: records elapsed time, calls useSession.recordAnswer(isFastTap, correct), shows ExplanationPanel.",
+      "depends_on": ["comp-015", "comp-019", "comp-020"],
+      "required_by": ["comp-023"],
+      "dependency_type": "hard",
+      "dependency_level": 5,
+      "estimated_complexity": "medium",
+      "on_critical_path": true
+    },
+    {
+      "id": "comp-022",
+      "name": "SessionSummary component",
+      "type": "frontend",
+      "description": "End-of-session screen. Shows: questions answered count, correct%, fast-taps flagged count, state distribution (new/active/near_mastery/mastered). 'Start New Session' button calls useSession.startSession(). Uses Zustand store for stats.",
+      "depends_on": ["comp-004", "comp-013"],
+      "required_by": ["comp-023"],
+      "dependency_type": "hard",
+      "dependency_level": 3,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-023",
+      "name": "StudyTab component",
+      "type": "frontend",
+      "description": "Session orchestrator. On mount: if no currentSession, calls startSession(). If session complete: shows SessionSummary. Else: shows QuestionCard for current question. Reads current question from store queue+index.",
+      "depends_on": ["comp-007", "comp-015", "comp-021", "comp-022"],
+      "required_by": ["comp-018"],
+      "dependency_type": "hard",
+      "dependency_level": 6,
+      "estimated_complexity": "medium",
+      "on_critical_path": true
+    },
+    {
+      "id": "comp-024",
+      "name": "SkillCard component",
+      "type": "frontend",
+      "description": "Expandable accordion card. Collapsed: skillName + category badge. Expanded: objective, numbered steps, commonErrors list, evaluationCriteria list. Reads skillsExpandedId from store; sets it on expand. Accordion: only one open at a time.",
+      "depends_on": ["comp-002", "comp-004", "comp-013"],
+      "required_by": ["comp-025"],
+      "dependency_type": "hard",
+      "dependency_level": 3,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-025",
+      "name": "SkillsTab component",
+      "type": "frontend",
+      "description": "Renders all 12 skills as SkillCard list. Imports skills from src/data/skills.ts. No filtering or search — plain scrollable list.",
+      "depends_on": ["comp-007", "comp-024"],
+      "required_by": ["comp-018"],
+      "dependency_type": "hard",
+      "dependency_level": 4,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-026",
+      "name": "ScoreDisplay component",
+      "type": "frontend",
+      "description": "Large estimated exam score number (DM Sans 300 weight). 'Ready to test' banner: shows when estimatedScore >= 80 AND all topics >= 75% mastery. Uses computeEstimatedScore() from analytics.ts.",
+      "depends_on": ["comp-004", "comp-012"],
+      "required_by": ["comp-029"],
+      "dependency_type": "hard",
+      "dependency_level": 4,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-027",
+      "name": "TopicGrid component",
+      "type": "frontend",
+      "description": "11-cell grid. For each topic: short name + masteryPercent%. Color: red (#E54343) < 50%, yellow (#F5A623) 50–80%, green (#2DB55D) > 80%. Calls computeTopicStats(). Uses CSS grid layout.",
+      "depends_on": ["comp-004", "comp-012"],
+      "required_by": ["comp-029"],
+      "dependency_type": "hard",
+      "dependency_level": 4,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-028",
+      "name": "WeakTopics component",
+      "type": "frontend",
+      "description": "Renders top 3 weakest topics by masteryPercent (ascending sort of topicStats). Shows topic name and mastery%. Uses computeTopicStats().",
+      "depends_on": ["comp-004", "comp-012"],
+      "required_by": ["comp-029"],
+      "dependency_type": "hard",
+      "dependency_level": 4,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-029",
+      "name": "ProgressTab component",
+      "type": "frontend",
+      "description": "Container for progress screen. Calls computeTopicStats() and computeEstimatedScore() from analytics.ts using Zustand questions state. Renders ScoreDisplay, TopicGrid, WeakTopics. Re-renders when questions state changes.",
+      "depends_on": ["comp-012", "comp-026", "comp-027", "comp-028"],
+      "required_by": ["comp-018"],
+      "dependency_type": "hard",
+      "dependency_level": 5,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-030",
+      "name": "SyncControls component",
+      "type": "frontend",
+      "description": "Manual Save button: triggers useSync.manualSave(), shows loading spinner, success/error status. Restore button: shows confirmation prompt → useSync.restoreBackup(). Last sync timestamp. Content version display.",
+      "depends_on": ["comp-004", "comp-016"],
+      "required_by": ["comp-031"],
+      "dependency_type": "hard",
+      "dependency_level": 3,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-031",
+      "name": "SettingsTab component",
+      "type": "frontend",
+      "description": "Container for Settings screen. Renders SyncControls. Mounts useSync hook for auto-sync interval (every 60s when isDirty). Displays app version and content version info.",
+      "depends_on": ["comp-030"],
+      "required_by": ["comp-018"],
+      "dependency_type": "hard",
+      "dependency_level": 4,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-032",
+      "name": "IOSInstallBanner component",
+      "type": "frontend",
+      "description": "Detects iOS Safari via: navigator.standalone === false AND /iPad|iPhone|iPod/.test(navigator.userAgent). Renders dismissible banner with 'Tap Share → Add to Home Screen' instruction. On dismiss: store.dismissIOSBanner(). Not shown if iosInstallDismissed or on Android.",
+      "depends_on": ["comp-004", "comp-013"],
+      "required_by": ["comp-033"],
+      "dependency_type": "soft",
+      "dependency_level": 3,
+      "estimated_complexity": "low",
+      "on_critical_path": false
+    },
+    {
+      "id": "comp-033",
+      "name": "App entry (src/main.tsx + App.tsx)",
+      "type": "frontend",
+      "description": "main.tsx: Initialize Zustand store (call initializeQuestions with all question IDs, call resolveDeviceId and set in store). App.tsx: Render AppShell + IOSInstallBanner + mount useSync auto-sync. Verify app renders to first question with zero console errors.",
+      "depends_on": ["comp-006", "comp-013", "comp-018", "comp-032"],
+      "required_by": ["comp-034"],
+      "dependency_type": "hard",
+      "dependency_level": 8,
+      "estimated_complexity": "low",
+      "on_critical_path": true
+    },
+    {
+      "id": "comp-034",
+      "name": "Vercel production deployment",
+      "type": "integration",
+      "description": "Run: vite build. Verify dist/ size (< 5MB). Run: vercel deploy --prod. Verify: app loads at production URL, service worker registers, PWA installable, /api/sync responds, offline mode works after first visit.",
+      "depends_on": ["comp-008", "comp-009", "comp-033"],
+      "required_by": [],
+      "dependency_type": "hard",
+      "dependency_level": 9,
+      "estimated_complexity": "low",
+      "on_critical_path": true
+    }
+  ],
+
+  "critical_path": {
+    "components": [
+      "comp-001",
+      "comp-002",
+      "comp-010",
+      "comp-013",
+      "comp-011",
+      "comp-015",
+      "comp-021",
+      "comp-023",
+      "comp-018",
+      "comp-033",
+      "comp-034"
+    ],
+    "total_depth": 9,
+    "description": "Project setup → TypeScript types → Algorithm → Store → Session builder → useSession hook → QuestionCard → StudyTab → AppShell → main.tsx → Deploy. This chain cannot be parallelized. Any delay in algorithm.ts or useSession.ts directly blocks deployment."
+  },
+
+  "parallel_groups": [
+    {
+      "level": 0,
+      "components": ["comp-001", "comp-003", "comp-004", "comp-009"],
+      "description": "Foundation + Infrastructure: Project setup, PWA assets, design system CSS, and infrastructure provisioning can all proceed simultaneously. Infrastructure provisioning (Upstash + Vercel) should start first as it involves external dependencies."
+    },
+    {
+      "level": 1,
+      "components": ["comp-002", "comp-008", "comp-014"],
+      "description": "Type definitions (after project setup), Vite PWA config (after project setup + icons), /api/sync function (after project setup + infra). These are independent of each other."
+    },
+    {
+      "level": 2,
+      "components": ["comp-005", "comp-006", "comp-007", "comp-010", "comp-013", "comp-016", "comp-019", "comp-020"],
+      "description": "All utility libs + content data + store + sync hook + leaf UI components. Largest parallel batch. Algorithm (comp-010) is critical path; others can run alongside it."
+    },
+    {
+      "level": 3,
+      "components": ["comp-011", "comp-012", "comp-017", "comp-022", "comp-024", "comp-030", "comp-032"],
+      "description": "Session builder (needs PRNG + algorithm), analytics, and most UI components that only need types + store + design system."
+    },
+    {
+      "level": 4,
+      "components": ["comp-015", "comp-025", "comp-026", "comp-027", "comp-028", "comp-031"],
+      "description": "useSession hook (needs session builder), SkillsTab, all Progress sub-components, SettingsTab."
+    },
+    {
+      "level": 5,
+      "components": ["comp-021", "comp-029"],
+      "description": "QuestionCard (needs useSession + leaf components) and ProgressTab (needs analytics + sub-components)."
+    },
+    {
+      "level": 6,
+      "components": ["comp-023"],
+      "description": "StudyTab: needs QuestionCard + SessionSummary + useSession."
+    },
+    {
+      "level": 7,
+      "components": ["comp-018"],
+      "description": "AppShell: assembles all 4 tab components + BottomNav."
+    },
+    {
+      "level": 8,
+      "components": ["comp-033"],
+      "description": "App entry: wires store initialization, renders AppShell + IOSInstallBanner."
+    },
+    {
+      "level": 9,
+      "components": ["comp-034"],
+      "description": "Production deployment: final gate after full build passes."
+    }
+  ],
+
+  "risk_points": [
+    {
+      "component_id": "comp-002",
+      "risk": "Highest fan-out: 8 direct dependents. Any type error or interface omission blocks the entire component tree.",
+      "mitigation": "Complete all 4 type files before writing any logic. Review against algorithm specification and all 5 QuestionState values. TypeScript compiler will enforce correctness downstream."
+    },
+    {
+      "component_id": "comp-010",
+      "risk": "Highest implementation complexity. The 5-state machine has subtle conditions (reversal detection, session ID tracking, fast-tap exclusion). An off-by-one in streak logic or missed reversal breaks exam readiness accuracy.",
+      "mitigation": "Write pure functions with explicit inputs/outputs. Test each transition in isolation before integrating with store. Reversal window (last 5 deliberate exposures) is the most complex condition — verify with written test cases."
+    },
+    {
+      "component_id": "comp-009",
+      "risk": "External dependency with unknown auth state. If Upstash MCP is not authenticated, provisioning fails and /api/sync cannot be deployed.",
+      "mitigation": "Run as the FIRST execution task. Test MCP before writing any code. Vercel KV fallback is documented and maintains identical /api/sync code — only env var names differ."
+    },
+    {
+      "component_id": "comp-013",
+      "risk": "Store schema errors cause localStorage corruption on first deploy. Adding fields after v1 without a migration breaks persisted data.",
+      "mitigation": "Define all AppStore fields in types/store.ts before writing useStore.ts. Never add fields to the store without incrementing version and adding a migrate function. Redis restore in Settings provides recovery."
+    },
+    {
+      "component_id": "comp-015",
+      "risk": "useSession hook complexity: session queue management, fast-tap buffering, and state transitions across multiple functions. Bugs here cause questions to repeat incorrectly or mastery to not advance.",
+      "mitigation": "Split into atomic functions: startSession(), recordAnswer(), nextQuestion(), endSession(). Each function has a single responsibility. Test session end (fastTapPending flush) separately."
+    }
+  ],
+
+  "total_components": 34,
+  "max_dependency_depth": 9,
+  "parallelizable_percentage": 65,
+  "components_on_critical_path": 11,
+  "notes": "The critical path runs through the algorithm (comp-010) → session builder → useSession hook → QuestionCard → StudyTab. All UI work for Skills/Progress/Settings can proceed in parallel with the core study loop. Infrastructure (comp-009) should be treated as a parallel Level-0 task but is not on the critical path for the application code."
+}

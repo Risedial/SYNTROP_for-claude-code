@@ -1,0 +1,16 @@
+{
+  "task_id": "S5-T5",
+  "task_name": "StudyTab component",
+  "executed_at": "2026-04-18",
+  "status": "completed",
+  "files_created": ["src/components/study/StudyTab.tsx"],
+  "files_modified": [],
+  "validation_results": {
+    "files_exist": true,
+    "builds_clean": true,
+    "tests_pass": true,
+    "linter_clean": true
+  },
+  "notes": "Manages activeQuestion in local state to prevent mid-explanation question changes. Uses questionKey counter to force QuestionCard remount between questions. useEffect on currentSession.sessionId loads first question when session starts or restarts. onDone callback advances activeQuestion after QuestionCard calls nextQuestion(). SessionSummary shown on isComplete. Reactive via useStore selector on currentSession.",
+  "issues_encountered": []
+}

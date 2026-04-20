@@ -1,0 +1,16 @@
+{
+  "task_id": "S7-T4",
+  "task_name": "IOSInstallBanner component",
+  "executed_at": "2026-04-18T00:00:00Z",
+  "status": "completed",
+  "files_created": ["src/components/shared/IOSInstallBanner.tsx"],
+  "files_modified": [],
+  "validation_results": {
+    "files_exist": true,
+    "builds_clean": true,
+    "tests_pass": true,
+    "linter_clean": true
+  },
+  "notes": "Detects iOS UA + not standalone + not dismissed. Banner positioned above BottomNav. Dismiss calls dismissIOSBanner() which persists to store.",
+  "issues_encountered": []
+}

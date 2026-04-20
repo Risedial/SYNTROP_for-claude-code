@@ -1,0 +1,25 @@
+{
+  "sprint": 5,
+  "sprint_name": "Study Tab UI",
+  "validated_at": "2026-04-18",
+  "status": "passed",
+  "checks": [
+    { "check": "tsc --noEmit exits 0", "result": "pass" },
+    { "check": "npm run build exits 0", "result": "pass" },
+    { "check": "src/components/study/AnswerOption.tsx exists", "result": "pass" },
+    { "check": "src/components/study/ExplanationPanel.tsx exists", "result": "pass" },
+    { "check": "src/components/study/QuestionCard.tsx exists", "result": "pass" },
+    { "check": "src/components/study/SessionSummary.tsx exists", "result": "pass" },
+    { "check": "src/components/study/StudyTab.tsx exists", "result": "pass" },
+    { "check": "dist/manifest.webmanifest exists after build", "result": "pass" },
+    { "check": "dist/sw.js exists after build", "result": "pass" }
+  ],
+  "notes": [
+    "AnswerOption: 4 visual states (idle/selected-correct/selected-incorrect/revealed-correct/dimmed), 44px touch targets, disabled after selection.",
+    "ExplanationPanel: result badge (green/red), fast-tap warning only when isFastTap=true, explanation box, Next button.",
+    "QuestionCard: markQuestionDisplayed on mount, reads questionDisplayTime from store at answer time, recordAnswer+setSelectedIndex on selection, nextQuestion+onDone on Next click.",
+    "SessionSummary: 5-state distribution from store.questions, session answered count from queue.length, Start New Session button.",
+    "StudyTab: manages activeQuestion in local state to prevent mid-explanation question changes, useEffect on sessionId for new session init, handleQuestionDone advances question after nextQuestion() called.",
+    "Build output: 142.49 kB JS (45.74 kB gzip), 3.15 kB CSS — well within 5MB budget."
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "generated_at": "2026-04-17",
+  "criteria": [
+    {
+      "name": "Algorithm Correctness",
+      "weight": 0.25,
+      "description": "How well does the approach ensure the 5-state mastery machine is implemented correctly and verifiably?",
+      "weight_rationale": "Highest weight: a bug in streak tracking, reversal detection, or session counting directly impacts exam readiness. This is a medical certification tool — algorithm correctness is non-negotiable."
+    },
+    {
+      "name": "Atomic Task Precision",
+      "weight": 0.20,
+      "description": "How unambiguous are the build tasks this approach enables for a less-capable model? (CON-006)",
+      "weight_rationale": "Second highest: every task must be completable without interpretation. Language and state management choices directly control task specification quality."
+    },
+    {
+      "name": "Offline / PWA Reliability",
+      "weight": 0.20,
+      "description": "How reliably does the approach deliver offline-first PWA behavior on iOS Safari and Android Chrome?",
+      "weight_rationale": "High weight: offline is a must-have, iOS Safari is the primary mobile target, and PWA installation is a success criterion (SC-006)."
+    },
+    {
+      "name": "Implementation Surface",
+      "weight": 0.15,
+      "description": "How much custom code must be written vs. handled by well-tested libraries? Smaller surface = fewer bugs, fewer tasks.",
+      "weight_rationale": "Moderate weight: less custom code directly reduces execution phase scope and risk. Eliminating the localStorage adapter is a meaningful saving."
+    },
+    {
+      "name": "Performance",
+      "weight": 0.10,
+      "description": "How well does the approach achieve <2s first load, <300ms tab switch, and non-blocking Redis sync?",
+      "weight_rationale": "Moderate weight: all three approaches can meet performance requirements, but some require more manual optimization than others."
+    },
+    {
+      "name": "Maintainability",
+      "weight": 0.10,
+      "description": "How easy is the deployed app to maintain long-term given it's a permanent replacement with no ongoing cost?",
+      "weight_rationale": "Moderate weight: the app is intended to be permanent — a schema migration pattern, type safety, and standard tooling reduce long-term maintenance burden."
+    }
+  ],
+  "scores": [
+    {
+      "approach_id": "approach-A",
+      "approach_name": "JavaScript + Context/useReducer + vite-plugin-pwa",
+      "criterion_scores": {
+        "Algorithm Correctness": {
+          "score": 60,
+          "rationale": "No compile-time type checking for the 5-state machine. Runtime errors only. Unit tests can compensate but require exhaustive coverage of all state paths. A subtle streak-counting bug may pass tests but produce wrong behavior with edge-case question sequences."
+        },
+        "Atomic Task Precision": {
+          "score": 68,
+          "rationale": "Pure React primitives are well-understood, but plain JavaScript task specs must describe data shapes in prose rather than types. A task like 'add session tracking to question state' is ambiguous about the exact data structure without interface definitions."
+        },
+        "Offline / PWA Reliability": {
+          "score": 88,
+          "rationale": "vite-plugin-pwa is excellent — same tooling as Approach B. Full marks except for a minor deduction because vite-plugin-pwa's TypeScript config options are slightly easier to verify in TS projects."
+        },
+        "Implementation Surface": {
+          "score": 62,
+          "rationale": "Context/useReducer requires a custom localStorage persistence layer (~150-200 lines), a storage adapter with migration support, and serialization tests. This is non-trivial custom code. vite-plugin-pwa is good but the storage layer is the gap."
+        },
+        "Performance": {
+          "score": 75,
+          "rationale": "Achievable, but Context re-renders require manual memoization to meet NFR-003. useCallback and React.memo on QuestionCard components add task complexity. Tab switch performance is achievable but not automatic."
+        },
+        "Maintainability": {
+          "score": 65,
+          "rationale": "No type documentation means the algorithm's data shapes are implicit. Adding a feature 6 months later requires reading all code to understand the data model. Custom localStorage adapter adds maintenance surface."
+        }
+      },
+      "weighted_score": 69.45,
+      "rank": 2,
+      "score_breakdown": "Algorithm(60×0.25) + Tasks(68×0.20) + PWA(88×0.20) + Surface(62×0.15) + Perf(75×0.10) + Maint(65×0.10) = 15.0+13.6+17.6+9.3+7.5+6.5 = 69.5"
+    },
+    {
+      "approach_id": "approach-B",
+      "approach_name": "TypeScript + Zustand + vite-plugin-pwa",
+      "criterion_scores": {
+        "Algorithm Correctness": {
+          "score": 95,
+          "rationale": "TypeScript discriminated unions enforce exhaustive state handling at compile time. Every transition function is typed — streak counters, reversal arrays, session ID sets, mastery timestamps all have explicit types. A mistyped field or missing case is a build error, not a production bug."
+        },
+        "Atomic Task Precision": {
+          "score": 95,
+          "rationale": "TypeScript interfaces make every atomic task specification unambiguous: 'add field lastAnsweredAt: number to QuestionRecord in src/types/algorithm.ts'. No prose interpretation required. The less-capable model gets exact interface contracts, not descriptions."
+        },
+        "Offline / PWA Reliability": {
+          "score": 90,
+          "rationale": "vite-plugin-pwa with TypeScript config options is the community standard. Generates correct iOS Safari manifest fields, SW registration, update lifecycle, and precache manifest automatically. iOS Safari PWA installation is well-supported."
+        },
+        "Implementation Surface": {
+          "score": 90,
+          "rationale": "Zustand persist middleware eliminates the entire custom localStorage layer. No serialization code, no storage adapter, no migration utilities to write from scratch. The persist middleware handles all of this with a one-line configuration and a documented migration pattern."
+        },
+        "Performance": {
+          "score": 90,
+          "rationale": "Zustand selector subscriptions prevent unnecessary re-renders automatically — no manual memoization required for basic correctness. NFR-003 (<300ms tab switch) is straightforward to achieve. Bundle size increase (~3.5KB gzipped) is negligible on a cached PWA."
+        },
+        "Maintainability": {
+          "score": 90,
+          "rationale": "TypeScript types serve as living documentation of the data model. Adding a feature later requires extending typed interfaces — the compiler guides the change. Zustand's versioned persist schema provides a documented migration path. vite-plugin-pwa is maintained by the Vite ecosystem team."
+        }
+      },
+      "weighted_score": 92.25,
+      "rank": 1,
+      "score_breakdown": "Algorithm(95×0.25) + Tasks(95×0.20) + PWA(90×0.20) + Surface(90×0.15) + Perf(90×0.10) + Maint(90×0.10) = 23.75+19.0+18.0+13.5+9.0+9.0 = 92.25"
+    },
+    {
+      "approach_id": "approach-C",
+      "approach_name": "TypeScript + Zustand + Custom Service Worker",
+      "criterion_scores": {
+        "Algorithm Correctness": {
+          "score": 95,
+          "rationale": "Same TypeScript benefits as Approach B. The service worker does not affect algorithm correctness."
+        },
+        "Atomic Task Precision": {
+          "score": 78,
+          "rationale": "TypeScript + Zustand bring the same task precision benefits as Approach B, but the custom service worker introduces a non-trivial build artifact (post-build manifest script) that is itself ambiguous in specification and platform-dependent."
+        },
+        "Offline / PWA Reliability": {
+          "score": 45,
+          "rationale": "Custom service worker has a documented history of iOS Safari compatibility issues. Must manually handle: navigation fallback, skipWaiting/clientsClaim, cache scope, update detection, and iOS-specific manifest requirements. One missed edge case prevents PWA installation on iOS — which is SC-006. This risk alone is disqualifying."
+        },
+        "Implementation Surface": {
+          "score": 72,
+          "rationale": "Zustand persist is good (same as B) but the custom SW requires a post-build Vite manifest reader and asset list injector — adds ~100-200 lines of build infrastructure code. This is outside the app code and harder to test."
+        },
+        "Performance": {
+          "score": 88,
+          "rationale": "Zustand performance same as Approach B. Cache performance depends on custom SW implementation correctness — if cache-first strategy is implemented incorrectly, repeat visit load time (NFR-002) could regress."
+        },
+        "Maintainability": {
+          "score": 62,
+          "rationale": "The custom service worker is an ongoing maintenance burden. Every Vite version that changes output filename conventions requires updating the manifest generation script. iOS Safari SW behavior changes with each iOS update. This creates ongoing platform testing requirements."
+        }
+      },
+      "weighted_score": 75.25,
+      "rank": 3,
+      "score_breakdown": "Algorithm(95×0.25) + Tasks(78×0.20) + PWA(45×0.20) + Surface(72×0.15) + Perf(88×0.10) + Maint(62×0.10) = 23.75+15.6+9.0+10.8+8.8+6.2 = 74.15"
+    }
+  ],
+  "recommendation": {
+    "top_choice": "approach-B",
+    "score": 92.25,
+    "runner_up": "approach-A",
+    "runner_up_score": 69.45,
+    "gap_analysis": "Approach B leads by 22.8 points. The gap is driven by Algorithm Correctness (+35 pts: TypeScript vs JavaScript) and Atomic Task Precision (+27 pts: typed interfaces vs prose specs). Approach C scores lower than A on PWA Reliability due to custom SW risk.",
+    "caveats": [
+      "TypeScript tsconfig.json must be configured with strict: true in the architecture phase — without this, TypeScript's guarantees are weakened",
+      "Zustand persist migration pattern must be documented in the architecture phase as a standard pattern before execution",
+      "vite-plugin-pwa configuration (manifest icons, display mode, start_url) must be specified as atomic tasks before execution"
+    ],
+    "rationale": "Approach B wins because the two highest-weighted criteria (Algorithm Correctness 25%, Atomic Task Precision 20%) are where TypeScript + Zustand have the largest advantage. The 5-state mastery algorithm is this project's most complex and highest-stakes component — compile-time type checking is the cheapest possible form of correctness guarantee. Zustand persist middleware directly reduces the execution phase scope by eliminating a custom localStorage layer. vite-plugin-pwa is the established solution for the iOS Safari PWA requirement that represents the highest platform risk. Approach A is viable but should be rejected because an undetected algorithm bug in a medical certification study tool is unacceptable. Approach C should be rejected because the custom SW introduces iOS Safari risk with no offsetting benefit."
+  }
+}

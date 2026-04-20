@@ -1,0 +1,227 @@
+{
+  "generated_at": "2026-04-17",
+  "evaluation_criteria": {
+    "user_priorities": [
+      "Algorithm correctness — the mastery algorithm must be deterministic and bug-free; a broken transition could sabotage exam preparation",
+      "Atomic build tasks — every task must be completable by a less-capable model without ambiguity (CON-006)",
+      "Zero ongoing cost — permanent deployment on free tier only (CON-002)",
+      "Offline first — full app functionality after first load, no network required (FR-020, NFR-009)",
+      "Zero manual infrastructure setup — all provisioning by Claude Code (CON-003)",
+      "Fast initial load — <2s to first question on first visit (NFR-001)"
+    ],
+    "hardest_constraints": [
+      "React + Vite is locked — no alternative framework evaluation possible (CON-001)",
+      "Every build task must be atomic enough for a less-capable model (CON-006)",
+      "Zero paid infrastructure — Upstash free tier + Vercel Hobby only (CON-002)",
+      "frontend-design skill runs before any component code (CON-007)"
+    ],
+    "critical_success_factors": [
+      "5-state algorithm transitions are deterministic and match the SSOT exactly",
+      "App opens to a quiz question with zero interactions after first load (SC-001)",
+      "Full offline functionality after one online visit (SC-002)",
+      "PWA installable on iOS Safari and Android Chrome (SC-006)"
+    ]
+  },
+  "analyses": [
+    {
+      "approach_id": "approach-A",
+      "approach_name": "JavaScript + Context/useReducer + vite-plugin-pwa",
+      "pros": [
+        {
+          "point": "Zero external state management dependencies",
+          "relevance": "Smaller bundle, fewer upgrade surface areas, no library-specific patterns to learn",
+          "strength": "minor",
+          "user_alignment": "You care about zero ongoing cost and simplicity — fewer deps means fewer maintenance liabilities"
+        },
+        {
+          "point": "useReducer maps naturally to the dispatch-action pattern of a state machine",
+          "relevance": "The 5-state mastery machine has well-defined actions (ANSWER_CORRECT, ANSWER_WRONG, FAST_TAP_DETECTED) — useReducer handles these cleanly",
+          "strength": "moderate",
+          "user_alignment": "The algorithm's transition logic fits the reducer pattern philosophically — each action case maps to a state transition rule"
+        },
+        {
+          "point": "vite-plugin-pwa handles iOS Safari and Android PWA edge cases automatically",
+          "relevance": "You need offline to work on iOS Safari (your primary mobile platform) — vite-plugin-pwa is battle-tested for this",
+          "strength": "strong",
+          "user_alignment": "You mentioned iOS Safari as primary target in the SSOT — vite-plugin-pwa's iOS manifest and SW handling is correct out of the box"
+        },
+        {
+          "point": "Pure React primitives — fewer concepts for a less-capable model to understand",
+          "relevance": "Context + useReducer are React core — no library-specific API to explain in atomic task specs",
+          "strength": "moderate",
+          "user_alignment": "CON-006 requires atomic tasks completable without ambiguity — fewer APIs means fewer things to explain"
+        }
+      ],
+      "cons": [
+        {
+          "point": "No TypeScript — algorithm bugs surface at runtime, not compile time",
+          "relevance": "The 5-state machine tracks streak counts, reversal arrays, session ID sets, and mastery timestamps per question — these have complex interdependencies that TypeScript catches",
+          "severity": "significant",
+          "mitigation": "Comprehensive unit tests for every state transition can partially compensate, but test coverage must be exhaustive for 5×N state paths",
+          "user_consideration": "You're building a study tool for a medical certification — a bug in the mastery algorithm that promotes a question incorrectly directly impacts exam readiness. TypeScript is cheaper insurance than debugging at runtime."
+        },
+        {
+          "point": "Context re-renders all consumers on state change — potential performance issue with 131-question state tree",
+          "relevance": "Every answer submission updates the global store, which may trigger re-renders in tab nav, progress bar, and analytics components simultaneously",
+          "severity": "minor",
+          "mitigation": "React.memo and useMemo on expensive components; split Context into 'question state' and 'UI state' contexts",
+          "user_consideration": "You require <300ms tab switch (NFR-003) — this is achievable with Context but requires careful memoization that adds task complexity"
+        },
+        {
+          "point": "Custom localStorage serialization code is required — adds ~150-200 lines that need their own atomic tasks",
+          "relevance": "Persist middleware from Zustand eliminates this entirely; Context/useReducer requires writing, testing, and migrating this manually",
+          "severity": "significant",
+          "mitigation": "Write a reusable storage adapter module early and test it thoroughly",
+          "user_consideration": "CON-006 (atomic build tasks) means this storage adapter needs its own precisely-defined tasks — it's solvable but adds scope"
+        },
+        {
+          "point": "No devtools for state inspection — algorithm debugging requires console.log or browser DevTools manually",
+          "relevance": "During development of the mastery algorithm, inspecting the question state tree requires manual tooling",
+          "severity": "minor",
+          "mitigation": "React DevTools shows Context state; acceptable for development",
+          "user_consideration": "Minor inconvenience, not a blocker"
+        }
+      ],
+      "overall_fit_score": 72,
+      "fit_summary": "Approach A is a workable, dependency-light choice that uses only React core primitives. The primary concern is algorithm safety — without TypeScript, the 5-state mastery machine's complex state transitions rely entirely on runtime testing rather than compile-time verification. The custom localStorage code also adds implementation surface. For a study tool where algorithm correctness directly impacts certification readiness, this is a meaningful risk.",
+      "best_for": "Projects where minimizing dependencies is the top priority and algorithm complexity is low",
+      "worst_for": "Projects with complex state machines where compile-time correctness is important"
+    },
+    {
+      "approach_id": "approach-B",
+      "approach_name": "TypeScript + Zustand + vite-plugin-pwa",
+      "pros": [
+        {
+          "point": "TypeScript discriminated unions enforce exhaustive handling of all 5 algorithm states at compile time",
+          "relevance": "type QuestionState = 'new' | 'active' | 'near_mastery' | 'mastered' | 'maintenance' — every switch statement on this type gets a TypeScript error if any case is unhandled",
+          "strength": "strong",
+          "user_alignment": "You said 'algorithm correctness is user responsibility' for content, but the algorithm itself must be correct. TypeScript is the first safety net — free to apply, eliminates an entire class of bugs."
+        },
+        {
+          "point": "Zustand persist middleware eliminates all custom localStorage serialization code",
+          "relevance": "Instead of writing a storage adapter, migrate functions, and serialization tests, you configure: persist(store, { name: 'fap_store' }) — the library handles the rest",
+          "strength": "strong",
+          "user_alignment": "CON-006 requires atomic tasks — fewer custom utility modules means fewer atomic tasks and less implementation surface for a less-capable model"
+        },
+        {
+          "point": "Selector-based subscriptions prevent unnecessary re-renders without manual memoization",
+          "relevance": "useStore(s => s.questions[id].state) only re-renders when that specific question's state changes — NFR-003 (<300ms tab switch) is easier to achieve",
+          "strength": "strong",
+          "user_alignment": "NFR-003 requires fast tab switching — Zustand's granular subscriptions deliver this without the memoization boilerplate Context requires"
+        },
+        {
+          "point": "TypeScript interfaces make atomic task specifications unambiguous for a less-capable model",
+          "relevance": "A task that specifies 'add field sessionIds: string[] to QuestionRecord interface in src/types/algorithm.ts' is zero-ambiguity. A JS task saying 'add an array of session IDs to each question object' leaves structure undefined.",
+          "strength": "strong",
+          "user_alignment": "CON-006 is your hardest execution constraint — TypeScript is the best tool for making tasks atomic and unambiguous"
+        },
+        {
+          "point": "vite-plugin-pwa generates correct iOS-specific manifest fields and SW update lifecycle automatically",
+          "relevance": "iOS Safari requires specific meta tags, display modes, and SW registration timing — vite-plugin-pwa handles all of these correctly out of the box",
+          "strength": "strong",
+          "user_alignment": "SC-006 requires PWA installable on iOS Safari — this is the highest-risk PWA requirement. vite-plugin-pwa is the proven solution."
+        },
+        {
+          "point": "Zustand schema migration via version field is well-documented for localStorage persistence",
+          "relevance": "If you need to add a field to QuestionRecord post-deployment, Zustand's migrate option handles this cleanly",
+          "strength": "moderate",
+          "user_alignment": "The app is intended to be permanent — schema evolution over time is a realistic concern"
+        }
+      ],
+      "cons": [
+        {
+          "point": "TypeScript configuration (tsconfig.json) must be set up correctly before first build task",
+          "relevance": "Incorrect strictness settings can make TypeScript less useful or generate spurious errors; this must be resolved in the architecture phase",
+          "severity": "minor",
+          "mitigation": "Use Vite's official TypeScript + React template as the tsconfig baseline — it's well-tested and widely used",
+          "user_consideration": "This is a one-time setup cost in the architecture phase, not an ongoing burden"
+        },
+        {
+          "point": "Zustand persist requires a migration function if localStorage schema changes post-deployment",
+          "relevance": "Adding a new field to the persisted store requires a version bump and migration in zustand's persist config",
+          "severity": "minor",
+          "mitigation": "Document the migration pattern in the architecture phase so it's a known atomic task pattern, not a surprise",
+          "user_consideration": "You'll likely iterate on the question state schema during development — establish the migration pattern early"
+        },
+        {
+          "point": "~15KB addition to bundle (Zustand)",
+          "relevance": "Adds ~3.5KB gzipped to the bundle",
+          "severity": "minor",
+          "mitigation": "Bundle will be cached by service worker on install — first load impact is minimal, repeat loads are zero",
+          "user_consideration": "NFR-001 requires <2s first load — 3.5KB additional gzipped payload is negligible on any mobile connection"
+        }
+      ],
+      "overall_fit_score": 91,
+      "fit_summary": "Approach B is the strongest fit for this project. TypeScript directly serves the algorithm correctness requirement and the atomic build task constraint simultaneously. Zustand persist eliminates the most error-prone custom code (localStorage serialization). vite-plugin-pwa handles the iOS Safari PWA requirements that represent the highest platform risk. Every con is minor and manageable. This approach produces the most unambiguous atomic task specifications while minimizing custom utility code.",
+      "best_for": "Projects with complex business logic, strict atomic task requirements, and mobile PWA as a primary target",
+      "worst_for": "Projects where zero additional dependencies is a hard constraint"
+    },
+    {
+      "approach_id": "approach-C",
+      "approach_name": "TypeScript + Zustand + Custom Service Worker",
+      "pros": [
+        {
+          "point": "Full control over cache strategy and cache version naming",
+          "relevance": "You can define exactly which assets are cached and how cache invalidation works",
+          "strength": "minor",
+          "user_alignment": "vite-plugin-pwa exposes the same cache configuration — this benefit is available in Approach B without the added complexity"
+        },
+        {
+          "point": "No vite-plugin-pwa dependency",
+          "relevance": "One fewer Vite plugin in the build chain",
+          "strength": "minor",
+          "user_alignment": "This dependency savings is not meaningful — vite-plugin-pwa is stable, widely used, and maintained by the Vite ecosystem team"
+        },
+        {
+          "point": "TypeScript and Zustand advantages from Approach B still apply",
+          "relevance": "Algorithm correctness and atomic task precision are inherited from the same language and state management choices",
+          "strength": "strong",
+          "user_alignment": "Same benefits as Approach B for the algorithm and state management concerns"
+        }
+      ],
+      "cons": [
+        {
+          "point": "Custom service worker must enumerate Vite's hashed output filenames to cache — requires a post-build script",
+          "relevance": "Vite outputs files like main.a1b2c3d4.js — the service worker must cache these exact names. Without vite-plugin-pwa, a custom script must read the Vite manifest and inject filenames into the SW",
+          "severity": "significant",
+          "mitigation": "Write a build script (vite.config plugin or Node.js post-build) that reads vite-manifest.json and writes the asset list to the SW file",
+          "user_consideration": "This post-build script is itself a non-trivial atomic task — CON-006 requires it to be precisely specified, and it must be re-tested after every Vite version upgrade"
+        },
+        {
+          "point": "iOS Safari service worker edge cases must be solved manually",
+          "relevance": "iOS Safari has specific behaviors: SW update detection, navigation fallback for SPA routing, install prompt absence, cache scope restrictions. Workbox (used by vite-plugin-pwa) handles all of these — a custom SW must solve each independently",
+          "severity": "critical",
+          "mitigation": "Study web.dev iOS SW documentation thoroughly; test on physical iOS device at every step",
+          "user_consideration": "SC-006 requires iOS Safari installable PWA — this is your highest-risk requirement. A custom SW significantly increases the probability of hitting an iOS Safari bug. This could block the entire deployment."
+        },
+        {
+          "point": "Service worker update lifecycle bugs silently serve stale content",
+          "relevance": "If the SW doesn't correctly call skipWaiting() and clientsClaim(), users see old app versions after deployment",
+          "severity": "significant",
+          "mitigation": "Implement update lifecycle correctly on first try; test by deploying two versions and verifying update",
+          "user_consideration": "You mentioned permanent replacement — SW update bugs could mean the deployed version gets stuck. vite-plugin-pwa handles this correctly by default."
+        },
+        {
+          "point": "Higher implementation complexity with no offsetting benefit over Approach B",
+          "relevance": "Approach B provides all the same algorithm and state management benefits with a proven PWA solution. Approach C adds PWA risk for no gain.",
+          "severity": "critical",
+          "mitigation": "There is no mitigation — use Approach B instead",
+          "user_consideration": "The vision anchor 'atomic build tasks' and 'permanent replacement' both argue against Approach C. The custom SW is the opposite of atomic — it has environment dependencies, platform quirks, and maintenance burden."
+        }
+      ],
+      "overall_fit_score": 58,
+      "fit_summary": "Approach C inherits Approach B's language and state management advantages but introduces significant unnecessary risk in the service worker layer. The custom SW adds a non-trivial build artifact (post-build manifest script), requires manual handling of iOS Safari's documented gotchas, and offers no benefit over vite-plugin-pwa for this project's requirements. The vision anchor 'atomic build tasks' is directly undermined by the custom SW's complexity and platform dependencies. Approach B is strictly superior.",
+      "best_for": "Projects with highly specific caching requirements that cannot be expressed in vite-plugin-pwa configuration",
+      "worst_for": "Projects targeting iOS Safari as a primary platform, or any project where development speed and reliability matter more than total control"
+    }
+  ],
+  "comparative_insights": {
+    "best_timeline_fit": "approach-B",
+    "best_budget_fit": "approach-A",
+    "best_scalability": "approach-B",
+    "lowest_risk": "approach-B",
+    "best_maintainability": "approach-B",
+    "overall_recommendation": "approach-B",
+    "recommendation_rationale": "Approach B (TypeScript + Zustand + vite-plugin-pwa) wins on every dimension that matters for this project. TypeScript addresses the highest-stakes risk (algorithm correctness). Zustand persist eliminates the most error-prone custom code (localStorage serialization). vite-plugin-pwa is the proven solution for the highest-risk platform requirement (iOS Safari installable PWA). Approach A is viable but introduces algorithm correctness risk that is unacceptable for a medical certification study tool. Approach C adds complexity and iOS Safari risk with no offsetting benefit."
+  }
+}

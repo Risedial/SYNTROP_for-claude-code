@@ -1,0 +1,552 @@
+{
+  "generated_at": "2026-04-18",
+  "project_name": "First Aid Study PWA",
+  "project_id": "fap-2026-0417-001",
+  "total_sprints": 8,
+  "total_tasks": 35,
+  "estimated_chat_sessions": 11,
+  "content_gate_task": "S2-T3",
+  "content_gate_description": "Hard pause at Sprint 2 Task 3 — user must confirm clinical accuracy of questions.ts and skills.ts before UI build proceeds (CON-005)",
+
+  "sprints": [
+    {
+      "id": 1,
+      "name": "Foundation",
+      "focus": "Project scaffolding, TypeScript types, design system, PWA configuration",
+      "task_count": 4,
+      "requires_user_input": false,
+      "validation_summary": "npm run build exits 0, tsc --noEmit exits 0, dist/manifest.webmanifest and dist/sw.js exist",
+      "tasks": [
+        {
+          "id": "S1-T1",
+          "name": "Vite + React + TypeScript project scaffolding",
+          "type": "setup",
+          "description": "npm create vite@latest . -- --template react-ts. Set strict:true in tsconfig.json. Install zustand, @upstash/redis, vite-plugin-pwa, @vitejs/plugin-react. Clear template boilerplate from src/. Verify npm run build exits 0.",
+          "blueprint_reference": "Sections 2, 12",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md"],
+          "output_files": ["package.json", "tsconfig.json", "tsconfig.node.json", "vite.config.ts", "index.html", "src/main.tsx", "src/App.tsx"],
+          "dependencies": [],
+          "validation": "npm run build exits 0. tsc --noEmit exits 0. tsconfig.json contains \"strict\": true."
+        },
+        {
+          "id": "S1-T2",
+          "name": "TypeScript type definitions (src/types/)",
+          "type": "config",
+          "description": "Create 4 type files: src/types/algorithm.ts (QuestionState union, ExposureRecord, QuestionRecord), src/types/session.ts (SessionRecord), src/types/store.ts (AppStore), src/types/content.ts (Question, Skill). Copy interfaces verbatim from blueprint Section 3.",
+          "blueprint_reference": "Section 3",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md"],
+          "output_files": ["src/types/algorithm.ts", "src/types/session.ts", "src/types/store.ts", "src/types/content.ts"],
+          "dependencies": ["S1-T1"],
+          "validation": "tsc --noEmit exits 0. QuestionState has 5 values. QuestionRecord has all 10 fields."
+        },
+        {
+          "id": "S1-T3",
+          "name": "Design system CSS (src/styles/globals.css)",
+          "type": "frontend",
+          "description": "Run frontend-design skill first. Implement all design tokens from zzz/design-system/style-template.md as CSS custom properties. Include color tokens, typography (@import Syne + DM Sans), spacing, global resets. Import in src/main.tsx.",
+          "blueprint_reference": "Section 9, zzz/design-system/style-template.md",
+          "input_files": ["zzz/design-system/style-template.md", "zzz/design-system/CLAUDE.md"],
+          "output_files": ["src/styles/globals.css"],
+          "dependencies": ["S1-T1"],
+          "validation": "All --color-* variables present. Google Fonts imports present. vite dev serves without CSS errors."
+        },
+        {
+          "id": "S1-T4",
+          "name": "PWA assets + vite.config.ts + index.html iOS meta tags",
+          "type": "config",
+          "description": "Create public/icons/icon-192.png, icon-512.png, apple-touch-icon.png. Update vite.config.ts with full VitePWA config (manifest with name/icons/display:standalone/theme_color, registerType:autoUpdate). Add 4 iOS meta tags to index.html.",
+          "blueprint_reference": "Section 9 (vite.config.ts + index.html)",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md"],
+          "output_files": ["vite.config.ts", "index.html", "public/icons/icon-192.png", "public/icons/icon-512.png", "public/apple-touch-icon.png"],
+          "dependencies": ["S1-T1", "S1-T2"],
+          "validation": "npm run build exits 0. dist/manifest.webmanifest exists with display:standalone. dist/sw.js exists. iOS meta tags in index.html."
+        }
+      ],
+      "validation_checks": [
+        "npm run build exits 0",
+        "tsc --noEmit exits 0",
+        "src/types/ has 4 type files",
+        "src/styles/globals.css has all CSS tokens",
+        "vite.config.ts has VitePWA config",
+        "index.html has 4 iOS meta tags",
+        "public/icons/ has 3 icon files",
+        "dist/manifest.webmanifest and dist/sw.js exist after build"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Infrastructure & Data",
+      "focus": "Upstash Redis, content files, content gate, /api/sync, Zustand store",
+      "task_count": 5,
+      "requires_user_input": true,
+      "user_input_task": "S2-T3",
+      "user_input_type": "content_approval",
+      "user_input_prompt": "CONTENT VERIFICATION REQUIRED (CON-005): Review src/data/questions.ts (146 questions) and src/data/skills.ts (12 skills) for clinical accuracy against current St. John Ambulance Alberta guidelines. Reply CONTENT APPROVED to continue.",
+      "validation_summary": "Upstash Redis responds, /api/sync works on vercel dev, store persists to localStorage",
+      "tasks": [
+        {
+          "id": "S2-T1",
+          "name": "Infrastructure provisioning (Upstash Redis + Vercel + env vars)",
+          "type": "integration",
+          "description": "Test Upstash MCP. If accessible: create Redis database fap-backup us-east-1. Else: fallback to Vercel KV. Create Vercel project via CLI. Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN via vercel env add. Test Redis connectivity with curl. Record outcome in SYNTROP/artifacts/architecture/infra-notes.md.",
+          "blueprint_reference": "Section 10 (Upstash + Vercel provisioning)",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md", "SYNTROP/artifacts/research/technical-validation.json"],
+          "output_files": [".vercel/", "SYNTROP/artifacts/architecture/infra-notes.md"],
+          "dependencies": [],
+          "validation": "curl to Redis REST URL returns valid JSON. .vercel/ directory exists. Env vars confirmed in Vercel project."
+        },
+        {
+          "id": "S2-T2",
+          "name": "Content data files (src/data/questions.ts + skills.ts)",
+          "type": "backend",
+          "description": "Create typed wrappers: src/data/questions.ts (copy questions array from zzz/questions.js, type as Question[], export QUESTION_COUNT=146, TOPICS array, QUESTION_IDS array). src/data/skills.ts (copy skills array from zzz/skills.js, type as Skill[]). DO NOT modify content.",
+          "blueprint_reference": "Sections 3, 13, 15",
+          "input_files": ["zzz/questions.js", "zzz/skills.js", "src/types/content.ts"],
+          "output_files": ["src/data/questions.ts", "src/data/skills.ts"],
+          "dependencies": ["S1-T2"],
+          "validation": "tsc --noEmit exits 0. questions.length===146. skills.length===12. TOPICS has 11 entries."
+        },
+        {
+          "id": "S2-T3",
+          "name": "CONTENT GATE — Clinical accuracy review",
+          "type": "gate",
+          "description": "HARD GATE. Display content verification prompt to user. PAUSE execution. Do not proceed to S2-T4 or S2-T5 until user sends CONTENT APPROVED.",
+          "blueprint_reference": "SSOT Section 6 (CON-005)",
+          "input_files": ["src/data/questions.ts", "src/data/skills.ts"],
+          "output_files": [],
+          "dependencies": ["S2-T2"],
+          "requires_user_input": true,
+          "user_input_type": "content_approval",
+          "validation": "User has responded CONTENT APPROVED in this chat session."
+        },
+        {
+          "id": "S2-T4",
+          "name": "/api/sync serverless function (api/sync.ts)",
+          "type": "backend",
+          "description": "Create api/sync.ts Vercel serverless function. GET: validate deviceId UUID, redis.get('fap:'+deviceId), return {data, syncedAt}. POST: validate deviceId + data, redis.set key, return {ok:true, syncedAt}. Error handling: try/catch all Redis calls, return {error:'fetch_failed'} or {error:'write_failed'} with 500.",
+          "blueprint_reference": "Section 5",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md"],
+          "output_files": ["api/sync.ts"],
+          "dependencies": ["S1-T1", "S2-T1", "S2-T3"],
+          "validation": "vercel dev starts. GET /api/sync?deviceId=valid-uuid returns JSON. POST with valid body returns {ok:true}."
+        },
+        {
+          "id": "S2-T5",
+          "name": "Zustand store (src/store/useStore.ts)",
+          "type": "backend",
+          "description": "Create useStore.ts with persist middleware: name:'fap_store', version:1, storage:createJSONStorage(()=>localStorage), migrate template. All AppStore fields and actions from blueprint Section 8.",
+          "blueprint_reference": "Section 8",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md", "src/types/store.ts", "src/types/algorithm.ts", "src/types/session.ts"],
+          "output_files": ["src/store/useStore.ts"],
+          "dependencies": ["S1-T2", "S2-T3"],
+          "validation": "tsc --noEmit exits 0. localStorage entry fap_store appears after app loads. Store rehydrates on page reload."
+        }
+      ],
+      "validation_checks": [
+        "Upstash Redis responds to test command",
+        ".vercel/ directory exists",
+        "src/data/questions.ts — 146 questions typed",
+        "src/data/skills.ts — 12 skills typed",
+        "Content gate passed: user confirmed clinical accuracy",
+        "api/sync.ts handles GET + POST without errors",
+        "fap_store appears in localStorage after load"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Core Algorithm",
+      "focus": "PRNG, device ID, 5-state machine, session builder",
+      "task_count": 4,
+      "requires_user_input": false,
+      "validation_summary": "All 5 state transitions verified correct, algorithm test script passes 7 assertions",
+      "tasks": [
+        {
+          "id": "S3-T1",
+          "name": "mulberry32 PRNG + Device ID utility",
+          "type": "backend",
+          "description": "Create src/lib/prng.ts: mulberry32(seed), seedFromSessionId(sessionId), seededShuffle<T>(). Create src/lib/deviceId.ts: resolveDeviceId() with localStorage→cookie→generate fallback, getCookie, setCookie (7-year SameSite=Strict). Copy implementations verbatim from blueprint Section 7.",
+          "blueprint_reference": "Section 7",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md"],
+          "output_files": ["src/lib/prng.ts", "src/lib/deviceId.ts"],
+          "dependencies": ["S1-T2"],
+          "validation": "mulberry32(12345) produces same 3 values on repeat calls. seededShuffle deterministic. resolveDeviceId returns UUID and stores in localStorage+cookie."
+        },
+        {
+          "id": "S3-T2",
+          "name": "5-state algorithm (src/lib/algorithm.ts)",
+          "type": "backend",
+          "description": "Create src/lib/algorithm.ts: FAST_TAP_MS=2000, isFastTap(), hasReversalInWindow() (checks last 5 for correct-then-incorrect pattern), applyAnswer() pure function (all 5 state transitions per blueprint Section 4), isMaintenanceDue(). All functions pure, no side effects.",
+          "blueprint_reference": "Sections 4, 7",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md", "src/types/algorithm.ts"],
+          "output_files": ["src/lib/algorithm.ts"],
+          "dependencies": ["S1-T2"],
+          "validation": "tsc --noEmit exits 0. See S3-T3 for transition verification."
+        },
+        {
+          "id": "S3-T3",
+          "name": "Algorithm validation (manual test script)",
+          "type": "test",
+          "description": "Create scripts/test-algorithm.ts. Verify all 7 cases: (1) new+correct→active, (2) active+2correct→near_mastery, (3) near_mastery+3correct(1session)→NOT mastered, (4) near_mastery+correct(2sessions)→mastered, (5) mastered+miss→active, (6) fast-tap→unchanged, (7) reversal present→blocks mastery. Run with npx tsx. All assertions pass. Delete script after.",
+          "blueprint_reference": "Section 4 (State Machine Rules)",
+          "input_files": ["src/lib/algorithm.ts", "src/types/algorithm.ts"],
+          "output_files": [],
+          "dependencies": ["S3-T2"],
+          "validation": "Script runs with 'ALL TESTS PASSED' output and exits 0."
+        },
+        {
+          "id": "S3-T4",
+          "name": "Session builder (src/lib/sessionBuilder.ts)",
+          "type": "backend",
+          "description": "Create src/lib/sessionBuilder.ts: buildSessionQueue(questionRecords, sessionNumber, sessionId): string[]. Classify into ACTIVE_NEW, NEAR_MASTERY, MAINTENANCE_DUE tiers. Shuffle each tier with seededShuffle(mulberry32(seedFromSessionId(sessionId))). Assemble with 1:5 near_mastery interleave. Return array of question IDs.",
+          "blueprint_reference": "Section 4 (Session Queue Construction)",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md", "src/lib/algorithm.ts", "src/lib/prng.ts"],
+          "output_files": ["src/lib/sessionBuilder.ts"],
+          "dependencies": ["S3-T1", "S3-T2", "S2-T2"],
+          "validation": "tsc --noEmit exits 0. ACTIVE before NEAR_MASTERY. MAINTENANCE at end. Same sessionId produces same order."
+        }
+      ],
+      "validation_checks": [
+        "src/lib/prng.ts — deterministic output verified",
+        "src/lib/deviceId.ts — UUID stored in localStorage + cookie",
+        "src/lib/algorithm.ts — tsc exits 0",
+        "Algorithm test script: all 7 assertions pass",
+        "src/lib/sessionBuilder.ts — tier ordering correct, deterministic"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Hooks & Analytics",
+      "focus": "Session lifecycle, sync, analytics computations",
+      "task_count": 3,
+      "requires_user_input": false,
+      "validation_summary": "useSession starts session and records answers correctly, useSync triggers POST on manualSave",
+      "tasks": [
+        {
+          "id": "S4-T1",
+          "name": "Analytics computations (src/lib/analytics.ts)",
+          "type": "backend",
+          "description": "Create src/lib/analytics.ts: TopicStat interface, computeTopicStats(questionRecords), computeEstimatedScore(topicStats) using weighted formula, isReadyToTest(topicStats, score) (all topics >= 75% AND score >= 80).",
+          "blueprint_reference": "Section 4 (Analytics), Section 15 (topic list)",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md", "src/data/questions.ts", "src/types/algorithm.ts"],
+          "output_files": ["src/lib/analytics.ts"],
+          "dependencies": ["S1-T2", "S2-T2"],
+          "validation": "tsc --noEmit exits 0. 25 CPR questions mastered → CPR topic 100% green. All new → score 0. isReadyToTest false at 0%."
+        },
+        {
+          "id": "S4-T2",
+          "name": "useSession hook (src/hooks/useSession.ts)",
+          "type": "frontend",
+          "description": "Create src/hooks/useSession.ts: startSession() (generate UUID, build queue, create SessionRecord in store), markQuestionDisplayed() (set questionDisplayTime=Date.now()), recordAnswer(correct, answerTime) (isFastTap check, apply state transition or add to fastTapPending, advance index), nextQuestion() (flush fastTapPending if queue exhausted, set isComplete), getCurrentQuestion(), endSession() (clear session, markDirty).",
+          "blueprint_reference": "Sections 4, 6, 8",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md", "src/lib/sessionBuilder.ts", "src/lib/algorithm.ts", "src/store/useStore.ts"],
+          "output_files": ["src/hooks/useSession.ts"],
+          "dependencies": ["S3-T4", "S3-T2", "S2-T5"],
+          "validation": "tsc --noEmit exits 0. startSession creates SessionRecord in store. recordAnswer updates QuestionRecord. fastTapPending populated on fast answers."
+        },
+        {
+          "id": "S4-T3",
+          "name": "useSync hook (src/hooks/useSync.ts)",
+          "type": "frontend",
+          "description": "Create src/hooks/useSync.ts: auto-sync useEffect (setInterval 60s, POST /api/sync when isDirty, markClean on success), manualSave() (POST, update store), restoreBackup() (GET, merge questions into store on success). Returns {manualSave, restoreBackup}.",
+          "blueprint_reference": "Sections 5, 14",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md", "src/store/useStore.ts", "api/sync.ts"],
+          "output_files": ["src/hooks/useSync.ts"],
+          "dependencies": ["S2-T4", "S2-T5"],
+          "validation": "tsc --noEmit exits 0. manualSave sends POST, lastSyncAt updates on success. restoreBackup returns no_backup_found when Redis has no data."
+        }
+      ],
+      "validation_checks": [
+        "src/lib/analytics.ts — correct mastery% for known state sets",
+        "src/hooks/useSession.ts — session starts, answers recorded, fast-tap buffered",
+        "src/hooks/useSync.ts — manualSave triggers POST, restoreBackup triggers GET",
+        "tsc --noEmit exits 0 for all files"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Study Tab UI",
+      "focus": "Question display, answer selection, feedback, session orchestration",
+      "task_count": 5,
+      "requires_user_input": false,
+      "validation_summary": "App opens to question, full session flow works, fast-tap warning appears",
+      "tasks": [
+        {
+          "id": "S5-T1",
+          "name": "AnswerOption component",
+          "type": "frontend",
+          "description": "Create src/components/study/AnswerOption.tsx. Props: text, index, selectedIndex|null, correctIndex, onSelect. 4 visual states using design system colors. Disabled after selection. Min 44px touch target.",
+          "blueprint_reference": "Section 6 (AnswerOption)",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md", "src/styles/globals.css"],
+          "output_files": ["src/components/study/AnswerOption.tsx"],
+          "dependencies": ["S1-T2", "S1-T3"],
+          "validation": "Idle: all options neutral. After selection: selected shows correct/incorrect, correctIndex revealed, others dimmed."
+        },
+        {
+          "id": "S5-T2",
+          "name": "ExplanationPanel component",
+          "type": "frontend",
+          "description": "Create src/components/study/ExplanationPanel.tsx. Props: explanation, isCorrect, isFastTap, onNext. Shows result badge, explanation text, fast-tap warning (when isFastTap=true), Next button.",
+          "blueprint_reference": "Section 6 (ExplanationPanel)",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md", "src/styles/globals.css"],
+          "output_files": ["src/components/study/ExplanationPanel.tsx"],
+          "dependencies": ["S1-T2", "S1-T3"],
+          "validation": "Correct badge green, incorrect red. Fast-tap warning visible only when isFastTap=true. onNext fires on button click."
+        },
+        {
+          "id": "S5-T3",
+          "name": "QuestionCard component",
+          "type": "frontend",
+          "description": "Create src/components/study/QuestionCard.tsx. Props: question:Question. On mount: markQuestionDisplayed(). Renders topic label, question text, AnswerOption list. On answer: record answerTime=Date.now(), call useSession().recordAnswer(), set selectedIndex. Show ExplanationPanel with onNext→nextQuestion.",
+          "blueprint_reference": "Section 6 (QuestionCard)",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md", "src/hooks/useSession.ts", "src/components/study/AnswerOption.tsx", "src/components/study/ExplanationPanel.tsx"],
+          "output_files": ["src/components/study/QuestionCard.tsx"],
+          "dependencies": ["S4-T2", "S5-T1", "S5-T2"],
+          "validation": "Question + 4 options render. Selection shows ExplanationPanel. Next advances to next question."
+        },
+        {
+          "id": "S5-T4",
+          "name": "SessionSummary component",
+          "type": "frontend",
+          "description": "Create src/components/study/SessionSummary.tsx. Reads from Zustand store. Shows: session stats (answered, correct%, fast-taps), state distribution (5 counts). Start New Session button calls useSession().startSession().",
+          "blueprint_reference": "Section 6 (SessionSummary)",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md", "src/hooks/useSession.ts", "src/store/useStore.ts"],
+          "output_files": ["src/components/study/SessionSummary.tsx"],
+          "dependencies": ["S4-T2", "S1-T3", "S2-T5"],
+          "validation": "Stats display correctly after session ends. Start New Session button works."
+        },
+        {
+          "id": "S5-T5",
+          "name": "StudyTab component",
+          "type": "frontend",
+          "description": "Create src/components/study/StudyTab.tsx. On mount: if no currentSession, call startSession(). If session.isComplete: render SessionSummary. Else: render QuestionCard with getCurrentQuestion(). Reactive via useStore selector.",
+          "blueprint_reference": "Section 6 (StudyTab)",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md", "src/hooks/useSession.ts", "src/store/useStore.ts"],
+          "output_files": ["src/components/study/StudyTab.tsx"],
+          "dependencies": ["S4-T2", "S5-T3", "S5-T4"],
+          "validation": "App shows first question immediately on load (SC-001). Queue exhaustion shows SessionSummary. New session works."
+        }
+      ],
+      "validation_checks": [
+        "App opens to question with zero interactions (SC-001)",
+        "Answer selection shows all-option state update",
+        "ExplanationPanel with fast-tap warning on quick answers",
+        "SessionSummary appears after queue exhausted",
+        "New session starts with next question",
+        "tsc --noEmit exits 0"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Skills & Progress Tabs",
+      "focus": "Practical skills guide and analytics dashboard",
+      "task_count": 5,
+      "requires_user_input": false,
+      "validation_summary": "Skills accordion works, Progress tab shows correct mastery data",
+      "tasks": [
+        {
+          "id": "S6-T1",
+          "name": "SkillCard component",
+          "type": "frontend",
+          "description": "Create src/components/skills/SkillCard.tsx. Props: skill:Skill, isExpanded:boolean, onToggle:(). Collapsed: name + category badge. Expanded: + objective, numbered steps, commonErrors, evaluationCriteria. Smooth height animation.",
+          "blueprint_reference": "Section 6 (SkillCard)",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md", "src/types/content.ts", "src/styles/globals.css"],
+          "output_files": ["src/components/skills/SkillCard.tsx"],
+          "dependencies": ["S1-T2", "S1-T3"],
+          "validation": "Collapsed shows only name. Expanded shows all sections. Smooth height animation."
+        },
+        {
+          "id": "S6-T2",
+          "name": "SkillsTab component",
+          "type": "frontend",
+          "description": "Create src/components/skills/SkillsTab.tsx. Imports skills[]. Reads skillsExpandedId from store. Renders 12 SkillCards with accordion logic (setSkillsExpanded). Tab title: Skills Guide.",
+          "blueprint_reference": "Section 6 (SkillsTab)",
+          "input_files": ["src/data/skills.ts", "src/store/useStore.ts", "src/components/skills/SkillCard.tsx"],
+          "output_files": ["src/components/skills/SkillsTab.tsx"],
+          "dependencies": ["S6-T1", "S2-T2", "S2-T5"],
+          "validation": "12 skills render. Only one expanded at a time. Expanded state persists across tab switches."
+        },
+        {
+          "id": "S6-T3",
+          "name": "ScoreDisplay component",
+          "type": "frontend",
+          "description": "Create src/components/progress/ScoreDisplay.tsx. Props: estimatedScore:number, isReadyToTest:boolean. Large score number (DM Sans 300 weight, 3rem+). Ready to Test banner when isReadyToTest=true.",
+          "blueprint_reference": "Section 6 (ScoreDisplay)",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md", "src/styles/globals.css"],
+          "output_files": ["src/components/progress/ScoreDisplay.tsx"],
+          "dependencies": ["S1-T3"],
+          "validation": "Score renders large. Ready to Test banner visible only when isReadyToTest=true."
+        },
+        {
+          "id": "S6-T4",
+          "name": "TopicGrid + WeakTopics components",
+          "type": "frontend",
+          "description": "Create src/components/progress/TopicGrid.tsx (11-cell grid, color-coded: <50 red, 50-80 yellow, >80 green, using short topic names) and src/components/progress/WeakTopics.tsx (3 lowest mastery% topics, ascending sort).",
+          "blueprint_reference": "Section 6 (TopicGrid, WeakTopics)",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md", "src/lib/analytics.ts", "src/styles/globals.css"],
+          "output_files": ["src/components/progress/TopicGrid.tsx", "src/components/progress/WeakTopics.tsx"],
+          "dependencies": ["S4-T1", "S1-T3"],
+          "validation": "11 cells. All 3 color states verifiable. WeakTopics shows exactly 3 in ascending order."
+        },
+        {
+          "id": "S6-T5",
+          "name": "ProgressTab component",
+          "type": "frontend",
+          "description": "Create src/components/progress/ProgressTab.tsx. Reads questions from store. Computes topicStats, score, ready. Renders ScoreDisplay + TopicGrid + WeakTopics. Auto-updates on question state changes via Zustand selector.",
+          "blueprint_reference": "Section 6 (ProgressTab)",
+          "input_files": ["src/lib/analytics.ts", "src/store/useStore.ts"],
+          "output_files": ["src/components/progress/ProgressTab.tsx"],
+          "dependencies": ["S6-T3", "S6-T4", "S4-T1"],
+          "validation": "Progress updates after Study tab activity. Topics show correct colors."
+        }
+      ],
+      "validation_checks": [
+        "12 skills render in Skills tab",
+        "Accordion: single expand, persists across tab switches",
+        "Progress tab: 11-topic grid with correct colors",
+        "Score updates correctly after answering questions",
+        "WeakTopics shows 3 lowest mastery topics",
+        "tsc --noEmit exits 0"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Settings, Navigation & App Assembly",
+      "focus": "Settings, bottom nav, iOS banner, AppShell, app entry point",
+      "task_count": 6,
+      "requires_user_input": false,
+      "validation_summary": "Full app renders to question with zero console errors, all 4 tabs switch, auto-sync runs",
+      "tasks": [
+        {
+          "id": "S7-T1",
+          "name": "SyncControls component",
+          "type": "frontend",
+          "description": "Create src/components/settings/SyncControls.tsx. Save button (POST /api/sync, loading/success/error states). Restore button (confirm modal → GET /api/sync → restore). Last synced timestamp. Status messages clear after 4s.",
+          "blueprint_reference": "Section 6 (SyncControls)",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md", "src/hooks/useSync.ts"],
+          "output_files": ["src/components/settings/SyncControls.tsx"],
+          "dependencies": ["S4-T3", "S1-T3"],
+          "validation": "Save button triggers POST, shows Saved with timestamp. Restore shows confirm dialog before acting."
+        },
+        {
+          "id": "S7-T2",
+          "name": "SettingsTab component",
+          "type": "frontend",
+          "description": "Create src/components/settings/SettingsTab.tsx. Mounts useSync (auto-sync starts when mounted). Renders Settings heading + SyncControls + About section.",
+          "blueprint_reference": "Section 6 (SettingsTab)",
+          "input_files": ["src/components/settings/SyncControls.tsx", "src/hooks/useSync.ts"],
+          "output_files": ["src/components/settings/SettingsTab.tsx"],
+          "dependencies": ["S7-T1", "S4-T3"],
+          "validation": "Auto-sync triggers after 60s when isDirty=true. SyncControls visible."
+        },
+        {
+          "id": "S7-T3",
+          "name": "BottomNav component",
+          "type": "frontend",
+          "description": "Create src/components/layout/BottomNav.tsx. 4 items (Study/Skills/Progress/Settings). Active indicator: gradient underline. 44px touch targets. Fixed bottom. iOS safe-area-inset-bottom padding. setActiveTab on tap.",
+          "blueprint_reference": "Section 6 (BottomNav)",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md", "src/styles/globals.css", "src/store/useStore.ts"],
+          "output_files": ["src/components/layout/BottomNav.tsx"],
+          "dependencies": ["S2-T5", "S1-T3"],
+          "validation": "Active indicator updates on tap. 44px touch targets. iOS safe area padding present."
+        },
+        {
+          "id": "S7-T4",
+          "name": "IOSInstallBanner component",
+          "type": "frontend",
+          "description": "Create src/components/shared/IOSInstallBanner.tsx. Detection: navigator.standalone===false AND iOS UA AND !iosInstallDismissed. Dismissible banner: 'Tap Share → Add to Home Screen'. Dismiss persists in store.",
+          "blueprint_reference": "Sections 6, 7 (iOS detection logic)",
+          "input_files": ["SYNTROP/artifacts/architecture/blueprint.md", "src/store/useStore.ts"],
+          "output_files": ["src/components/shared/IOSInstallBanner.tsx"],
+          "dependencies": ["S2-T5", "S1-T3"],
+          "validation": "Appears on iOS UA. Dismisses permanently (persisted). Hidden on Android/desktop."
+        },
+        {
+          "id": "S7-T5",
+          "name": "AppShell component",
+          "type": "frontend",
+          "description": "Create src/components/layout/AppShell.tsx. All 4 tab components always mounted. CSS display:none toggling (not unmounting). Content area padding-bottom for BottomNav. BottomNav fixed at bottom outside content area.",
+          "blueprint_reference": "Section 6 (AppShell — display:none, not unmounting)",
+          "input_files": ["All 4 tab components", "src/components/layout/BottomNav.tsx", "src/store/useStore.ts"],
+          "output_files": ["src/components/layout/AppShell.tsx"],
+          "dependencies": ["S5-T5", "S6-T5", "S6-T2", "S7-T2", "S7-T3"],
+          "validation": "All 4 tabs switch. React DevTools: all 4 tab components stay mounted during switches. BottomNav doesn't overlap content."
+        },
+        {
+          "id": "S7-T6",
+          "name": "App entry point (src/main.tsx + App.tsx)",
+          "type": "frontend",
+          "description": "src/main.tsx: call resolveDeviceId() and useStore.getState().setDeviceId(id). Call useStore.getState().initializeQuestions(QUESTION_IDS). Render App. src/App.tsx: render AppShell + IOSInstallBanner.",
+          "blueprint_reference": "Section 6 (app entry), Section 13",
+          "input_files": ["src/lib/deviceId.ts", "src/store/useStore.ts", "src/data/questions.ts", "src/components/layout/AppShell.tsx", "src/components/shared/IOSInstallBanner.tsx"],
+          "output_files": ["src/main.tsx", "src/App.tsx"],
+          "dependencies": ["S7-T5", "S7-T4", "S3-T1"],
+          "validation": "App opens to question with ZERO console errors. 146 questions in fap_store localStorage. DeviceId set. tsc --noEmit exits 0."
+        }
+      ],
+      "validation_checks": [
+        "App opens to question: zero console errors",
+        "All 4 tabs switch correctly",
+        "BottomNav active state updates",
+        "IOSInstallBanner on iOS UA, dismisses permanently",
+        "146 questions in localStorage on first load",
+        "DeviceId in localStorage + cookie",
+        "Auto-sync runs after 60s with isDirty=true",
+        "tsc --noEmit exits 0"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Deployment & Validation",
+      "focus": "Production build, deploy, and full acceptance testing",
+      "task_count": 3,
+      "requires_user_input": false,
+      "validation_summary": "All 7 success criteria verified in production",
+      "tasks": [
+        {
+          "id": "S8-T1",
+          "name": "Production build + bundle size verification",
+          "type": "test",
+          "description": "Run npm run build. Verify exit 0. Run du -sh dist/ — must be <5MB. Verify dist/manifest.webmanifest and dist/sw.js exist. Verify iOS meta tags in dist/index.html.",
+          "blueprint_reference": "Section 2 (performance), Section 10 (deployment), SSOT A1",
+          "input_files": ["All source files"],
+          "output_files": ["dist/"],
+          "dependencies": ["S7-T6"],
+          "validation": "npm run build exits 0. dist/ < 5MB. manifest.webmanifest and sw.js present."
+        },
+        {
+          "id": "S8-T2",
+          "name": "Vercel production deployment",
+          "type": "integration",
+          "description": "Run vercel deploy --prod. Verify production URL loads. Test /api/sync GET and POST at production URL. Verify service worker activates in Chrome DevTools. Record production URL in SYNTROP/artifacts/architecture/infra-notes.md.",
+          "blueprint_reference": "Section 10 (Vercel deployment), SSOT SC-007",
+          "input_files": ["dist/", "SYNTROP/artifacts/architecture/infra-notes.md"],
+          "output_files": ["SYNTROP/artifacts/architecture/infra-notes.md"],
+          "dependencies": ["S8-T1", "S2-T1"],
+          "validation": "Production URL loads. /api/sync responds. Service worker registered. No deployment errors."
+        },
+        {
+          "id": "S8-T3",
+          "name": "Acceptance validation (SC-001 through SC-007)",
+          "type": "test",
+          "description": "Verify all 7 success criteria from SSOT Section 7 at production URL. Document results in SYNTROP/artifacts/architecture/acceptance-results.md. SC-001 (first question immediate), SC-002 (offline after first load), SC-003 (progress persists), SC-004 (Redis restore works), SC-007 (zero dashboard interaction confirmed).",
+          "blueprint_reference": "SSOT Section 7 (Success Criteria)",
+          "input_files": ["SYNTROP/artifacts/intake/SINGLE-SOURCE-OF-TRUTH.md"],
+          "output_files": ["SYNTROP/artifacts/architecture/acceptance-results.md"],
+          "dependencies": ["S8-T2"],
+          "validation": "acceptance-results.md shows PASS for SC-001, SC-002, SC-003, SC-004, SC-007."
+        }
+      ],
+      "validation_checks": [
+        "npm run build exits 0, dist/ < 5MB",
+        "Service worker in dist/",
+        "Production URL loads app",
+        "/api/sync responds in production",
+        "SC-001: First question immediate",
+        "SC-002: Offline mode works",
+        "SC-003: Progress persists across reload",
+        "SC-004: Redis restore recovers data",
+        "SC-007: Zero dashboard URLs opened"
+      ]
+    }
+  ]
+}

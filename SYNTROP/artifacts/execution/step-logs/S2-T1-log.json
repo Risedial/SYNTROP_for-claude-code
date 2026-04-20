@@ -1,0 +1,23 @@
+{
+  "task_id": "S2-T1",
+  "task_name": "Infrastructure provisioning (Upstash Redis + Vercel + env vars)",
+  "executed_at": "2026-04-18",
+  "status": "partial",
+  "files_created": [
+    ".vercel/project.json",
+    "SYNTROP/artifacts/architecture/infra-notes.md"
+  ],
+  "files_modified": [".gitignore"],
+  "validation_results": {
+    "vercel_project_linked": true,
+    "redis_db_created": false,
+    "env_vars_set": false,
+    "redis_connectivity_tested": false
+  },
+  "notes": "Vercel project linked successfully (cpr-first-aid / risedials-projects). Upstash MCP was unavailable in this session; Vercel KV is deprecated in CLI v43+. infra-notes.md contains step-by-step instructions for the user to create a free Upstash database and add env vars via 'vercel env add'. All downstream code (api/sync.ts) is written to use UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN as env vars — once those are set, the sync endpoint will work without any code changes.",
+  "issues_encountered": [
+    "Upstash MCP not available in Claude Code tool list",
+    "Vercel KV deprecated in CLI v43 — 'vercel storage' command not recognized",
+    "Fallback: user must create free Upstash database manually (documented in infra-notes.md)"
+  ]
+}

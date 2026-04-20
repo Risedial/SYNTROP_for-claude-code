@@ -1,0 +1,158 @@
+{
+  "generated_at": "2026-04-17",
+  "research_context": {
+    "project_type": "Progressive Web App (mobile-first study tool)",
+    "scale_tier": "small",
+    "key_requirements": [
+      "React + Vite locked — sub-stack choices are within this constraint",
+      "Complex 5-state mastery algorithm requires deterministic, testable state transitions",
+      "localStorage primary + Redis backup — state persistence is load-bearing",
+      "Offline-first PWA — service worker must cache everything on install",
+      "Atomic build tasks — every implementation step completable by a less-capable model"
+    ]
+  },
+  "note": "React + Vite and Upstash + Vercel are locked by constraint CON-001 and CON-003. These approaches evaluate the sub-stack choices within that constraint: state management library, TypeScript vs JavaScript, PWA tooling (service worker setup), and tab routing pattern. These are the genuine open decisions for this project.",
+  "approaches": [
+    {
+      "id": "approach-A",
+      "name": "JavaScript + Context/useReducer + vite-plugin-pwa",
+      "summary": "Plain JavaScript with React Context and useReducer for state management. vite-plugin-pwa handles the service worker and PWA manifest. Tab routing is managed as state in the root Context. All question states stored in a single localStorage JSON blob under one key. Zero external state management dependencies.",
+      "technology_stack": {
+        "frontend": "React 18 + Vite (locked)",
+        "language": "JavaScript (ES2022+, no TypeScript)",
+        "state_management": "React Context + useReducer",
+        "pwa_tooling": "vite-plugin-pwa (Workbox-based)",
+        "routing": "Tab index as Context state (no router library)",
+        "persistence": "Custom localStorage adapter (single key: fap_state)",
+        "hosting": "Vercel Hobby (locked)",
+        "additional": ["uuid npm package for device UUID generation"]
+      },
+      "architecture_pattern": "jamstack",
+      "research_sources": [
+        "React official docs: useReducer for complex state (https://react.dev/reference/react/useReducer)",
+        "vite-plugin-pwa documentation (https://vite-pwa-org.netlify.app/)",
+        "MDN: Service Worker API cache-first strategy",
+        "Workbox documentation: generateSW mode"
+      ],
+      "strengths": [
+        "Zero extra dependencies beyond vite-plugin-pwa — no state library adds no bundle weight",
+        "useReducer is ideal for a finite state machine pattern — dispatch(action) maps naturally to state transitions",
+        "Context + useReducer is the React team's own recommendation for app-level state without external dependencies",
+        "vite-plugin-pwa is the de facto standard for Vite PWA setup — handles iOS Safari manifest quirks automatically",
+        "Single localStorage key design is simple and easy to understand in atomic build tasks"
+      ],
+      "weaknesses": [
+        "Context + useReducer requires more boilerplate per component than Zustand — each atomic task includes more setup code for a less-capable model",
+        "No TypeScript means type errors in the 5-state algorithm surface only at runtime — a subtle streak-tracking bug could go undetected",
+        "Manual localStorage serialization/deserialization on every state change adds custom code that must be tested",
+        "React Context re-renders all consumers on every state change — in a 131-question state tree, performance profiling may be needed",
+        "No devtools integration — debugging the algorithm state requires console.log or custom tooling"
+      ],
+      "risk_factors": [
+        "Algorithm correctness risk: without TypeScript, the 5-state machine's transition logic has no compile-time guard",
+        "Re-render performance: Context updates are not selective — all consumers re-render, which may cause jank during session question rendering",
+        "localStorage schema versioning requires manual migration code"
+      ],
+      "estimated_timeline_fit": "within_target",
+      "estimated_budget_fit": "within_target",
+      "scalability_assessment": "Single user, no scale concern. Architecture is adequate for the project's lifetime.",
+      "learning_curve": "low",
+      "ecosystem_maturity": "mature"
+    },
+    {
+      "id": "approach-B",
+      "name": "TypeScript + Zustand + vite-plugin-pwa",
+      "summary": "TypeScript for the full application with Zustand as the state management library. Zustand's persist middleware handles localStorage synchronization automatically. vite-plugin-pwa generates the service worker and manifest. Tab routing is a Zustand store field. The 5-state mastery algorithm is fully typed with interfaces for QuestionState, SessionRecord, and MasteryTransition.",
+      "technology_stack": {
+        "frontend": "React 18 + Vite (locked)",
+        "language": "TypeScript 5.x",
+        "state_management": "Zustand 4.x + persist middleware",
+        "pwa_tooling": "vite-plugin-pwa (Workbox-based)",
+        "routing": "Tab index as Zustand store field (no router library)",
+        "persistence": "Zustand persist middleware (localStorage key: fap_store) + custom Redis sync layer",
+        "hosting": "Vercel Hobby (locked)",
+        "additional": ["uuid npm package", "@types/uuid", "Zustand devtools middleware (dev only)"]
+      },
+      "architecture_pattern": "jamstack",
+      "research_sources": [
+        "Zustand documentation: persist middleware (https://docs.pmnd.rs/zustand/integrations/persisting-store-data)",
+        "vite-plugin-pwa documentation",
+        "TypeScript handbook: discriminated unions for state machines",
+        "Zustand GitHub: 5.7k+ production apps, React team recommended alternative to Redux"
+      ],
+      "strengths": [
+        "TypeScript interfaces catch algorithm bugs at compile time — streak counters, reversal arrays, and session tracking are fully typed",
+        "Zustand persist middleware eliminates all custom localStorage serialization code — reduces implementation surface by ~200 lines",
+        "Zustand's selector pattern prevents unnecessary re-renders — each component subscribes only to the slice it needs",
+        "Atomic build tasks are more precise with TypeScript: every task can specify exact interface fields, reducing ambiguity for a less-capable model",
+        "Zustand devtools makes algorithm state visible during development without custom tooling",
+        "vite-plugin-pwa handles iOS Safari 'Add to Home Screen' flow and Android install prompt edge cases automatically",
+        "Discriminated union types for QuestionState (New|Active|NearMastery|Mastered|Maintenance) make exhaustive case handling compiler-enforced"
+      ],
+      "weaknesses": [
+        "TypeScript compilation step adds build complexity — tsconfig.json must be correctly configured for Vite + React",
+        "Zustand persist middleware has opinions about store shape — migrating the schema if requirements change requires a version migration function",
+        "Adds ~15KB to bundle (Zustand is small but not zero) compared to Context/useReducer",
+        "A less-capable model must understand Zustand store patterns — slightly higher conceptual overhead than pure React primitives"
+      ],
+      "risk_factors": [
+        "Zustand persist migration: if localStorage schema needs to change post-deployment, migration functions must be implemented correctly",
+        "TypeScript tsconfig strictness level affects how much type safety is enforced — must be configured before first build task"
+      ],
+      "estimated_timeline_fit": "within_target",
+      "estimated_budget_fit": "within_target",
+      "scalability_assessment": "Single user. Zustand scales well beyond this project's needs — no scale concern.",
+      "learning_curve": "low",
+      "ecosystem_maturity": "mature"
+    },
+    {
+      "id": "approach-C",
+      "name": "TypeScript + Zustand + Custom Service Worker",
+      "summary": "TypeScript with Zustand for state management, but the PWA service worker is written manually rather than generated by vite-plugin-pwa. The custom service worker gives full control over cache strategy, cache naming, and update behavior. Same state and persistence approach as Approach B, but PWA tooling is hand-rolled.",
+      "technology_stack": {
+        "frontend": "React 18 + Vite (locked)",
+        "language": "TypeScript 5.x",
+        "state_management": "Zustand 4.x + persist middleware",
+        "pwa_tooling": "Custom service worker (sw.ts compiled via Vite worker build) + vite-plugin-legacy for manifest",
+        "routing": "Tab index as Zustand store field",
+        "persistence": "Zustand persist middleware + custom Redis sync layer",
+        "hosting": "Vercel Hobby (locked)",
+        "additional": ["uuid npm package", "@types/uuid", "Manual manifest.json"]
+      },
+      "architecture_pattern": "jamstack",
+      "research_sources": [
+        "MDN: Service Worker API — install, activate, fetch lifecycle",
+        "MDN: Cache API",
+        "web.dev: Workbox vs custom service workers (https://web.dev/articles/service-workers-cache-storage)",
+        "PWABuilder documentation: manual service worker patterns"
+      ],
+      "strengths": [
+        "Full control over cache strategy — can implement exact cache behavior without Workbox abstraction",
+        "No dependency on vite-plugin-pwa — one fewer plugin in the Vite build chain",
+        "Cache version string is explicit in code — cache invalidation behavior is fully transparent"
+      ],
+      "weaknesses": [
+        "Service worker development is notoriously tricky — iOS Safari has specific gotchas around update behavior and cache scope that Workbox handles automatically",
+        "A custom service worker requires manual asset manifest generation — must enumerate build output filenames to cache, or use glob patterns that could miss files",
+        "Vite content hashes in filenames change every build — custom SW must regenerate the asset list on each build, requiring a post-build script or Vite plugin",
+        "Significantly more code to write and maintain for the same offline result that vite-plugin-pwa delivers in 10 lines of config",
+        "iOS Safari PWA has a list of known quirks (navigation preload, update handling) that Workbox already patches — custom SW must solve these independently"
+      ],
+      "risk_factors": [
+        "High risk: iOS Safari service worker behavior is the most common source of PWA install failure — custom SW is more likely to hit unhandled edge cases",
+        "Maintenance burden: any Vite upgrade that changes output filenames requires updating the cache manifest generation script",
+        "Service worker update lifecycle bugs can silently serve stale content after deployment"
+      ],
+      "estimated_timeline_fit": "within_target",
+      "estimated_budget_fit": "within_target",
+      "scalability_assessment": "Not a scalability concern — service worker behavior is unrelated to scale.",
+      "learning_curve": "high",
+      "ecosystem_maturity": "mature"
+    }
+  ],
+  "total_approaches": 3,
+  "preliminary_recommendation": {
+    "approach_id": "approach-B",
+    "rationale": "Approach B (TypeScript + Zustand + vite-plugin-pwa) best serves the two most demanding constraints: atomic build tasks and algorithm correctness. TypeScript makes every atomic task unambiguous — a less-capable model receives typed interfaces, not implicit conventions. Zustand persist middleware eliminates a class of custom localStorage code that would otherwise need its own atomic tasks and tests. vite-plugin-pwa is the community standard for Vite PWA setup and handles iOS Safari edge cases that a custom service worker would need to solve independently. The bundle overhead (~15KB for Zustand) is negligible for a PWA that will be cached on device. Approach A is viable but riskier for the algorithm. Approach C adds complexity with no offsetting benefit."
+  }
+}

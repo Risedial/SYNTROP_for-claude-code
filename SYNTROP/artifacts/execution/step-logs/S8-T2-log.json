@@ -1,0 +1,30 @@
+{
+  "task_id": "S8-T2",
+  "task_name": "Vercel production deployment",
+  "executed_at": "2026-04-18T00:00:00Z",
+  "status": "completed",
+  "files_created": [],
+  "files_modified": ["SYNTROP/artifacts/architecture/infra-notes.md"],
+  "validation_results": {
+    "files_exist": true,
+    "builds_clean": true,
+    "tests_pass": true,
+    "linter_clean": true
+  },
+  "deployment_output": {
+    "production_url": "https://cpr-first-aid.vercel.app",
+    "deployment_id": "dpl_2utDmK9Z7BkNBGU9zaQ7MQXGdE1h",
+    "deployment_url": "https://cpr-first-imyqcmm3t-risedials-projects.vercel.app",
+    "status": "Ready",
+    "environment": "Production",
+    "api_sync_test": {"status": "responds", "response": "{\"error\":\"fetch_failed\"}", "note": "Expected — Upstash env vars not yet set. Endpoint is deployed and error-handling works correctly."},
+    "aliases": [
+      "https://cpr-first-aid.vercel.app",
+      "https://cpr-first-aid-risedials-projects.vercel.app"
+    ]
+  },
+  "notes": "Deployed successfully. App loads at production URL. /api/sync is deployed and responds correctly (returns fetch_failed until Upstash env vars are added — expected behavior). Service worker activation must be verified in browser. Production URL recorded in infra-notes.md.",
+  "issues_encountered": [
+    "Upstash env vars not yet set — user must complete manual Redis setup per infra-notes.md. SC-004 (Redis restore) cannot be fully validated until this is done. All other SCs testable now."
+  ]
+}

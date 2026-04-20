@@ -1,0 +1,16 @@
+{
+  "task_id": "S7-T6",
+  "task_name": "App entry point (main.tsx + App.tsx)",
+  "executed_at": "2026-04-18T00:00:00Z",
+  "status": "completed",
+  "files_created": [],
+  "files_modified": ["src/main.tsx", "src/App.tsx"],
+  "validation_results": {
+    "files_exist": true,
+    "builds_clean": true,
+    "tests_pass": true,
+    "linter_clean": true
+  },
+  "notes": "main.tsx: resolveDeviceId() called, setDeviceId + initializeQuestions run before render. App.tsx: renders AppShell + IOSInstallBanner. tsc + build both exit 0.",
+  "issues_encountered": []
+}

@@ -1,0 +1,400 @@
+{
+  "generated_at": "2026-04-17",
+  "project_summary": "A mobile-first Progressive Web App that replaces an AI-token-consuming Claude Code slash command with a permanently deployed, offline-capable, mastery-based study tool for the Alberta Standard First Aid Level C CPR & AED certification (St. John Ambulance Alberta). The app uses a five-state question state machine with mastery thresholds based on performance patterns — not calendar intervals — and syncs progress to Upstash Redis as a backup. Built with React + Vite, deployed on Vercel, zero paid infrastructure, zero manual setup, zero accounts. Content (131+ questions, 12 skills) and the design system are pre-built and compiled into the app at build time.",
+  "functional_requirements": [
+    {
+      "id": "FR-001",
+      "category": "study_modes",
+      "requirement": "The system SHALL provide an Adaptive Drill mode where the mastery algorithm exclusively controls which questions are presented — the user has no topic selection control.",
+      "priority": "must-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "No topic selector UI exists in Adaptive Drill. Questions surface based solely on algorithm state. User cannot manually choose which topic to study."
+    },
+    {
+      "id": "FR-002",
+      "category": "study_modes",
+      "requirement": "The system SHALL provide a Practical Skills Guide mode presenting step-by-step walkthroughs of all 12 practical assessment skills with self-assessment checklists.",
+      "priority": "must-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "All 12 skills from skills.js are accessible. Each skill shows ordered steps, common errors, and an evaluation checklist the user can check off."
+    },
+    {
+      "id": "FR-003",
+      "category": "algorithm",
+      "requirement": "The system SHALL implement a five-state question state machine: New → Active → Near-Mastery → Mastered → Maintenance, with defined transition rules for each state boundary.",
+      "priority": "must-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "Every question has a persisted state. State transitions occur only when threshold conditions are met. State machine is deterministic and testable."
+    },
+    {
+      "id": "FR-004",
+      "category": "algorithm",
+      "requirement": "The system SHALL apply mastery thresholds: Active→Near-Mastery requires 2 consecutive correct answers; Near-Mastery→Mastered requires 3 consecutive correct answers across 2+ distinct sessions with no reversals in the last 5 exposures.",
+      "priority": "must-have",
+      "source": "user-answer-q2",
+      "acceptance_criteria": "A question cannot reach Near-Mastery without 2 consecutive correct. A question cannot reach Mastered without 3 consecutive correct across at least 2 separate session IDs and a clean reversal window."
+    },
+    {
+      "id": "FR-005",
+      "category": "algorithm",
+      "requirement": "The system SHALL detect fast-tap responses (answer time < 2 seconds), flag them as low-confidence, exclude them from mastery streak counts, and repeat the flagged question later in the same session.",
+      "priority": "must-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "Timestamp is recorded on question display and answer submission. If delta < 2000ms: response does not increment streak, question is re-queued in the current session's question list."
+    },
+    {
+      "id": "FR-006",
+      "category": "algorithm",
+      "requirement": "The system SHALL order session questions as: Active questions first (prioritized by lowest mastery score), Near-Mastery questions interleaved mid-session, Mastered/Maintenance questions briefly at the end; ordering within each tier SHALL be randomized using the session ID as a seed.",
+      "priority": "must-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "Session question list is deterministic given the same session ID (reproducible). Tier ordering is verifiable by inspecting the session queue. Randomization does not allow the same question to appear consecutively within its tier."
+    },
+    {
+      "id": "FR-007",
+      "category": "algorithm",
+      "requirement": "The system SHALL demote Mastered/Maintenance questions to Active state when a non-fast-tap wrong answer is given; fast-tap wrong answers in Maintenance SHALL repeat the question in the current session without triggering demotion.",
+      "priority": "must-have",
+      "source": "user-answer-q6",
+      "acceptance_criteria": "A deliberate miss (response time ≥ 2s) on a Maintenance question causes immediate state transition to Active. A fast-tap miss on a Maintenance question adds it to the end of the current session queue only."
+    },
+    {
+      "id": "FR-008",
+      "category": "algorithm",
+      "requirement": "The system SHALL schedule Mastered questions for Maintenance review every 10 sessions.",
+      "priority": "must-have",
+      "source": "user-answer-q2",
+      "acceptance_criteria": "A Mastered question appears in a session's Maintenance tier when session_count mod 10 == 0 relative to the question's mastery date. Questions not due for Maintenance review are excluded from that session."
+    },
+    {
+      "id": "FR-009",
+      "category": "storage",
+      "requirement": "The system SHALL use localStorage as the primary storage for all session data; all reads during active sessions SHALL come from localStorage or in-memory state, not from Redis.",
+      "priority": "must-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "No Redis reads occur during a study session unless the user explicitly triggers a restore. All question states, session history, and mastery data are readable from localStorage alone."
+    },
+    {
+      "id": "FR-010",
+      "category": "storage",
+      "requirement": "The system SHALL generate an anonymous device UUID on first launch and store it in both localStorage AND a 7-year SameSite=Strict cookie; on app load, if localStorage UUID is absent, the system SHALL read from the cookie, re-seed localStorage, and restore the Redis association.",
+      "priority": "must-have",
+      "source": "user-answer-q3",
+      "acceptance_criteria": "Clearing localStorage and reloading the app results in the same device UUID being recovered from the cookie. Redis key association is maintained. No personal data is stored — UUID is a random identifier only."
+    },
+    {
+      "id": "FR-011",
+      "category": "storage",
+      "requirement": "The system SHALL maintain a dirty flag that prevents Redis writes when no data has changed since the last sync.",
+      "priority": "must-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "If no question state has changed since last sync, the 60-second interval sync timer fires but no Redis write is made. Dirty flag is set to true whenever any question state changes."
+    },
+    {
+      "id": "FR-012",
+      "category": "storage",
+      "requirement": "The system SHALL sync progress to Redis either on manual save (Settings tap) or automatically every 60 seconds if the dirty flag is set.",
+      "priority": "must-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "Manual save triggers immediate Redis write. 60-second interval timer checks dirty flag and writes only if dirty. Both paths clear the dirty flag after successful sync."
+    },
+    {
+      "id": "FR-013",
+      "category": "storage",
+      "requirement": "The system SHALL provide a one-tap restore function in Settings that fetches progress from Redis and overwrites localStorage with the backup data.",
+      "priority": "must-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "Tapping Restore in Settings: fetches Redis data via /api/sync, overwrites localStorage question states, reloads app state from restored data. Displays confirmation before overwriting."
+    },
+    {
+      "id": "FR-014",
+      "category": "analytics",
+      "requirement": "The system SHALL display an estimated exam score as a percentage calculated as the question-count-weighted average of per-topic mastery percentages: sum(topic_mastery_percent × topic_question_count) / total_questions.",
+      "priority": "must-have",
+      "source": "user-answer-q4",
+      "acceptance_criteria": "Estimated score matches manual calculation of the weighted formula. Score updates after each session as question states change. Score is displayed prominently on the Progress tab."
+    },
+    {
+      "id": "FR-015",
+      "category": "analytics",
+      "requirement": "The system SHALL display a topic-by-topic color-coded mastery grid: red for mastery <50%, yellow for 50-80%, green for >80%.",
+      "priority": "must-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "All 11 topics appear in the grid. Colors update in real time as mastery percentages change. Color thresholds are exactly as specified."
+    },
+    {
+      "id": "FR-016",
+      "category": "analytics",
+      "requirement": "The system SHALL display a 'Ready to test' banner on the Progress tab when all 11 topics exceed 75% mastery.",
+      "priority": "must-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "Banner appears when every topic grid cell is green (>80%) or yellow (≥75%). Banner disappears immediately if any topic drops below 75%. Banner is visually prominent."
+    },
+    {
+      "id": "FR-017",
+      "category": "analytics",
+      "requirement": "The system SHALL display the top 3 weakest topics by name on the Progress tab.",
+      "priority": "must-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "Three topic names with the lowest mastery percentages are displayed, ordered from weakest to strongest. Updates after each session."
+    },
+    {
+      "id": "FR-018",
+      "category": "navigation",
+      "requirement": "The system SHALL provide bottom navigation with exactly four tabs: Study | Skills | Progress | Settings.",
+      "priority": "must-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "Four tabs visible at the bottom of the viewport on all screen sizes ≥375px. Active tab is visually indicated. No fifth tab exists."
+    },
+    {
+      "id": "FR-019",
+      "category": "pwa",
+      "requirement": "The system SHALL include a valid manifest.json enabling PWA installation on iOS Safari and Android Chrome.",
+      "priority": "must-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "Browser install prompt is triggerable on Android Chrome. 'Add to Home Screen' works on iOS Safari. App icon and name display correctly when installed."
+    },
+    {
+      "id": "FR-020",
+      "category": "pwa",
+      "requirement": "The system SHALL register a service worker that caches all app assets (JS, CSS, HTML, fonts, icons) on install, enabling full offline use after the first page load.",
+      "priority": "must-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "After first load with network, disabling network and reloading serves the full app from cache. All four tabs function offline. No network requests are required to study."
+    },
+    {
+      "id": "FR-021",
+      "category": "infrastructure",
+      "requirement": "The system SHALL expose a single serverless API route /api/sync that accepts GET (fetch progress from Redis) and POST (write progress to Redis) requests, authenticated by device UUID.",
+      "priority": "must-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "GET /api/sync returns the stored progress JSON for the device UUID. POST /api/sync writes the provided progress JSON to Redis under the device UUID key. No other API routes exist."
+    },
+    {
+      "id": "FR-022",
+      "category": "infrastructure",
+      "requirement": "The system SHALL be deployed to Vercel via Vercel CLI with zero manual dashboard interaction from the user.",
+      "priority": "must-have",
+      "source": "user-answer-q5",
+      "acceptance_criteria": "Claude Code executes vercel CLI commands to create project, set environment variables, and deploy. User does not visit vercel.com to complete any step."
+    },
+    {
+      "id": "FR-023",
+      "category": "infrastructure",
+      "requirement": "The system SHALL provision Upstash Redis via the Upstash MCP server (Claude Code calls MCP tools), retrieving connection credentials to inject into Vercel environment variables.",
+      "priority": "must-have",
+      "source": "user-answer-q5",
+      "acceptance_criteria": "Claude Code creates Upstash Redis database using MCP server tools. UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN are injected into Vercel via CLI. User does not visit upstash.com."
+    },
+    {
+      "id": "FR-024",
+      "category": "content",
+      "requirement": "The system SHALL compile questions.js (131+ questions across 11 topics) as an ES module import at build time; no content fetching occurs at runtime.",
+      "priority": "must-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "questions.js is imported as a static ES module in the app source. Content is present in the compiled bundle. No fetch() calls exist for content data."
+    },
+    {
+      "id": "FR-025",
+      "category": "content",
+      "requirement": "The system SHALL compile skills.js (12 practical skill objects) as an ES module import at build time; no content fetching occurs at runtime.",
+      "priority": "must-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "skills.js is imported as a static ES module. All 12 skills are accessible in the compiled bundle without network requests."
+    },
+    {
+      "id": "FR-026",
+      "category": "settings",
+      "requirement": "The system SHALL display the content version field from questions.js on the Settings tab, documenting when the content was last verified against the current St. John Ambulance syllabus.",
+      "priority": "should-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "Settings tab shows a content version string. The string matches the version field exported from questions.js."
+    },
+    {
+      "id": "FR-027",
+      "category": "settings",
+      "requirement": "The system SHALL provide a manual sync button in Settings that immediately triggers a Redis write if the dirty flag is set.",
+      "priority": "must-have",
+      "source": "brain-dump",
+      "acceptance_criteria": "Tapping 'Save to Cloud' in Settings triggers POST /api/sync within 1 second. Success/failure confirmation is shown. Dirty flag is cleared on success."
+    }
+  ],
+  "non_functional_requirements": [
+    {
+      "id": "NFR-001",
+      "category": "performance",
+      "requirement": "The system SHALL load and render the first quiz question in under 2 seconds on first visit over a typical mobile connection.",
+      "metric": "<2000ms from navigation start to first quiz question rendered",
+      "priority": "must-have"
+    },
+    {
+      "id": "NFR-002",
+      "category": "performance",
+      "requirement": "The system SHALL load from service worker cache in under 0.5 seconds on repeat visits.",
+      "metric": "<500ms from navigation start to interactive on cache hit",
+      "priority": "must-have"
+    },
+    {
+      "id": "NFR-003",
+      "category": "performance",
+      "requirement": "The system SHALL render all four navigation tabs in under 300ms after initial app load.",
+      "metric": "<300ms tab switch time after initial bundle is loaded",
+      "priority": "must-have"
+    },
+    {
+      "id": "NFR-004",
+      "category": "performance",
+      "requirement": "The system SHALL complete Redis sync in under 1 second when the manual save button is tapped, without blocking the UI.",
+      "metric": "<1000ms from tap to sync confirmation, UI remains responsive throughout",
+      "priority": "must-have"
+    },
+    {
+      "id": "NFR-005",
+      "category": "compatibility",
+      "requirement": "The system SHALL support all viewports with a minimum width of 375px.",
+      "metric": "All UI elements render correctly and are usable at 375px viewport width",
+      "priority": "must-have"
+    },
+    {
+      "id": "NFR-006",
+      "category": "compatibility",
+      "requirement": "The system SHALL function correctly as the primary browsers: iOS Safari (latest) and Android Chrome (latest).",
+      "metric": "All features pass manual testing on iOS Safari and Android Chrome",
+      "priority": "must-have"
+    },
+    {
+      "id": "NFR-007",
+      "category": "usability",
+      "requirement": "The system SHALL present a quiz question immediately on app open with zero onboarding, setup screens, or login prompts.",
+      "metric": "From app open to first question: 0 required interactions (question is immediately visible)",
+      "priority": "must-have"
+    },
+    {
+      "id": "NFR-008",
+      "category": "security",
+      "requirement": "The system SHALL collect no personal data; the only identifier is an anonymous random UUID that carries no personally identifiable information.",
+      "metric": "No name, email, location, or identifying data stored in localStorage, cookies, or Redis",
+      "priority": "must-have"
+    },
+    {
+      "id": "NFR-009",
+      "category": "reliability",
+      "requirement": "The system SHALL function fully offline (study, skills guide, analytics, settings view) after the first successful load.",
+      "metric": "All four tabs functional with network disabled after first load",
+      "priority": "must-have"
+    },
+    {
+      "id": "NFR-010",
+      "category": "scalability",
+      "requirement": "The system SHALL remain within Upstash free tier limits (10,000 Redis commands/day) for a single-user workload.",
+      "metric": "Daily Redis command count < 10,000 under normal single-user study patterns",
+      "priority": "must-have"
+    }
+  ],
+  "constraints": [
+    {
+      "id": "CON-001",
+      "type": "technology",
+      "constraint": "Frontend framework is React + Vite (confirmed by user Q1:A). This decision is locked.",
+      "impact": "All component architecture, state management patterns, routing, and build configuration must use React + Vite conventions."
+    },
+    {
+      "id": "CON-002",
+      "type": "budget",
+      "constraint": "Zero paid infrastructure. Upstash free tier (10,000 commands/day) and Vercel free tier (Hobby) only.",
+      "impact": "No paid Redis tiers, no Vercel Pro features. Architecture must stay within free tier limits."
+    },
+    {
+      "id": "CON-003",
+      "type": "platform",
+      "constraint": "Zero manual dashboard interaction from user. All provisioning via Claude Code using Upstash MCP server + Vercel CLI.",
+      "impact": "Infrastructure spec must define exact CLI/MCP command sequences. Any step requiring dashboard access violates this constraint."
+    },
+    {
+      "id": "CON-004",
+      "type": "technology",
+      "constraint": "Build-time content only. No CMS, no content API, no dynamic content fetching. Content changes require a new deployment.",
+      "impact": "questions.js and skills.js are ES module imports compiled into the bundle. The /api/sync route handles progress only, not content."
+    },
+    {
+      "id": "CON-005",
+      "type": "regulatory",
+      "constraint": "Clinical accuracy of questions.js and skills.js cannot be validated by code review. User must verify content correctness before build proceeds.",
+      "impact": "A user sign-off step on content accuracy must occur before the execution phase begins. This is a hard gate."
+    },
+    {
+      "id": "CON-006",
+      "type": "team",
+      "constraint": "Each build task must be atomic enough for a less-capable model to execute without ambiguity — one file or one function per task, all decisions resolved in planning before execution.",
+      "impact": "The implementation plan must have zero ambiguous tasks. Every task specifies exact file path, function signature, inputs, outputs, and acceptance criteria."
+    },
+    {
+      "id": "CON-007",
+      "type": "technology",
+      "constraint": "The frontend-design skill must be invoked before any frontend code is written. The design system at zzz/design-system/style-template.md must be fully applied.",
+      "impact": "No React component may be written without first running frontend-design and establishing the component library that implements the design tokens."
+    },
+    {
+      "id": "CON-008",
+      "type": "scope",
+      "constraint": "Content generation phase is complete. Orchestration begins at data model specification (planning phase 2 of the spec's 6-phase sequence).",
+      "impact": "The research phase must not include content generation tasks. The first research artifact is the data model specification."
+    }
+  ],
+  "success_criteria": [
+    {
+      "id": "SC-001",
+      "criterion": "User opens the deployed URL on mobile and sees a quiz question with zero interactions required",
+      "metric": "First visible element after app load is a question card with answer options"
+    },
+    {
+      "id": "SC-002",
+      "criterion": "App functions fully offline after first visit",
+      "metric": "All four tabs load and function with device in airplane mode after one prior online visit"
+    },
+    {
+      "id": "SC-003",
+      "criterion": "Study progress persists across browser close and reopen",
+      "metric": "Question states (Active/Near-Mastery/Mastered counts) match before close and after reopen on the same device"
+    },
+    {
+      "id": "SC-004",
+      "criterion": "One-tap Redis restore successfully recovers all question states after localStorage is manually cleared",
+      "metric": "After clearing localStorage and tapping Restore, all question states and mastery data are restored from Redis without data loss"
+    },
+    {
+      "id": "SC-005",
+      "criterion": "Analytics shows 'Ready to test' with 80%+ estimated exam score after sufficient study",
+      "metric": "Banner appears, estimated score ≥ 80%, all topic cells green — validated manually after completing representative study sessions"
+    },
+    {
+      "id": "SC-006",
+      "criterion": "App is installable to home screen as a PWA on both iOS Safari and Android Chrome",
+      "metric": "Install prompt appears on Android Chrome; 'Add to Home Screen' succeeds on iOS Safari; installed app opens in standalone mode"
+    },
+    {
+      "id": "SC-007",
+      "criterion": "Entire infrastructure provisioned by Claude Code with zero manual dashboard interaction from user",
+      "metric": "User does not open vercel.com or upstash.com at any point during setup. All credentials and deployments happen via CLI/MCP."
+    }
+  ],
+  "vision_anchors": [
+    "Replace AI-dependent Claude Code command with permanently deployed, zero-marginal-cost PWA",
+    "Mastery-based algorithm — questions graduate through performance patterns across sessions, not calendar intervals",
+    "Single user, single device, no accounts, no login, no personal data collection of any kind",
+    "Full offline capability after first load via service worker cache-on-install",
+    "Zero manual infrastructure setup — all provisioning by Claude Code via Upstash MCP + Vercel CLI",
+    "Content correctness is user responsibility — clinical accuracy of questions.js and skills.js must be user-verified before build",
+    "React + Vite is the locked framework — all component and build decisions derive from this",
+    "Build atomicity — every implementation task must be executable by a less-capable model without ambiguity"
+  ],
+  "statistics": {
+    "total_functional": 27,
+    "total_non_functional": 10,
+    "total_constraints": 8,
+    "total_success_criteria": 7,
+    "must_have_count": 26,
+    "should_have_count": 1,
+    "nice_to_have_count": 0
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "generated_at": "2026-04-18",
+  "overall_score": 87,
+  "overall_grade": "B+",
+  "categories": {
+    "code_quality": {
+      "score": 95,
+      "lint_errors": 0,
+      "lint_warnings": 0,
+      "type_errors": 0,
+      "build_exit_code": 0,
+      "bundle_size_kb": 372,
+      "complexity_issues": [],
+      "duplication_issues": [],
+      "notes": ["No lint script in package.json; eslint.config.js confirmed 0 errors in sprint 7"]
+    },
+    "security": {
+      "score": 88,
+      "vulnerabilities_found": 15,
+      "dependency_audit": {"critical": 0, "high": 10, "moderate": 5, "low": 0},
+      "audit_risk_level": "low",
+      "audit_context": "All 15 vulnerabilities in build-time/serverless deps (undici, serialize-javascript). Client bundle unaffected.",
+      "hardcoded_secrets": false,
+      "input_validation": "pass",
+      "uuid_validation": "pass",
+      "authentication": "pass",
+      "personal_data_collected": false,
+      "manual_review_notes": [
+        "No rate limiting (single-user by design)",
+        "CORS not explicitly configured (Vercel default, acceptable for personal tool)"
+      ]
+    },
+    "performance": {
+      "score": 90,
+      "bundle_size_kb": 372,
+      "bundle_size_limit_kb": 5120,
+      "tab_switch_ms": 0,
+      "redis_calls_per_get": 2,
+      "memory_leaks": false,
+      "auto_sync_interval_ms": 60000,
+      "service_worker_precache_entries": 8,
+      "lighthouse_validated": false,
+      "notes": ["Lighthouse run recommended after Upstash activation"]
+    },
+    "accessibility": {
+      "score": 75,
+      "mobile_first": true,
+      "safe_area_inset": true,
+      "aria_labels": "not_audited",
+      "keyboard_nav": "partial",
+      "issues": ["BottomNav uses div not button elements"],
+      "compliance_level": "not_required"
+    },
+    "best_practices": {
+      "score": 88,
+      "env_vars_documented": true,
+      "twelve_factor_compliant": true,
+      "user_friendly_errors": true,
+      "project_readme": false,
+      "passing_checks": ["env_docs", "error_messages", "logging", "config_via_env"]
+    }
+  },
+  "critical_issues": [],
+  "warnings": [
+    {
+      "id": "W-001",
+      "category": "security",
+      "description": "15 npm audit vulnerabilities (build/runtime dev deps only, not client bundle)",
+      "severity": "low"
+    },
+    {
+      "id": "W-002",
+      "category": "best_practices",
+      "description": "FR-026: No content version exported from questions.ts / displayed in Settings",
+      "severity": "low"
+    },
+    {
+      "id": "W-003",
+      "category": "best_practices",
+      "description": "No user-facing README.md at project root",
+      "severity": "low"
+    },
+    {
+      "id": "W-004",
+      "category": "performance",
+      "description": "NFR-001/002/004 not Lighthouse-validated",
+      "severity": "low"
+    },
+    {
+      "id": "W-005",
+      "category": "accessibility",
+      "description": "BottomNav uses clickable divs, not button elements",
+      "severity": "low"
+    }
+  ],
+  "recommendations": [
+    "Run Lighthouse after Upstash activation to validate NFR-001/002",
+    "Add CONTENT_VERSION export to questions.ts for FR-026 in v2",
+    "Convert BottomNav divs to button elements for accessibility in v2",
+    "Defer npm audit fix until next PWA tooling update (major version)"
+  ]
+}
